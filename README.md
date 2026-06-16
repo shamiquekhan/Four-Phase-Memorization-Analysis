@@ -1,3 +1,5 @@
+> **Note on version history:** The initial codebase was developed locally and uploaded in a single commit. All subsequent changes are committed incrementally. See [CHANGELOG.md](CHANGELOG.md) for a narrative of what changed and when.
+
 # Structural Fingerprints of Label Memorization in Shallow Neural Networks
 
 A systematic 4-phase analysis of how label memorization leaves structural fingerprints in shallow ReLU networks — spanning CKA representation drift, spectral geometry, circuit sparsity, influence functions, and rank-one model editing (ROME). Primary experiments on MNIST (784→16→10), validated on CIFAR-10 (3-layer MLP), with width scaling from 16 to 1024 hidden units.

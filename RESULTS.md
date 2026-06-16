@@ -189,7 +189,7 @@ ROME delta-norm scales monotonically with label noise rate (MNIST fc2, 5 seeds):
 | Spectral norm fc2 ratio | 1.86× |
 | Linear probe (hidden acts → corruption) | AUC = 0.514 |
 
-**Finding**: ROME is the most sensitive memorization probe. It outperforms the spectral norm ratio by 2.3× (4.34× vs 1.86×). The linear probe — a logistic regression trained on hidden activations to predict whether a sample is corrupted — achieves AUC of only 0.514, barely above random (0.5). This rules out a trivial explanation: ROME is not reading off an obvious signal in the hidden activations; it captures a geometric property (class boundary overlap in weight space) that a linear probe cannot access.
+**Finding**: ROME is the most sensitive memorization probe. It outperforms the spectral norm ratio by 2.3× (4.34× vs 1.86×). The linear probe — a logistic regression trained on hidden activations to predict whether a sample is corrupted — achieves AUC of only 0.514, barely above random (0.5). This weak discriminative power is expected: the quadratic Hessian approximation underlying influence functions degrades in non-convex settings, and the 16-unit bottleneck compresses corrupted and clean examples into largely overlapping loss distributions. The AUC should be interpreted as existence evidence — a statistically significant memorization signal — rather than as a usable detection tool. ROME captures a geometric property (class boundary overlap in weight space) that these simpler methods cannot access.
 
 ### Random Baseline for ROME
 
