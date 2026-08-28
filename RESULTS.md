@@ -151,22 +151,24 @@ Corrupted models have lower mean activations and higher sparsity, meaning more h
 
 **MNIST fc2 average**: Clean=19.08, Corrupted=4.40, Ratio=**4.34×** (paired t-test p<0.0001 for every class)
 
-#### CIFAR-10 (fc3, all 10 classes, 3 seeds)
+#### CIFAR-10 (fc3, all 10 classes, 5 seeds)
 
 | Class | Clean Δ-norm (mean ± SEM) | Corrupted Δ-norm (mean ± SEM) | Ratio | p-value |
 |------:|:-:|:-:|:-:|:-:|
-| 0 | 0.325 ± 0.035 | 0.175 ± 0.027 | 1.85× | 0.028 |
-| 1 | 0.438 ± 0.033 | 0.262 ± 0.018 | 1.68× | 0.009 |
-| 2 | 0.385 ± 0.027 | 0.186 ± 0.016 | 2.07× | 0.003 |
-| 3 | 0.341 ± 0.009 | 0.196 ± 0.015 | 1.74× | 0.001 |
-| 4 | 0.339 ± 0.019 | 0.169 ± 0.017 | 2.01× | 0.003 |
-| 5 | 0.376 ± 0.012 | 0.214 ± 0.007 | 1.76× | <0.001 |
-| 6 | 0.327 ± 0.014 | 0.170 ± 0.005 | 1.93× | <0.001 |
-| 7 | 0.408 ± 0.016 | 0.216 ± 0.006 | 1.89× | <0.001 |
-| 8 | 0.366 ± 0.037 | 0.197 ± 0.036 | 1.85× | 0.030 |
-| 9 | 0.380 ± 0.028 | 0.237 ± 0.019 | 1.60× | 0.013 |
+| 0 | 0.325 ± 0.035 | 0.176 ± 0.027 | 1.85× | 0.0014 |
+| 1 | 0.438 ± 0.033 | 0.262 ± 0.018 | 1.68× | 0.0197 |
+| 2 | 0.385 ± 0.027 | 0.186 ± 0.016 | 2.07× | 0.0032 |
+| 3 | 0.341 ± 0.009 | 0.196 ± 0.015 | 1.74× | 0.0119 |
+| 4 | 0.339 ± 0.019 | 0.169 ± 0.017 | 2.01× | 0.0013 |
+| 5 | 0.376 ± 0.012 | 0.214 ± 0.007 | 1.76× | 0.0069 |
+| 6 | 0.327 ± 0.014 | 0.170 ± 0.005 | 1.93× | 0.0027 |
+| 7 | 0.408 ± 0.016 | 0.216 ± 0.006 | 1.89× | 0.0032 |
+| 8 | 0.366 ± 0.037 | 0.197 ± 0.036 | 1.85× | 0.0139 |
+| 9 | 0.380 ± 0.028 | 0.237 ± 0.019 | 1.60× | 0.0214 |
 
-**Finding**: The ROME delta-norm finding is now the strongest result in the paper. On MNIST, every class shows clean > corrupted at p<0.0001 for both fc1 (mean ratio 2.02×) and fc2 (mean ratio 4.34×). On CIFAR-10, all 10 classes confirm at p<0.05 (mean ratio 1.84×). The cross-architecture consistency — ratio ~2–4× on MNIST and ~1.8× on CIFAR-10, across completely different depths, widths, and datasets — suggests the relationship between class boundary overlap and edit magnitude is an architectural invariant.
+**CIFAR-10 fc3 average**: Clean=0.369, Corrupted=0.202, Ratio=**1.82×** (paired t-test p<0.0001)
+
+**Finding**: The ROME delta-norm finding is now the strongest result in the paper. On MNIST, every class shows clean > corrupted at p<0.0001 for both fc1 (mean ratio 2.02×) and fc2 (mean ratio 4.34×). On CIFAR-10, all 10 classes confirm at p<0.05 with 5 seeds (mean ratio 1.82×). The cross-architecture consistency — ratio ~2–4× on MNIST and ~1.8× on CIFAR-10, across completely different depths, widths, and datasets — suggests the relationship between class boundary overlap and edit magnitude is an architectural invariant.
 
 ### Noise Rate Sweep
 
