@@ -33,6 +33,7 @@ def main():
     parser.add_argument('--skip-analysis', action='store_true', help='Skip analysis')
     parser.add_argument('--skip-figures', action='store_true', help='Skip figure generation')
     parser.add_argument('--skip-cifar10', action='store_true', help='Skip CIFAR-10 validation experiments')
+    parser.add_argument('--phase5', action='store_true', help='Run Phase 5: LoRA vs ROME subspace comparison')
     parser.add_argument('--output-dir', type=str, default='outputs')
     args = parser.parse_args()
     
@@ -207,7 +208,16 @@ def main():
             cwd=root
         )
 
-    # Step 16: Final verification
+    # Step 16: Phase 5 - LoRA vs ROME Subspace Comparison
+    if args.phase5:
+        # Use all 10 seeds for Phase 5 to match paper
+        run(
+            f"python src/analysis/phase5_lora_comparison.py --config {args.config} --checkpoint-dir {args.output_dir}/targeted_corrupted --seeds {' '.join(map(str, seeds))} --output-dir {args.output_dir}/phase5 --layer fc2 --ranks 1 2 4 8 --n-examples 100 --epochs 20 --lr 1e-2",
+            "Phase 5: LoRA vs ROME subspace comparison",
+            cwd=root
+        )
+    
+    # Step 17: Final verification
     run("python scripts/verify_consistency.py", "Final consistency check", cwd=root)
     
     print(f"\n{'='*60}")
