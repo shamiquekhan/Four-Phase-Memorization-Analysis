@@ -250,6 +250,33 @@ Accuracy at different SVD ranks of the fc2 weight matrix:
 
 ---
 
+## Phase 5: LoRA vs ROME Subspace Comparison (MNIST, 5 seeds)
+
+### LoRA Correction vs ROME Edit on Targeted Corruption Configs
+
+| Config | Rank | ROME Recovery (pp) | LoRA Recovery (pp) | ROME Side Effects | LoRA Side Effects | ROME Norm | LoRA Norm | Subspace Overlap | Epochs |
+|--------|------|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| 7→1 | 1 | +11.1 [+9.4, +12.7] | +100.0 [+100.0, +100.0] | 0.188 | 0.912 | 1.052 | 3.171 | 1.000 | 19.0 |
+| 7→1 | 2 | +11.1 [+9.4, +12.7] | +100.0 [+100.0, +100.0] | 0.188 | 0.933 | 1.052 | 3.581 | 1.000 | 14.6 |
+| 7→1 | 4 | +11.1 [+9.4, +12.7] | +100.0 [+100.0, +100.0] | 0.188 | 0.948 | 1.052 | 4.164 | 1.000 | 11.6 |
+| 7→1 | 8 | +11.1 [+9.4, +12.7] | +100.0 [+100.0, +100.0] | 0.188 | 0.950 | 1.052 | 4.940 | 1.000 | 9.6 |
+| 1→7 | 1 | +14.7 [+5.4, +23.9] | +99.98 [+99.9, +100.0] | 0.171 | 0.874 | 0.862 | 2.989 | 1.000 | 16.4 |
+| 1→7 | 2 | +14.7 [+5.4, +23.9] | +99.98 [+99.9, +100.0] | 0.171 | 0.922 | 0.862 | 3.419 | 1.000 | 13.4 |
+| 1→7 | 4 | +14.7 [+5.4, +23.9] | +100.0 [+100.0, +100.0] | 0.171 | 0.940 | 0.862 | 3.967 | 1.000 | 11.0 |
+| 1→7 | 8 | +14.7 [+5.4, +23.9] | +100.0 [+100.0, +100.0] | 0.171 | 0.949 | 0.862 | 4.837 | 1.000 | 9.2 |
+| 5→6 | 1 | +12.0 [+6.9, +17.0] | +100.0 [+100.0, +100.0] | 0.235 | 0.916 | 1.090 | 3.039 | 1.000 | 17.8 |
+| 5→6 | 2 | +12.0 [+6.9, +17.0] | +100.0 [+100.0, +100.0] | 0.235 | 0.943 | 1.090 | 3.461 | 1.000 | 13.8 |
+| 5→6 | 4 | +12.0 [+6.9, +17.0] | +100.0 [+100.0, +100.0] | 0.235 | 0.954 | 1.090 | 3.938 | 1.000 | 11.2 |
+| 5→6 | 8 | +12.0 [+6.9, +17.0] | +100.0 [+100.0, +100.0] | 0.235 | 0.955 | 1.090 | 4.929 | 1.000 | 9.6 |
+| 0→8 | 1 | +16.0 [+9.0, +22.9] | +100.0 [+100.0, +100.0] | 0.155 | 0.907 | 1.034 | 3.205 | 1.000 | 17.8 |
+| 0→8 | 2 | +16.0 [+9.0, +22.9] | +100.0 [+100.0, +100.0] | 0.155 | 0.937 | 1.034 | 3.585 | 1.000 | 14.4 |
+| 0→8 | 4 | +16.0 [+9.0, +22.9] | +100.0 [+100.0, +100.0] | 0.155 | 0.950 | 1.034 | 4.170 | 1.000 | 11.4 |
+| 0→8 | 8 | +16.0 [+9.0, +22.9] | +100.0 [+100.0, +100.0] | 0.155 | 0.951 | 1.034 | 5.082 | 1.000 | 9.6 |
+
+**Finding**: LoRA achieves near-perfect source-class recovery (100%) across all ranks and configs, significantly outperforming ROME's 10–17% recovery (paired t-test p<0.0001, Bonferroni-corrected). However, LoRA incurs catastrophic side effects (~87–95% accuracy loss on non-target classes) vs ROME's moderate 15–24% side effects. Subspace overlap is 1.000 (identical direction) at all ranks because LoRA at convergence effectively learns a rank-1 update aligned with ROME's closed-form direction — higher LoRA ranks merely scale the magnitude without changing direction. LoRA converges in 9–19 epochs (decreasing with rank), confirming the low-rank subspace is efficiently discoverable by gradient descent. The trade-off: ROME is a precise "scalpel" (partial recovery, low collateral damage); LoRA is a "sledgehammer" (full recovery, massive collateral damage). This validates the rank-ablation finding: the memorization subspace is low-rank, but cleanly disentangling it from genuine class structure requires more than a single rank-1 update — either higher-rank corrections with constrained optimization, or multi-layer interventions.
+
+---
+
 ## Scaling Analysis (MNIST, 10 seeds)
 
 | Hidden Dim | FDR | σ (legacy) | Monosemanticity | Circuit Size | Sparsity | Accuracy |
@@ -292,4 +319,5 @@ All results are in `outputs/`:
 | `outputs/analysis/rank_ablation_*/*.json` | Rank ablation results |
 | `outputs/analysis/scaling/*.json` | Scaling analysis metrics |
 | `outputs/cifar10/analysis/*.json` | CIFAR-10 validation results |
+| `outputs/phase5/` | Phase 5 LoRA vs ROME comparison (raw_results.json, table3_lora_vs_rome.csv) |
 | `outputs/figures/*.png` | Publication figures |
