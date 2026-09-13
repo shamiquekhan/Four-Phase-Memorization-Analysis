@@ -16,6 +16,7 @@ import json
 import sys
 sys.path.append(str(Path(__file__).parent.parent))
 from models.model import MNISTNet
+from utils.stats import SEEDS
 
 
 def get_data_loaders(batch_size=128, num_workers=4):
@@ -76,7 +77,7 @@ def main():
     parser = argparse.ArgumentParser(description='Scaling experiment: train models with varying hidden dimensions')
     parser.add_argument('--config', type=str, default='configs/experiment_config.yaml')
     parser.add_argument('--hidden-dims', type=int, nargs='+', default=[16, 32, 64, 128, 256])
-    parser.add_argument('--seeds', type=int, nargs='+', default=list(range(5)))
+    parser.add_argument('--seeds', type=int, nargs='+', default=SEEDS[:5])
     parser.add_argument('--epochs', type=int, default=20)
     parser.add_argument('--output-dir', type=str, default='outputs/scaling')
     args = parser.parse_args()

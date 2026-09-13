@@ -95,7 +95,7 @@ The rank-one edit delta-norm $\|\Delta\| = \|(v - Wu) \otimes u / (u \cdot u)\|$
 
 \textbf{Training.} Models are trained on MNIST and CIFAR-10 under two regimes: (1) \textit{clean}, with ground-truth labels; (2) \textit{corrupted}, with 20\% of training labels randomly flipped. Training uses Adam ($\text{lr}=0.001$, $\text{epochs}=20$, $\text{batch}=128$). Xavier initialization is used throughout.
 
-\textbf{Statistical methodology.} All results are reported across 10 seeds (MNIST) or 5 seeds (CIFAR-10) with 95\% bootstrap confidence intervals. Paired t-tests are used for clean-vs-corrupted comparisons.
+\textbf{Statistical methodology.} All results are reported across 10 seeds (MNIST) or 5 seeds (CIFAR-10) with 95\% Student-t confidence intervals. Paired t-tests and paired effect sizes ($d_z$) are used for clean-vs-corrupted comparisons.
 
 \textbf{Separability metrics.} We use two class-separability metrics with distinct roles. The Fisher discriminant ratio (FDR = $\operatorname{tr}(S_B)/\operatorname{tr}(S_W)$) is our primary metric: it is dimension-invariant and does not conflate geometric spread with dimensionality, making it suitable for cross-width comparisons in Section~\ref{sec:scaling}. The Davies--Bouldin index is retained as an auxiliary diagnostic in the t-SNE visualization (Figure~\ref{fig:tsne}) to show geometric disentanglement across layers. Both are computed from hidden activations; FDR is the formally reported metric in Sections~\ref{sec:phase1} and~\ref{sec:scaling}.
 

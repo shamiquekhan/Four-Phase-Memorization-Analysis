@@ -2,7 +2,34 @@
 
 # Structural Fingerprints of Label Memorization in Shallow Neural Networks
 
-A systematic 4-phase analysis of how label memorization leaves structural fingerprints in shallow ReLU networks — spanning CKA representation drift, spectral geometry, circuit sparsity, influence functions, and rank-one model editing (ROME). Primary experiments on MNIST (784→16→10), validated on CIFAR-10 (3-layer MLP), with width scaling from 16 to 1024 hidden units.
+> ## ⚠️ v2 methodology revision in progress — v0 results below are EXPLORATORY
+>
+> An internal audit found methodological defects in the v0 pipeline. The fixes
+> below are implemented in code; **all v0 headline numbers must be re-derived
+> from retrained checkpoints before being trusted**:
+>
+> | Defect (v0) | Status | Fix |
+> |---|---|---|
+> | Label corruption could re-assign the ORIGINAL label (~10% of "corrupted" samples were silently unchanged) | ✅ fixed | `src/data/corruption.py`: selected == changed, guaranteed; provenance saved |
+> | "Corrupted sample" equated with "memorized sample" | ✅ fixed | Behavioral definition: changed AND fits noisy label AND ≠ original |
+> | Rank-one edit built AND evaluated on the same test set (leakage) | ✅ fixed | `src/data/splits.py`: stratified disjoint EDIT/EVAL split, provenance saved |
+> | Method called "ROME" but is not Meng et al. (2022) ROME | ✅ renamed | Now "ROME-inspired closed-form rank-one edit" everywhere |
+> | CKA measured within-model layer similarity, not clean↔corrupted drift | ✅ fixed | `cross_model_cka()` + cross-seed noise-floor controls |
+> | Influence functions used per-batch Hessian, no damping; "CG sensitivity" flag computed nothing | ✅ replaced | Demoted to future work; TracIn-style + behavioral memorization instead |
+> | Seeds via `range(n)` in runners vs config list | ✅ fixed | Config `seeds:` is the single source of truth everywhere |
+> | "Spectral norm down ⇒ lower rank" inference | ✅ fixed | Direct stable rank / effective rank / entropy metrics added |
+> | `∞` signal ratios; uncorrected multiple tests | ✅ fixed | z vs empirical null, Holm correction, paired d_z effect sizes |
+> | CI wording (paper said bootstrap, code computed Student-t) | ✅ fixed | Paper now says Student-t; bootstrap_ci available as robustness check |
+>
+> Existing checkpoints are **v0** (no corruption provenance); the v2 pipeline
+> detects and flags them as degraded. Retraining campaign is the next step.
+
+A systematic 4-phase analysis of how label memorization leaves structural fingerprints in shallow ReLU networks — spanning cross-model CKA representation drift, spectral geometry, selectivity, behavioral memorization dynamics, and ROME-inspired closed-form rank-one interventions. Primary experiments on MNIST (784→16→10), validated on CIFAR-10 (3-layer MLP), with width scaling.
+
+> **Terminology (v2):** "rank-one edit" below refers to a ROME-INSPIRED
+> closed-form class-mean rank-one update, NOT the original ROME algorithm of
+> Meng et al. (2022) (no causal tracing, no key/value covariance constraint).
+> All v0 numbers labeled ROME below are pending v2 re-derivation.
 
 ## Key Results (MNIST, 10 seeds, 95% CI)
 
@@ -86,6 +113,7 @@ All ROME comparisons significant at p < 0.0001 across 10 seeds × 10 classes. CI
 │   └── verify_statistics.py          # CI and seed count verification
 ├── configs/experiment_config.yaml
 ├── tests/test_metrics.py            # 24 unit tests
+├── tests/test_invariants.py         # 30 scientific-invariant tests (v2)
 ├── reproduce_all.py                 # Single-command pipeline
 ├── RESULTS.md                       # Verified result tables
 ├── METHODOLOGY.md                   # 4-phase methodology
@@ -112,7 +140,7 @@ python reproduce_all.py --skip-training --skip-cifar10
 python reproduce_all.py
 
 # Run tests
-python -m pytest tests/ -v          # 24/24 pass
+python -m pytest tests/ -v          # 54/54 pass
 ```
 
 ## Pipeline

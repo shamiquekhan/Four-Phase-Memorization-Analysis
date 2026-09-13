@@ -317,6 +317,109 @@ def extract_hidden_activations(
     return np.concatenate(all_hidden)[:max_samples], np.concatenate(all_labels)[:max_samples]
 
 
+def compute_spectral_metrics(weight: torch.Tensor) -> dict:
+    """
+    Spectrum-derived quantities for a weight matrix. Replaces the invalid
+    inference "spectral norm down => effective rank down" with directly
+    computed measures.
+
+    Returns:
+        stable_rank:        ||W||_F^2 / ||W||_2^2  (1 = rank-1, = full rank for isotropic)
+        effective_rank:     exp(H(p)) with p_i = sigma_i / sum(sigma)  (Roy & Vetterli)
+        spectral_entropy:    H(p) / log(rank_max)  (normalized to [0, 1])
+        participation_ratio: (sum sigma)^2 / sum(sigma^2)
+        top1_singular:      sigma_1 (spectral norm)
+        cumulative_energy_top_k for k in {1, 2, 4, 8}: energy captured
+        singular_values:    full spectrum (descending)
+    """
+    with torch.no_grad():
+        s = torch.linalg.svdvals(weight.float())
+        s = s[s > 1e-12]
+        if len(s) == 0:
+            return {'stable_rank': 0.0, 'effective_rank': 0.0,
+                    'spectral_entropy': 0.0, 'participation_ratio': 0.0,
+                    'top1_singular': 0.0, 'cumulative_energy': {},
+                    'singular_values': []}
+
+        fro2 = float((s ** 2).sum())
+        top1 = float(s[0])
+        stable_rank = fro2 / (top1 ** 2 + 1e-12)
+
+        p = s / s.sum()
+        ent = float(-(p * p.clamp_min(1e-12).log()).sum())
+        effective_rank = float(np.exp(ent))
+        max_rank = len(s)
+        spectral_entropy = ent / np.log(max_rank)
+
+        pr = float((s.sum() ** 2) / ((s ** 2).sum() + 1e-12))
+
+        energy = (s ** 2) / fro2
+        cum = {}
+        for k in [1, 2, 4, 8]:
+            if k <= max_rank:
+                cum[k] = float(energy[:k].sum())
+
+        return {
+            'stable_rank': stable_rank,
+            'effective_rank': effective_rank,
+            'spectral_entropy': spectral_entropy,
+            'participation_ratio': pr,
+            'top1_singular': top1,
+            'cumulative_energy': cum,
+            'singular_values': s.tolist(),
+        }
+
+
+def compute_selectivity(hidden_acts: np.ndarray, labels: np.ndarray,
+                        top_ratio_threshold: float = 0.5) -> dict:
+    """
+    Neuron class-selectivity via top-1/top-2 mean-activation dominance,
+    replacing the Pearson-indicator 'monosemanticity' metric that confounds
+    selectivity with firing frequency.
+
+    For each neuron j:
+        S_j = (mu_top1 - mu_top2) / (mu_top1 + eps)
+
+    Returns:
+        mean_selectivity, frac_selective (S_j > threshold),
+        per-neuron top-1 class assignments, and selectivity values.
+    """
+    n_neurons = hidden_acts.shape[1]
+    classes = np.unique(labels)
+    class_means = {int(c): hidden_acts[labels == c].mean(0) for c in classes}
+
+    mu = np.stack([class_means[int(c)] for c in classes])  # (C, H)
+    sorted_mu = np.sort(mu, axis=0)[::-1]                   # per-neuron descending
+    top1, top2 = sorted_mu[0], sorted_mu[1]
+    sel = (top1 - top2) / (np.abs(top1) + 1e-9)
+
+    top_classes = np.argmax(mu, axis=0)
+    return {
+        'mean_selectivity': float(sel.mean()),
+        'std_selectivity': float(sel.std()),
+        'frac_selective': float((sel > top_ratio_threshold).mean()),
+        'threshold': top_ratio_threshold,
+        'top_classes': top_classes.tolist(),
+        'selectivity_values': sel.tolist(),
+    }
+
+
+def compute_weight_norms_spectral(model) -> dict:
+    """Per-layer norms + spectral metrics for every Linear layer."""
+    out = {}
+    with torch.no_grad():
+        for name, module in model.named_modules():
+            if isinstance(module, nn.Linear) and module.weight is not None:
+                W = module.weight.data
+                key = name if name else 'linear'
+                out[f'{key}_frobenius'] = float(W.norm(p='fro'))
+                out[f'{key}_spectral_norm'] = float(torch.linalg.svdvals(W.float())[0])
+                out[f'{key}_stable_rank'] = compute_spectral_metrics(W)['stable_rank']
+                out[f'{key}_effective_rank'] = compute_spectral_metrics(W)['effective_rank']
+                out[f'{key}_spectral_entropy'] = compute_spectral_metrics(W)['spectral_entropy']
+    return out
+
+
 def evaluate_class_accuracy(
     model: nn.Module, loader: DataLoader, class_id: int, device: str = 'cpu'
 ) -> float:

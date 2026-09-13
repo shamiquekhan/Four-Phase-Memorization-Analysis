@@ -1,8 +1,16 @@
 """
-Phase 5: LoRA vs ROME Subspace Comparison
+Phase 5: LoRA vs closed-form rank-one intervention comparison
 
-Compares gradient-learned low-rank adapters (LoRA) against closed-form 
-rank-one model editing (ROME) on the targeted corruption configurations.
+Compares gradient-learned low-rank adapters (LoRA) against the ROME-inspired
+closed-form rank-one edit on targeted corruption configurations.
+
+v2 protocol (fair comparison):
+  - BOTH methods receive the SAME edit set (EDIT split of the test set,
+    source-class examples only).
+  - BOTH methods are evaluated on the disjoint EVAL split only.
+  - All post-edit accuracies are MEASURED, never synthesized.
+  - The rank-one method here is NOT the original ROME algorithm (Meng et al.
+    2022); it is a closed-form rank-one adaptation for shallow classifiers.
 """
 
 import argparse
@@ -31,9 +39,12 @@ from analysis.subspace_overlap import (
 from utils.stats import compute_ci
 from utils.metrics import evaluate_class_accuracy
 
-# Import ROME functions - need to add parent to path for sibling module
+# Import rank-one intervention functions (v2 names)
 sys.path.append(str(Path(__file__).parent))
-from multiclass_rome import run_rome_experiment, compute_rome_edit
+sys.path.append(str(Path(__file__).parent.parent.parent))
+from multiclass_rome import (
+    compute_rank1_edit, apply_rank1_edit, get_test_dataset, build_edit_eval_loaders
+)
 
 
 CORRUPTION_CONFIGS = [
@@ -48,17 +59,6 @@ DEFAULT_N_EXAMPLES = 100
 DEFAULT_EPOCHS = 20
 DEFAULT_LR = 1e-2
 EARLY_STOP_PATIENCE = 3
-
-
-def build_correction_set(train_dataset, source_class: int, n_examples: int = DEFAULT_N_EXAMPLES, seed: int = 42):
-    """Pulls n_examples correctly-labeled examples of source_class from the original label set."""
-    rng = torch.Generator().manual_seed(seed)
-    class_indices = [i for i, (_, y) in enumerate(train_dataset) if y == source_class]
-    if len(class_indices) < n_examples:
-        n_examples = len(class_indices)
-    perm = torch.randperm(len(class_indices), generator=rng)[:n_examples]
-    selected = [class_indices[i] for i in perm]
-    return Subset(train_dataset, selected)
 
 
 def get_train_loader(batch_size=128, num_workers=4):
@@ -77,6 +77,37 @@ def get_test_loader(batch_size=128, num_workers=4):
     ])
     test_dataset = datasets.MNIST('./data', train=False, download=True, transform=transform)
     return DataLoader(test_dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers)
+
+
+def build_matched_edit_eval_loaders(test_dataset, split, source_class: int,
+                                    n_examples: int, seed: int):
+    """
+    Build the matched-protocol loaders:
+      - EDIT loader: up to n_examples source-class examples sampled from the
+        EDIT half of the stratified test split. Both methods use this exact set.
+      - EVAL loader: the full EVAL half (all classes), disjoint from EDIT.
+    """
+    import numpy as np
+    from data.splits import SplitProvenance
+
+    edit_full_idx = np.array(split.edit_indices)
+    targets = np.array(test_dataset.targets)
+    src_in_edit = edit_full_idx[targets[edit_full_idx] == source_class]
+
+    rng = np.random.default_rng(seed)
+    perm = rng.permutation(len(src_in_edit))
+    chosen = src_in_edit[perm[:n_examples]]
+    assert len(chosen) > 0, f"no source-class examples in edit half for class {source_class}"
+
+    # Verify disjointness (hard invariant)
+    assert set(chosen.tolist()).isdisjoint(set(split.eval_indices)), \
+        "EDIT examples leaked into EVAL set"
+
+    edit_loader = DataLoader(Subset(test_dataset, chosen.tolist()),
+                              batch_size=min(32, len(chosen)), shuffle=True)
+    eval_loader = DataLoader(Subset(test_dataset, split.eval_indices),
+                             batch_size=256, shuffle=False)
+    return edit_loader, eval_loader
 
 
 def evaluate_per_class(model, test_loader, device):
@@ -151,8 +182,8 @@ def train_lora_correction(
 
 def run_lora_correction(
     model,
-    correction_loader: DataLoader,
-    test_loader: DataLoader,
+    edit_loader: DataLoader,       # SAME edit set as the rank-one method
+    eval_loader: DataLoader,       # disjoint final evaluation
     source_class: int,
     target_class: int,
     layer_name: str = 'fc2',
@@ -166,11 +197,12 @@ def run_lora_correction(
 ) -> Dict:
     """
     Run full LoRA correction pipeline for a single config/rank/seed.
-    
+    Trains on the SAME edit set used by the rank-one method; evaluated on eval_loader.
+
     Returns dict with recovery, side effects, edit norm, epochs, and delta_W.
     """
-    # Baseline accuracy
-    pre_accs = evaluate_per_class(model, test_loader, device)
+    # Baseline accuracy (EVAL split)
+    pre_accs = evaluate_per_class(model, eval_loader, device)
     pre_source_acc = pre_accs[source_class]
     
     # Attach LoRA
@@ -182,13 +214,13 @@ def run_lora_correction(
     if init_delta_norm > 1e-10:
         print(f"  WARNING: Initial delta_W norm = {init_delta_norm:.6f} (should be ~0)")
     
-    # Train LoRA
+    # Train LoRA on the edit set
     loss_history, epochs_trained = train_lora_correction(
-        model, lora_layer, correction_loader, device, epochs, lr
+        model, lora_layer, edit_loader, device, epochs, lr
     )
     
-    # Post-correction accuracy
-    post_accs = evaluate_per_class(model, test_loader, device)
+    # Post-correction accuracy (EVAL split, MEASURED)
+    post_accs = evaluate_per_class(model, eval_loader, device)
     post_source_acc = post_accs[source_class]
     
     # Compute metrics
@@ -216,33 +248,47 @@ def run_lora_correction(
     }
 
 
-def run_rome_correction(
+def run_rank1_correction(
     model,
-    test_loader: DataLoader,
+    edit_loader: DataLoader,
+    eval_loader: DataLoader,
     source_class: int,
     target_class: int,
     layer_name: str = 'fc2',
     device: str = 'cpu'
 ) -> Dict:
     """
-    Run ROME correction for comparison.
-    Uses the existing multiclass_rome functions.
+    Closed-form rank-one correction, on the SAME edit set given to LoRA,
+    evaluated on the eval_loader only. All post-edit accuracies are measured.
     """
-    recovery, side_effects, magnitude, pre_accs, meta = run_rome_experiment(
-        model, test_loader, device, target_class, layer_name
-    )
-    
-    # Also get the delta_W for subspace comparison
-    delta_W = compute_rome_delta_W(model, target_class, layer_name)
-    
+    pre_accs = evaluate_per_class(model, eval_loader, device)
+
+    delta, u, v, used_layer = compute_rank1_edit(model, edit_loader, device, target_class, layer_name)
+    if delta is None:
+        raise RuntimeError("rank-one edit construction failed (no target-class examples in edit set)")
+
+    layer = getattr(model, used_layer)
+    W_orig = layer.weight.data.clone()
+    apply_rank1_edit(model, delta, used_layer)
+
+    post_accs = evaluate_per_class(model, eval_loader, device)  # MEASURED, not synthesized
+
+    recovery = post_accs[target_class] - pre_accs[target_class]
+    other = [c for c in range(10) if c != target_class]
+    side_effects = float(np.mean([abs(post_accs[c] - pre_accs[c]) for c in other]))
+    edit_norm = (layer.weight.data - W_orig).norm(p='fro').item()
+
+    layer.weight.data.copy_(W_orig)  # restore
+
     return {
+        'method': 'rank1_closed_form',
         'recovery': recovery,
         'side_effects': side_effects,
-        'edit_norm': magnitude,
+        'edit_norm': edit_norm,
         'pre_accs': pre_accs,
-        'post_accs': {c: pre_accs[c] + (recovery if c == target_class else 0) for c in range(10)},
-        'delta_W': delta_W.cpu().numpy() if isinstance(delta_W, torch.Tensor) else delta_W,
-        'layer': layer_name,
+        'post_accs': post_accs,
+        'delta_W': delta.cpu().numpy() if isinstance(delta, torch.Tensor) else delta,
+        'layer': used_layer,
     }
 
 
@@ -283,33 +329,45 @@ def run_single_experiment(
     model.load_state_dict(checkpoint['model_state_dict'])
     model.eval()
     
-    # Data loaders
-    train_loader = get_train_loader()
-    test_loader = get_test_loader()
+    # Matched edit/eval protocol:
+    #   EDIT set  = n_examples source-class examples sampled from the EDIT half
+    #               of the stratified test split (same info for BOTH methods)
+    #   EVAL set  = the disjoint EVAL half of the stratified test split
+    test_dataset = get_test_dataset()
+    _, eval_loader_full, split = build_edit_eval_loaders(test_dataset, split_seed=42)
+    edit_loader, eval_loader = build_matched_edit_eval_loaders(
+        test_dataset, split, source, n_examples, seed
+    )
+
+    # Save split provenance alongside results
+    split_record = {
+        'split_name': split.split_name,
+        'n_edit': len(split.edit_indices),
+        'n_eval': len(split.eval_indices),
+        'edit_source_class_indices_used': len(edit_loader.dataset),
+        'seed': seed,
+    }
     
-    # Build correction set (clean examples of source class)
-    train_dataset = train_loader.dataset
-    correction_subset = build_correction_set(train_dataset, source, n_examples, seed)
-    correction_loader = DataLoader(correction_subset, batch_size=min(32, n_examples), shuffle=True)
+    # Create a copy for the closed-form edit (it modifies weights in-place)
+    model_rank1 = copy.deepcopy(model)
     
-    # Create a copy for ROME (since it modifies weights in-place)
-    model_rome = copy.deepcopy(model)
+    # Closed-form rank-one edit - target the source class (corrupted class to recover)
+    print(f"    Running rank-one edit...")
+    rank1_results = run_rank1_correction(
+        model_rank1, edit_loader, eval_loader, source, source, layer_name, device
+    )
+    print(f"      rank1: recovery={rank1_results['recovery']:+.4f}, side_effects={rank1_results['side_effects']:.4f}, norm={rank1_results['edit_norm']:.4f}")
     
-    # Run ROME - target the source class (the corrupted class we want to recover)
-    print(f"    Running ROME...")
-    rome_results = run_rome_correction(model_rome, test_loader, source, source, layer_name, device)
-    print(f"      ROME: recovery={rome_results['recovery']:.4f}, side_effects={rome_results['side_effects']:.4f}, norm={rome_results['edit_norm']:.4f}")
-    
-    # Run LoRA - train on clean examples of source class
+    # LoRA - trained on the SAME edit examples
     print(f"    Running LoRA...")
     lora_results = run_lora_correction(
-        model, correction_loader, test_loader, source, source,
+        model, edit_loader, eval_loader, source, source,
         layer_name, rank, alpha, device, epochs, lr, n_examples, seed
     )
-    print(f"      LoRA: recovery={lora_results['recovery']:.4f}, side_effects={lora_results['side_effects']:.4f}, norm={lora_results['edit_norm']:.4f}, epochs={lora_results['epochs_trained']}")
+    print(f"      LoRA: recovery={lora_results['recovery']:+.4f}, side_effects={lora_results['side_effects']:.4f}, norm={lora_results['edit_norm']:.4f}, epochs={lora_results['epochs_trained']}")
     
-    # Subspace overlap
-    rome_delta = rome_results['delta_W']
+    # Subspace overlap (computed between the two ACTUAL deltas)
+    rome_delta = rank1_results['delta_W']
     lora_delta = lora_results['delta_W']
     
     if isinstance(rome_delta, torch.Tensor):
@@ -327,9 +385,10 @@ def run_single_experiment(
         'seed': seed,
         'rank': rank,
         'layer': layer_name,
-        'rome': rome_results,
+        'rank1': rank1_results,
         'lora': lora_results,
         'subspace_overlap': overlap_details,
+        'edit_eval_protocol': split_record,
     }
 
 
@@ -415,7 +474,7 @@ def main():
     print(f"\nRaw results saved to {raw_results_path}")
     
     # Generate aggregated table (Table III format)
-    print("\n=== AGGREGATED RESULTS (Table III) ===")
+    print("\n=== AGGREGATED RESULTS (Table III; matched edit sets, EVAL split only) ===")
     
     # Group by config, rank
     aggregated = {}
@@ -424,19 +483,19 @@ def main():
             continue
         key = (r['config'], r['rank'])
         if key not in aggregated:
-            aggregated[key] = {'rome_rec': [], 'lora_rec': [], 'rome_se': [], 'lora_se': [], 
-                              'rome_norm': [], 'lora_norm': [], 'overlap': [], 'epochs': []}
-        aggregated[key]['rome_rec'].append(r['rome']['recovery'])
+            aggregated[key] = {'rank1_rec': [], 'lora_rec': [], 'rank1_se': [], 'lora_se': [],
+                              'rank1_norm': [], 'lora_norm': [], 'overlap': [], 'epochs': []}
+        aggregated[key]['rank1_rec'].append(r['rank1']['recovery'])
         aggregated[key]['lora_rec'].append(r['lora']['recovery'])
-        aggregated[key]['rome_se'].append(r['rome']['side_effects'])
+        aggregated[key]['rank1_se'].append(r['rank1']['side_effects'])
         aggregated[key]['lora_se'].append(r['lora']['side_effects'])
-        aggregated[key]['rome_norm'].append(r['rome']['edit_norm'])
+        aggregated[key]['rank1_norm'].append(r['rank1']['edit_norm'])
         aggregated[key]['lora_norm'].append(r['lora']['edit_norm'])
         aggregated[key]['overlap'].append(r['subspace_overlap']['overlap_score'])
         aggregated[key]['epochs'].append(r['lora']['epochs_trained'])
     
     # Print table
-    header = f"{'Config':>8} {'Rank':>4} {'ROME Rec':>14} {'LoRA Rec':>14} {'ROME SE':>12} {'LoRA SE':>12} {'ROME Norm':>12} {'LoRA Norm':>12} {'Overlap':>10} {'Epochs':>8}"
+    header = f"{'Config':>8} {'Rank':>4} {'Rank1 Rec':>14} {'LoRA Rec':>14} {'Rank1 SE':>12} {'LoRA SE':>12} {'Rank1 Norm':>12} {'LoRA Norm':>12} {'Overlap':>10} {'Epochs':>8}"
     print(header)
     print('-' * len(header))
     
@@ -453,25 +512,25 @@ def main():
                 return "N/A"
             return f"{np.mean(vals_list):.4f}"
         
-        rome_rec_ci = fmt_ci(vals['rome_rec'])
+        rank1_rec_ci = fmt_ci(vals['rank1_rec'])
         lora_rec_ci = fmt_ci(vals['lora_rec'])
-        rome_se = fmt_mean(vals['rome_se'])
+        rank1_se = fmt_mean(vals['rank1_se'])
         lora_se = fmt_mean(vals['lora_se'])
-        rome_norm = fmt_mean(vals['rome_norm'])
+        rank1_norm = fmt_mean(vals['rank1_norm'])
         lora_norm = fmt_mean(vals['lora_norm'])
         overlap = fmt_mean(vals['overlap'])
         epochs = fmt_mean(vals['epochs'])
         
-        row = f"{config_label:>8} {rank:>4} {rome_rec_ci:>14} {lora_rec_ci:>14} {rome_se:>12} {lora_se:>12} {rome_norm:>12} {lora_norm:>12} {overlap:>10} {epochs:>8}"
+        row = f"{config_label:>8} {rank:>4} {rank1_rec_ci:>14} {lora_rec_ci:>14} {rank1_se:>12} {lora_se:>12} {rank1_norm:>12} {lora_norm:>12} {overlap:>10} {epochs:>8}"
         print(row)
         table_rows.append({
             'config': config_label,
             'rank': rank,
-            'rome_recovery_ci': rome_rec_ci,
+            'rank1_recovery_ci': rank1_rec_ci,
             'lora_recovery_ci': lora_rec_ci,
-            'rome_side_effects': rome_se,
+            'rank1_side_effects': rank1_se,
             'lora_side_effects': lora_se,
-            'rome_edit_norm': rome_norm,
+            'rank1_edit_norm': rank1_norm,
             'lora_edit_norm': lora_norm,
             'subspace_overlap': overlap,
             'epochs_trained': epochs,
@@ -486,13 +545,13 @@ def main():
     
     # Statistical comparison: paired t-test ROME vs LoRA recovery per config/rank
     from scipy import stats
-    print("\n=== PAIRED T-TEST: ROME vs LoRA Recovery ===")
+    print("\n=== PAIRED T-TEST: rank-one vs LoRA Recovery (EVAL split) ===")
     n_comparisons = len(aggregated)
     alpha_corrected = 0.05 / max(n_comparisons, 1)
     
     for (config_label, rank), vals in sorted(aggregated.items()):
-        if len(vals['rome_rec']) > 1 and len(vals['lora_rec']) > 1:
-            t_stat, p_val = stats.ttest_rel(vals['rome_rec'], vals['lora_rec'])
+        if len(vals['rank1_rec']) > 1 and len(vals['lora_rec']) > 1:
+            t_stat, p_val = stats.ttest_rel(vals['rank1_rec'], vals['lora_rec'])
             sig = "***" if p_val < alpha_corrected else ("**" if p_val < 0.01 else ("*" if p_val < 0.05 else "ns"))
             print(f"  {config_label} rank={rank}: t={t_stat:.3f}, p={p_val:.4f} {sig} (Bonferroni α={alpha_corrected:.4f})")
     

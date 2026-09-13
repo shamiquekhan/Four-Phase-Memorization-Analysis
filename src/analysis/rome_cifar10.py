@@ -26,8 +26,8 @@ def _get_hidden_activations(model, data, device):
         return out['fc2_post_activation']
 
 
-def compute_rome_edit(model, dataloader, device, target_class, layer='fc3'):
-    """ROME rank-one edit (Meng et al., 2022) adapted for CIFAR-10 MLP."""
+def compute_rank1_edit(model, dataloader, device, target_class, layer='fc3'):
+    """ROME-inspired rank-one edit adapted for CIFAR-10 MLP (built from EDIT loader)."""
     model.eval()
     if layer == 'fc3':
         target_key = []
@@ -64,12 +64,12 @@ def compute_rome_edit(model, dataloader, device, target_class, layer='fc3'):
     else:
         raise ValueError(f"Unknown layer: {layer}")
 
-    # ROME rank-one update (Meng et al., 2022)
+    # Rank-one closed-form update (ROME-inspired adaptation, not the original algorithm)
     delta = torch.outer(v - W @ u, u) / (u @ u + 1e-8)
     return delta, u, v, layer
 
 
-def apply_rome_edit(model, delta, layer='fc3'):
+def apply_rank1_edit(model, delta, layer='fc3'):
     with torch.no_grad():
         if layer == 'fc3':
             model.fc3.weight.data += delta
@@ -77,9 +77,9 @@ def apply_rome_edit(model, delta, layer='fc3'):
             model.fc2.weight.data += delta
 
 
-def run_rome_experiment(model, test_loader, device, target_class, layer='fc3'):
-    pre_accs = {c: evaluate_class_accuracy(model, test_loader, c, device) for c in range(10)}
-    delta, u, v, used_layer = compute_rome_edit(model, test_loader, device, target_class, layer)
+def run_rank1_experiment(model, edit_loader, eval_loader, device, target_class, layer='fc3'):
+    pre_accs = {c: evaluate_class_accuracy(model, eval_loader, c, device) for c in range(10)}
+    delta, u, v, used_layer = compute_rank1_edit(model, edit_loader, device, target_class, layer)
     if delta is None:
         return 0.0, 0.0, 0.0, pre_accs, {}
 
@@ -87,8 +87,8 @@ def run_rome_experiment(model, test_loader, device, target_class, layer='fc3'):
         W_orig = model.fc3.weight.data.clone()
     else:
         W_orig = model.fc2.weight.data.clone()
-    apply_rome_edit(model, delta, used_layer)
-    post_accs = {c: evaluate_class_accuracy(model, test_loader, c, device) for c in range(10)}
+    apply_rank1_edit(model, delta, used_layer)
+    post_accs = {c: evaluate_class_accuracy(model, eval_loader, c, device) for c in range(10)}
     recovery = post_accs[target_class] - pre_accs[target_class]
     other_classes = [c for c in range(10) if c != target_class]
     side_effects = float(np.mean([abs(post_accs[c] - pre_accs[c]) for c in other_classes]))
@@ -116,7 +116,7 @@ def get_data_loaders(batch_size=128):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='CIFAR-10 ROME validation')
+    parser = argparse.ArgumentParser(description='CIFAR-10 rank-one intervention validation')
     parser.add_argument('--config', type=str, default='configs/experiment_config.yaml')
     parser.add_argument('--clean-dir', type=str, default='outputs/cifar10/clean')
     parser.add_argument('--corrupted-dir', type=str, default='outputs/cifar10/corrupted')
@@ -129,6 +129,27 @@ def main():
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    # Stratified disjoint edit/eval split of the CIFAR-10 test set
+    test_dataset = test_loader.dataset
+    targets = np.array(test_dataset.targets)
+    edit_idx, eval_idx = [], []
+    for c in range(10):
+        cls_idx = np.where(targets == c)[0]
+        rng = np.random.default_rng(42)
+        perm = rng.permutation(cls_idx)
+        half = len(perm) // 2
+        eval_idx.extend(perm[:half].tolist())
+        edit_idx.extend(perm[half:].tolist())
+    assert set(edit_idx).isdisjoint(eval_idx)
+    from data.splits import SplitProvenance
+    split = SplitProvenance('cifar10_test_edit_eval_stratified', edit_idx, eval_idx, seed=42)
+    split.save(output_dir / 'split_provenance.json')
+    print(f"Edit/eval split: {len(edit_idx)} edit / {len(eval_idx)} eval (disjoint, stratified)")
+
+    from torch.utils.data import Subset
+    edit_loader = DataLoader(Subset(test_dataset, split.edit_indices), batch_size=128, shuffle=False)
+    eval_loader = DataLoader(Subset(test_dataset, split.eval_indices), batch_size=128, shuffle=False)
+
     clean_results = {c: {'fc3_recovery': [], 'fc3_magnitude': []} for c in range(10)}
     corrupted_results = {c: {'fc3_recovery': [], 'fc3_magnitude': []} for c in range(10)}
 
@@ -137,21 +158,21 @@ def main():
         if ckpt_clean.exists():
             model = CIFAR10MLP.load_checkpoint(str(ckpt_clean), device)
             for c in range(10):
-                rec, se, mag, pre, meta = run_rome_experiment(model, test_loader, device, c, 'fc3')
+                rec, se, mag, pre, meta = run_rank1_experiment(model, edit_loader, eval_loader, device, c, 'fc3')
                 clean_results[c]['fc3_recovery'].append(rec)
                 clean_results[c]['fc3_magnitude'].append(mag)
-            print(f"Clean seed={seed}: ROME done")
+            print(f"Clean seed={seed}: rank-one edits done")
 
         ckpt_corr = Path(args.corrupted_dir) / f"noise_0.2" / f"seed_{seed}" / 'final_model.pt'
         if ckpt_corr.exists():
             model = CIFAR10MLP.load_checkpoint(str(ckpt_corr), device)
             for c in range(10):
-                rec, se, mag, pre, meta = run_rome_experiment(model, test_loader, device, c, 'fc3')
+                rec, se, mag, pre, meta = run_rank1_experiment(model, edit_loader, eval_loader, device, c, 'fc3')
                 corrupted_results[c]['fc3_recovery'].append(rec)
                 corrupted_results[c]['fc3_magnitude'].append(mag)
-            print(f"Corrupted seed={seed}: ROME done")
+            print(f"Corrupted seed={seed}: rank-one edits done")
 
-    print("\n=== CIFAR-10 ROME Recovery: Clean vs Corrupted (fc3) ===")
+    print("\n=== CIFAR-10 Rank-One Recovery: Clean vs Corrupted (fc3, EVAL split only) ===")
     for c in range(10):
         clean_rec = clean_results[c]['fc3_recovery']
         corr_rec = corrupted_results[c]['fc3_recovery']

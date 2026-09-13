@@ -15,7 +15,7 @@ import sys
 sys.path.append(str(Path(__file__).parent.parent))
 from models.model import MNISTNet
 from utils.metrics import linear_cka
-from utils.stats import compute_ci, paired_t_test
+from utils.stats import compute_ci, SEEDS, paired_t_test
 
 
 def get_activations(model, dataloader, device, max_samples=5000):
@@ -56,10 +56,11 @@ def compute_pca(activations, n_components=50):
 
 
 def analyze_representations(model, dataloader, device):
-    """Analyze representation similarity and structure."""
+    """Analyze representation similarity and structure (within-model, retained
+    for continuity; cross-model drift is computed by cross_model_cka below)."""
     acts = get_activations(model, dataloader, device)
     
-    # CKA between layers
+    # CKA between layers (within-model)
     cka_input_fc1pre = linear_cka(acts['input'], acts['fc1_pre'])
     cka_fc1pre_fc1post = linear_cka(acts['fc1_pre'], acts['fc1_post'])
     cka_fc1post_output = linear_cka(acts['fc1_post'], acts['output'])
@@ -90,6 +91,76 @@ def analyze_representations(model, dataloader, device):
     }
 
 
+CKA_LAYERS = ['input', 'fc1_pre', 'fc1_post', 'output']
+
+
+def cross_model_cka(model_a, model_b, dataloader, device):
+    """
+    The v2 primary Phase-2 measurement: representational drift between two
+    models, computed as CKA between their layer activations on IDENTICAL inputs.
+
+    Drift_d = 1 - CKA(X_clean[layer], X_corrupted[layer])
+
+    This directly measures how label noise changes each layer's representation,
+    replacing the v0 within-model layer-similarity analysis as the headline.
+    """
+    acts_a = get_activations(model_a, dataloader, device)
+    acts_b = get_activations(model_b, dataloader, device)
+    drift = {}
+    for layer in CKA_LAYERS:
+        cka = linear_cka(acts_a[layer], acts_b[layer])
+        drift[layer] = 1.0 - cka  # drift: 0 = identical representations
+    return drift
+
+
+def cross_seed_cka_controls(clean_dir, corrupted_dir, seeds, loader, device, config):
+    """
+    Controls for cross-model CKA: is clean<->corrupted drift larger than
+    normal seed-to-seed variation?
+
+    For each pair of distinct seeds (i, j):
+      - clean_i <-> clean_j        (seed noise floor, clean condition)
+      - corrupted_i <-> corrupted_j (seed noise floor, corrupted condition)
+    Plus paired clean_i <-> corrupted_i drift for every available seed i.
+    """
+    import itertools
+
+    def load_model(ckpt_dir, seed):
+        m = MNISTNet(
+            input_dim=config['model']['input_dim'],
+            hidden_dim=config['model']['hidden_dim'],
+            output_dim=config['model']['output_dim'],
+            activation=config['model']['activation']
+        ).to(device)
+        ckpt = torch.load(Path(ckpt_dir) / f"seed_{seed}" / 'final_model.pt',
+                          map_location=device)
+        m.load_state_dict(ckpt['model_state_dict'])
+        m.eval()
+        return m
+
+    clean_models, corrupted_models = {}, {}
+    for s in seeds:
+        if (Path(clean_dir) / f"seed_{s}" / 'final_model.pt').exists():
+            clean_models[s] = load_model(clean_dir, s)
+        if (Path(corrupted_dir) / f"seed_{s}" / 'final_model.pt').exists():
+            corrupted_models[s] = load_model(corrupted_dir, s)
+
+    common = sorted(set(clean_models) & set(corrupted_models))
+
+    controls = {'clean_clean': [], 'corrupted_corrupted': [], 'clean_corrupted_paired': []}
+    for a, b in itertools.combinations(sorted(clean_models), 2):
+        d = cross_model_cka(clean_models[a], clean_models[b], loader, device)
+        controls['clean_clean'].append({'seeds': [a, b], 'drift': d})
+    for a, b in itertools.combinations(sorted(corrupted_models), 2):
+        d = cross_model_cka(corrupted_models[a], corrupted_models[b], loader, device)
+        controls['corrupted_corrupted'].append({'seeds': [a, b], 'drift': d})
+    for s in common:
+        d = cross_model_cka(clean_models[s], corrupted_models[s], loader, device)
+        controls['clean_corrupted_paired'].append({'seed': s, 'drift': d})
+
+    return controls
+
+
 def get_data_loader(batch_size=128, num_workers=4):
     transform = transforms.Compose([
         transforms.ToTensor(),
@@ -106,7 +177,7 @@ def main():
     parser.add_argument('--corrupted-checkpoint-dir', type=str, default=None,
                        help='If provided, runs paired t-test between clean and corrupted CKA values')
     parser.add_argument('--output-dir', type=str, default='outputs/analysis/phase2')
-    parser.add_argument('--seeds', type=int, nargs='+', default=list(range(10)))
+    parser.add_argument('--seeds', type=int, nargs='+', default=SEEDS[:10])
     args = parser.parse_args()
     
     with open(args.config, 'r') as f:
@@ -152,7 +223,7 @@ def main():
     
     if args.corrupted_checkpoint_dir:
         corr_results = run_phase2(args.corrupted_checkpoint_dir, "corrupted")
-        print("\n=== Clean vs Corrupted Paired t-test ===")
+        print("\n=== Clean vs Corrupted Paired t-test (within-model CKA, legacy) ===")
         for cka_key in ['input_fc1_pre', 'fc1_pre_fc1_post', 'fc1_post_output']:
             clean_vals = [all_results[s]['cka'][cka_key] for s in args.seeds if all_results[s]]
             corr_vals = [corr_results[s]['cka'][cka_key] for s in args.seeds if corr_results[s]]
@@ -163,7 +234,57 @@ def main():
                 print(f"CKA {cka_key}: Clean={c_mean:.4f} [{c_lo:.4f}, {c_hi:.4f}], "
                       f"Corrupted={r_mean:.4f} [{r_lo:.4f}, {r_hi:.4f}], "
                       f"Δ={c_mean - r_mean:+.4f}, t={t_stat:.3f}, p={p_val:.4f}")
-        all_results = {'clean': all_results, 'corrupted': corr_results}
+
+        # ---- v2 primary analysis: CROSS-MODEL representational drift ----
+        print("\n=== v2: Cross-Model Representational Drift (clean <-> corrupted) ===")
+        drift_by_seed = {}
+        for s in args.seeds:
+            c_path = Path(args.checkpoint_dir) / f"seed_{s}" / 'final_model.pt'
+            r_path = Path(args.corrupted_checkpoint_dir) / f"seed_{s}" / 'final_model.pt'
+            if not (c_path.exists() and r_path.exists()):
+                continue
+            mc = MNISTNet(input_dim=config['model']['input_dim'],
+                          hidden_dim=config['model']['hidden_dim'],
+                          output_dim=config['model']['output_dim'],
+                          activation=config['model']['activation']).to(device)
+            mc.load_state_dict(torch.load(c_path, map_location=device)['model_state_dict'])
+            mc.eval()
+            mr = MNISTNet(input_dim=config['model']['input_dim'],
+                          hidden_dim=config['model']['hidden_dim'],
+                          output_dim=config['model']['output_dim'],
+                          activation=config['model']['activation']).to(device)
+            mr.load_state_dict(torch.load(r_path, map_location=device)['model_state_dict'])
+            mr.eval()
+            drift_by_seed[s] = cross_model_cka(mc, mr, test_loader, device)
+
+        if drift_by_seed:
+            for layer in CKA_LAYERS:
+                vals = [drift_by_seed[s][layer] for s in sorted(drift_by_seed)]
+                mean, lo, hi = compute_ci(vals)
+                print(f"Drift({layer}): {mean:.4f} [{lo:.4f}, {hi:.4f}]  (0 = identical reps)")
+
+            # ---- cross-seed controls: seed noise floors ----
+            print("\n=== v2: Cross-seed controls (is drift > seed noise?) ===")
+            controls = cross_seed_cka_controls(args.checkpoint_dir,
+                                               args.corrupted_checkpoint_dir,
+                                               args.seeds, test_loader, device, config)
+            for control_name, entries in controls.items():
+                if not entries:
+                    continue
+                for layer in CKA_LAYERS:
+                    key = 'drift'
+                    vals = [e[key][layer] for e in entries if key in e]
+                    if vals:
+                        mean, lo, hi = compute_ci(vals)
+                        print(f"{control_name} drift({layer}): {mean:.4f} [{lo:.4f}, {hi:.4f}] "
+                              f"(n={len(vals)})")
+
+            all_results = {'clean': all_results, 'corrupted': corr_results,
+                           'cross_model_drift': {str(s): drift_by_seed[s] for s in drift_by_seed},
+                           'cross_seed_controls': {
+                               k: [{kk: (vv if not isinstance(vv, dict) else vv)
+                                    for kk, vv in e.items()} for e in v]
+                               for k, v in controls.items()}}
     
     with open(output_dir / 'phase2_results.json', 'w') as f:
         json.dump(all_results, f, indent=2, default=str)

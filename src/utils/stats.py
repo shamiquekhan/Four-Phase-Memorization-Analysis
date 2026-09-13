@@ -1,4 +1,18 @@
-"""Statistical utilities: CI computation and multi-seed experiment runner."""
+"""Statistical utilities: CI computation, effect sizes, multiplicity control.
+
+v2 STATISTICAL CONTRACT (one convention for every script):
+  - Primary unit of replication: the random seed.
+  - For each seed we compute a paired (clean, corrupted) difference when a
+    comparison is being made; never compare unpaired across-seed means when
+    pairing is available.
+  - Reported interval: Student-t CI on per-seed values (labelled as such).
+    bootstrap_ci() is provided as a robustness check; scripts must state
+    which interval they print. Paper text must match (no "bootstrap" wording
+    unless bootstrap_ci was used).
+  - Effect sizes: paired dz = mean(delta) / std(delta).
+  - Multiplicity: use holm_correction() for families of p-values instead of
+    reporting dozens of raw p < 0.0001 values.
+"""
 
 import numpy as np
 import torch
@@ -11,16 +25,13 @@ SEEDS = [42, 123, 456, 789, 1024, 2048, 3141, 5555, 7777, 9999]
 
 def compute_ci(values: List[float], confidence: float = 0.95) -> Tuple[float, float, float]:
     """
-    Compute mean and confidence interval for a list of measurements across seeds.
-
-    Args:
-        values: List of scalar measurements (one per seed)
-        confidence: Confidence level (default 0.95)
-
-    Returns:
-        Tuple of (mean, ci_lower, ci_upper)
+    Student-t confidence interval for the mean across seeds.
+    (Explicitly NOT bootstrap; label as "Student-t CI" in all outputs.)
     """
+    values = list(values)
     n = len(values)
+    if n == 0:
+        return float('nan'), float('nan'), float('nan')
     if n < 2:
         return float(np.mean(values)), float(np.mean(values)), float(np.mean(values))
 
@@ -28,6 +39,50 @@ def compute_ci(values: List[float], confidence: float = 0.95) -> Tuple[float, fl
     se = stats.sem(values)
     ci = se * stats.t.ppf((1 + confidence) / 2., n - 1)
     return float(mean), float(mean - ci), float(mean + ci)
+
+
+def bootstrap_ci(values: List[float], confidence: float = 0.95,
+                n_resamples: int = 5000, seed: int = 0) -> Tuple[float, float, float]:
+    """Percentile bootstrap CI for the mean (robustness check companion to compute_ci)."""
+    values = np.asarray(values, dtype=float)
+    if len(values) < 2:
+        m = float(values.mean()) if len(values) else float('nan')
+        return m, m, m
+    rng = np.random.default_rng(seed)
+    means = rng.choice(values, size=(n_resamples, len(values)), replace=True).mean(axis=1)
+    lo, hi = np.percentile(means, [(1 - confidence) / 2 * 100, (1 + confidence) / 2 * 100])
+    return float(values.mean()), float(lo), float(hi)
+
+
+def paired_effect_size_dz(values_a: List[float], values_b: List[float]) -> float:
+    """Paired standardized effect size: dz = mean(a-b) / sd(a-b)."""
+    a, b = np.asarray(values_a, float), np.asarray(values_b, float)
+    if len(a) != len(b) or len(a) < 2:
+        return float('nan')
+    d = a - b
+    sd = d.std(ddof=1)
+    if sd < 1e-12:
+        return float('nan')
+    return float(d.mean() / sd)
+
+
+def holm_correction(pvals: List[float]) -> List[float]:
+    """Holm-Bonferroni adjusted p-values (order-preserving output).
+
+    Input p-values must be a family of pre-specified comparisons; do not
+    feed every exploratory number through this.
+    """
+    p = np.asarray(pvals, dtype=float)
+    n = len(p)
+    order = np.argsort(p)
+    adjusted = np.empty(n)
+    prev = 0.0
+    for rank, idx in enumerate(order):
+        adj = (n - rank) * p[idx]
+        adj = min(1.0, max(adj, prev))
+        adjusted[idx] = adj
+        prev = adj
+    return adjusted.tolist()
 
 
 def run_with_seeds(experiment_fn: Callable, seeds: List[int] = None, **kwargs) -> Dict[str, List[float]]:

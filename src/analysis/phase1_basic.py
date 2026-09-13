@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import sys
 sys.path.append(str(Path(__file__).parent.parent))
 from models.model import MNISTNet
-from utils.stats import compute_ci
+from utils.stats import compute_ci, SEEDS
 from utils.metrics import compute_sigma_and_fdr, extract_hidden_activations
 
 
@@ -74,10 +74,43 @@ def compute_gradient_norms(model, dataloader, criterion, device, num_batches=5):
     return np.mean(grad_norms), np.std(grad_norms)
 
 
+def compute_weight_norms(model):
+    """Compute weight matrix norms for each layer."""
+    with torch.no_grad():
+        fc1_norm = model.fc1.weight.data.norm(p='fro').item()
+        fc2_norm = model.fc2.weight.data.norm(p='fro').item()
+        fc1_spectral = torch.linalg.norm(model.fc1.weight.data, ord=2).item()
+        fc2_spectral = torch.linalg.norm(model.fc2.weight.data, ord=2).item()
+    return {
+        'fc1_frobenius': fc1_norm,
+        'fc2_frobenius': fc2_norm,
+        'fc1_spectral': fc1_spectral,
+        'fc2_spectral': fc2_spectral
+    }
+
+
 def analyze_checkpoint(model, history, dataloader, criterion, device, epoch):
-    """Analyze a single checkpoint."""
+    """Analyze a single checkpoint: norms + SPECTRAL metrics + FDR.
+
+    v2: adds stable rank / effective rank / spectral entropy per layer so
+    that rank claims are measured directly instead of inferred from the
+    spectral norm (which conflates scale with rank).
+    """
+    from utils.metrics import compute_spectral_metrics
     weight_norms = compute_weight_norms(model)
-    grad_mean, grad_std = compute_gradient_norms(model, dataloader, criterion, device)
+    _sp_fc1 = compute_spectral_metrics(model.fc1.weight.data)
+    _sp_fc2 = compute_spectral_metrics(model.fc2.weight.data)
+    spectral = {
+        'fc1_stable_rank': _sp_fc1['stable_rank'],
+        'fc2_stable_rank': _sp_fc2['stable_rank'],
+        'fc1_effective_rank': _sp_fc1['effective_rank'],
+        'fc2_effective_rank': _sp_fc2['effective_rank'],
+        'fc1_spectral_entropy': _sp_fc1['spectral_entropy'],
+        'fc2_spectral_entropy': _sp_fc2['spectral_entropy'],
+        'fc2_cum_energy_top1': _sp_fc2['cumulative_energy'].get(1),
+        'fc2_cum_energy_top4': _sp_fc2['cumulative_energy'].get(4),
+    }
+    grad_mean, grad_std = compute_gradient_norms(model, dataloader, criterion, device, num_batches=5)
 
     # FDR and sigma from hidden activations
     hidden_acts, labels = extract_hidden_activations(model, dataloader, device)
@@ -86,6 +119,7 @@ def analyze_checkpoint(model, history, dataloader, criterion, device, epoch):
     results = {
         'epoch': epoch,
         **weight_norms,
+        **spectral,
         'grad_norm_mean': grad_mean,
         'grad_norm_std': grad_std,
         'sigma': sf['sigma'],
@@ -115,7 +149,7 @@ def main():
     parser.add_argument('--config', type=str, default='configs/experiment_config.yaml')
     parser.add_argument('--checkpoint-dir', type=str, required=True)
     parser.add_argument('--output-dir', type=str, default='outputs/analysis/phase1')
-    parser.add_argument('--seeds', type=int, nargs='+', default=list(range(10)))
+    parser.add_argument('--seeds', type=int, nargs='+', default=SEEDS[:10])
     args = parser.parse_args()
     
     with open(args.config, 'r') as f:
@@ -154,8 +188,11 @@ def main():
     
     # Aggregate across seeds
     print("\n=== Aggregated Results (10 seeds) ===")
-    metrics = ['test_acc', 'fc1_frobenius', 'fc2_frobenius', 'fc1_spectral', 'fc2_spectral', 
-               'grad_norm_mean']
+    metrics = ['test_acc', 'fc1_frobenius', 'fc2_frobenius', 'fc1_spectral', 'fc2_spectral',
+               'grad_norm_mean',
+               'fc1_stable_rank', 'fc2_stable_rank', 'fc1_effective_rank',
+               'fc2_effective_rank', 'fc1_spectral_entropy', 'fc2_spectral_entropy',
+               'fc2_cum_energy_top1', 'fc2_cum_energy_top4']
     
     for metric in metrics:
         values = [all_results[s][0][metric] for s in args.seeds if all_results[s] and all_results[s][0].get(metric) is not None]

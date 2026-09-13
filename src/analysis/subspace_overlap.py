@@ -87,37 +87,32 @@ def frobenius_norm(tensor: torch.Tensor) -> float:
 
 def compute_rome_delta_W(model, target_class: int, layer_name: str = 'fc2') -> torch.Tensor:
     """
-    Recompute the ROME delta_W for a given model, target class, and layer.
-    Matches the ROME computation in multiclass_rome.py.
-    
+    Recompute the rank-one delta_W for a given model, target class, and layer.
+    Matches the rank-one computation in multiclass_rome.py.
+
+    Uses ONLY the EDIT half of the test split (never the EVAL half).
+
     Args:
         model: The trained model
-        target_class: The target class for ROME edit
+        target_class: The target class for the rank-one edit
         layer_name: 'fc1' or 'fc2'
-    
+
     Returns:
-        The ROME delta weight update matrix
+        The rank-one delta weight update matrix
     """
     # Import here to avoid circular imports
     import sys
     from pathlib import Path
     sys.path.append(str(Path(__file__).parent))
-    from multiclass_rome import compute_rome_edit
-    import torch
-    from torch.utils.data import DataLoader
-    from torchvision import datasets, transforms
-    
+    from multiclass_rome import compute_rank1_edit, get_test_dataset, build_edit_eval_loaders
+
     device = next(model.parameters()).device
-    
-    # Get test dataloader
-    transform = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize((0.1307,), (0.3081,))
-    ])
-    test_dataset = datasets.MNIST('./data', train=False, download=True, transform=transform)
-    test_loader = DataLoader(test_dataset, batch_size=128, shuffle=False)
-    
-    delta, u, v, used_layer = compute_rome_edit(model, test_loader, device, target_class, layer_name)
+
+    # Build only the EDIT loader (disjoint from evaluation)
+    test_dataset = get_test_dataset()
+    edit_loader, _, _ = build_edit_eval_loaders(test_dataset, split_seed=42)
+
+    delta, u, v, used_layer = compute_rank1_edit(model, edit_loader, device, target_class, layer_name)
     if delta is None:
         return torch.zeros_like(getattr(model, used_layer).weight)
     return delta

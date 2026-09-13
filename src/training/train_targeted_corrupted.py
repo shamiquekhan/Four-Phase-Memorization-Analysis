@@ -16,17 +16,7 @@ from tqdm import tqdm
 import sys
 sys.path.append(str(Path(__file__).parent.parent))
 from models.model import MNISTNet
-
-
-def apply_targeted_corruption(dataset, source, target, seed=42):
-    """Swap all labels of source class to target class."""
-    np.random.seed(seed)
-    targets = np.array(dataset.targets)
-    mask = targets == source
-    n_corrupt = mask.sum()
-    targets[mask] = target
-    dataset.targets = targets.tolist()
-    return dataset, mask
+from data.corruption import apply_targeted_corruption
 
 
 def get_data_loaders(batch_size=128, source=7, target=1, num_workers=4, seed=42):
@@ -35,14 +25,15 @@ def get_data_loaders(batch_size=128, source=7, target=1, num_workers=4, seed=42)
         transforms.ToTensor(),
         transforms.Normalize((0.1307,), (0.3081,))
     ])
+
     train_dataset = datasets.MNIST('./data', train=True, download=True, transform=transform)
     test_dataset = datasets.MNIST('./data', train=False, download=True, transform=transform)
 
-    train_dataset, corrupt_mask = apply_targeted_corruption(train_dataset, source, target, seed)
+    train_dataset, provenance = apply_targeted_corruption(train_dataset, source, target, seed)
 
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers)
-    return train_loader, test_loader, corrupt_mask
+    return train_loader, test_loader, provenance
 
 
 def train_epoch(model, loader, optimizer, criterion, device):
@@ -111,7 +102,7 @@ def main():
     optimizer = optim.Adam(model.parameters(), lr=config['training']['lr'])
     criterion = nn.CrossEntropyLoss()
 
-    train_loader, test_loader, corrupt_mask = get_data_loaders(
+    train_loader, test_loader, provenance = get_data_loaders(
         batch_size=config['training']['batch_size'],
         source=args.source, target=args.target,
         num_workers=config['training']['num_workers'],
@@ -121,7 +112,8 @@ def main():
     output_dir = Path(args.output_dir) / f"src{args.source}_tgt{args.target}" / f"seed_{args.seed}"
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    np.save(output_dir / 'corrupt_mask.npy', corrupt_mask)
+    np.save(output_dir / 'corrupt_mask.npy', np.array(provenance.changed_indices, dtype=bool))
+    provenance.save(output_dir / 'corruption_provenance.json')
 
     best_acc = 0
     history = {'train_loss': [], 'train_acc': [], 'test_loss': [], 'test_acc': []}
@@ -143,12 +135,14 @@ def main():
             best_acc = test_acc
             model.save_checkpoint(output_dir / 'best_model.pt', {
                 'epoch': epoch, 'test_acc': test_acc,
-                'source': args.source, 'target': args.target
+                'source': args.source, 'target': args.target,
+                'corrupt_indices': provenance.changed_indices
             })
 
     model.save_checkpoint(output_dir / 'final_model.pt', {
         'epoch': config['training']['epochs'], 'test_acc': test_acc,
-        'source': args.source, 'target': args.target
+        'source': args.source, 'target': args.target,
+        'corrupt_indices': provenance.changed_indices
     })
     torch.save(history, output_dir / 'history.pt')
 

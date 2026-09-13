@@ -14,7 +14,7 @@ import json
 import sys
 sys.path.append(str(Path(__file__).parent.parent))
 from models.model import MNISTNet, CIFAR10MLP
-from utils.stats import compute_ci
+from utils.stats import compute_ci, SEEDS
 
 
 def get_low_rank_approximation(W, k):
@@ -243,7 +243,7 @@ def main():
     parser.add_argument('--config', type=str, default='configs/experiment_config.yaml')
     parser.add_argument('--checkpoint-dir', type=str, required=True)
     parser.add_argument('--output-dir', type=str, default='outputs/analysis/rank_ablation')
-    parser.add_argument('--seeds', type=int, nargs='+', default=list(range(5)))
+    parser.add_argument('--seeds', type=int, nargs='+', default=SEEDS[:5])
     parser.add_argument('--layer', type=str, default='fc2', choices=['fc1', 'fc2', 'fc3'])
     args = parser.parse_args()
     

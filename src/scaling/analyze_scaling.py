@@ -18,7 +18,7 @@ from utils.metrics import (
     compute_davies_bouldin, compute_calinski_harabasz, compute_monosemanticity,
     compute_circuit_sparsity, extract_hidden_activations, compute_sigma_and_fdr
 )
-from utils.stats import compute_ci
+from utils.stats import compute_ci, SEEDS
 
 
 def power_law(x, a, b, c):
@@ -141,7 +141,7 @@ def main():
     parser.add_argument('--results-dir', type=str, default='outputs/scaling')
     parser.add_argument('--output-dir', type=str, default='outputs/analysis/scaling')
     parser.add_argument('--hidden-dims', type=int, nargs='+', default=[16, 32, 64, 128, 256, 512, 1024])
-    parser.add_argument('--seeds', type=int, nargs='+', default=list(range(3)))
+    parser.add_argument('--seeds', type=int, nargs='+', default=SEEDS[:3])
     args = parser.parse_args()
 
     import torch

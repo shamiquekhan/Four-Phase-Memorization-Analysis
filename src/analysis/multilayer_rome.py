@@ -19,8 +19,10 @@ import sys
 sys.path.append(str(Path(__file__).parent.parent))
 from models.model import MNISTNet
 from utils.metrics import evaluate_class_accuracy
-from utils.stats import compute_ci
-from analysis.multiclass_rome import compute_rome_edit, apply_rome_edit
+from utils.stats import compute_ci, SEEDS
+from analysis.multiclass_rome import (
+    compute_rank1_edit, apply_rank1_edit, get_test_dataset, build_edit_eval_loaders,
+)
 
 CORRUPTION_CONFIGS = [
     {'source': 7, 'target': 1, 'label': '7→1'},
@@ -32,26 +34,26 @@ CORRUPTION_CONFIGS = [
 
 def sequential_multilayer_rome(
     model,
-    dataloader,
+    edit_loader,
     src_class: int,
     tgt_class: int,
     layers: list = ['fc2', 'fc1'],
     device: str = 'cpu',
 ):
     """
-    Apply ROME sequentially: edit layers[0] first, then layers[1] on the updated model.
-    Returns (edited_model, [(layer_name, delta), ...]).
+    Apply rank-one edits sequentially: layers[0] first, then layers[1] on the updated model.
+    Edit directions are built from edit_loader only. Returns (edited_model, [(layer_name, delta), ...]).
     """
     model_copy = deepcopy(model)
     deltas = []
 
     for layer_name in layers:
-        delta, u, v, _ = compute_rome_edit(
-            model_copy, dataloader, device, tgt_class, layer_name=layer_name
+        delta, u, v, _ = compute_rank1_edit(
+            model_copy, edit_loader, device, tgt_class, layer_name=layer_name
         )
         if delta is None:
             continue
-        apply_rome_edit(model_copy, delta, layer_name)
+        apply_rank1_edit(model_copy, delta, layer_name)
         deltas.append((layer_name, delta))
 
     return model_copy, deltas
@@ -59,32 +61,34 @@ def sequential_multilayer_rome(
 
 def joint_multilayer_rome(
     model,
-    dataloader,
+    edit_loader,
+    eval_loader,
     src_class: int,
     tgt_class: int,
     n_iters: int = 3,
     device: str = 'cpu',
 ):
     """
-    Iterative joint ROME: alternate between editing fc2 and fc1 for n_iters rounds.
-    Each round re-computes the ROME update given the current state of both layers.
+    Iterative joint editing: alternate between editing fc2 and fc1 for n_iters rounds.
+    Each round re-computes the update given the current state of both layers.
+    Edits built from edit_loader; recovery evaluated on eval_loader only.
 
     Returns (edited_model, recovery_per_iter).
     """
     model_copy = deepcopy(model)
     recovery_per_iter = []
 
-    baseline_acc = evaluate_class_accuracy(model, dataloader, src_class, device)
+    baseline_acc = evaluate_class_accuracy(model, eval_loader, src_class, device)
 
     for i in range(n_iters):
-        delta2, _, _, _ = compute_rome_edit(model_copy, dataloader, device, tgt_class, 'fc2')
+        delta2, _, _, _ = compute_rank1_edit(model_copy, edit_loader, device, tgt_class, 'fc2')
         if delta2 is not None:
-            apply_rome_edit(model_copy, delta2, 'fc2')
-        delta1, _, _, _ = compute_rome_edit(model_copy, dataloader, device, tgt_class, 'fc1')
+            apply_rank1_edit(model_copy, delta2, 'fc2')
+        delta1, _, _, _ = compute_rank1_edit(model_copy, edit_loader, device, tgt_class, 'fc1')
         if delta1 is not None:
-            apply_rome_edit(model_copy, delta1, 'fc1')
+            apply_rank1_edit(model_copy, delta1, 'fc1')
 
-        acc = evaluate_class_accuracy(model_copy, dataloader, src_class, device)
+        acc = evaluate_class_accuracy(model_copy, eval_loader, src_class, device)
         recovery_per_iter.append(acc - baseline_acc)
 
     return model_copy, recovery_per_iter
@@ -92,13 +96,15 @@ def joint_multilayer_rome(
 
 def run_multilayer_rome_experiment(
     model,
-    dataloader,
+    edit_loader,
+    eval_loader,
     corruption_configs: list,
     device: str = 'cpu',
 ) -> dict:
     """
-    Run sequential and joint multi-layer ROME for each corruption config.
-    Compare to single-layer ROME baseline.
+    Run sequential and joint multi-layer edits for each corruption config.
+    Compare to single-layer baseline. All edits built from edit_loader;
+    all recovery measured on eval_loader only.
     """
     results = {}
 
@@ -108,24 +114,24 @@ def run_multilayer_rome_experiment(
         key = label.replace('→', '_to_')
 
         # Single-layer (fc2 only) baseline
-        base_acc = evaluate_class_accuracy(model, dataloader, src, device)
-        delta_single, _, _, _ = compute_rome_edit(model, dataloader, device, tgt, 'fc2')
+        base_acc = evaluate_class_accuracy(model, eval_loader, src, device)
+        delta_single, _, _, _ = compute_rank1_edit(model, edit_loader, device, tgt, 'fc2')
         if delta_single is not None:
             model_temp = deepcopy(model)
-            apply_rome_edit(model_temp, delta_single, 'fc2')
-            single_acc = evaluate_class_accuracy(model_temp, dataloader, src, device)
+            apply_rank1_edit(model_temp, delta_single, 'fc2')
+            single_acc = evaluate_class_accuracy(model_temp, eval_loader, src, device)
             single_rec = single_acc - base_acc
         else:
             single_rec = 0.0
 
         # Sequential multi-layer
-        m_seq, _ = sequential_multilayer_rome(model, dataloader, src, tgt,
+        m_seq, _ = sequential_multilayer_rome(model, edit_loader, src, tgt,
                                                layers=['fc2', 'fc1'], device=device)
-        seq_acc = evaluate_class_accuracy(m_seq, dataloader, src, device)
+        seq_acc = evaluate_class_accuracy(m_seq, eval_loader, src, device)
         seq_rec = seq_acc - base_acc
 
         # Joint multi-layer (3 iterations)
-        m_joint, iter_recoveries = joint_multilayer_rome(model, dataloader, src, tgt,
+        m_joint, iter_recoveries = joint_multilayer_rome(model, edit_loader, eval_loader, src, tgt,
                                                           n_iters=3, device=device)
         joint_rec = iter_recoveries[-1] if iter_recoveries else 0.0
 
@@ -156,7 +162,7 @@ def main():
     parser = argparse.ArgumentParser(description='Multi-layer ROME')
     parser.add_argument('--checkpoint-dir', type=str, default='outputs/targeted_corrupted')
     parser.add_argument('--output-dir', type=str, default='outputs/analysis/multilayer_rome')
-    parser.add_argument('--seeds', type=int, nargs='+', default=list(range(5)))
+    parser.add_argument('--seeds', type=int, nargs='+', default=SEEDS[:5])
     parser.add_argument('--config', type=str, default='configs/experiment_config.yaml')
     args = parser.parse_args()
 
@@ -165,9 +171,16 @@ def main():
         config = yaml.safe_load(f)
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    test_loader = get_test_loader(config['training']['batch_size'])
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Disjoint edit/eval split of the test set
+    test_dataset = get_test_dataset()
+    edit_loader, eval_loader, split = build_edit_eval_loaders(
+        test_dataset, split_seed=42, batch_size=config['training']['batch_size']
+    )
+    split.save(output_dir / 'split_provenance.json')
+    print(f"Edit/eval split: {len(split.edit_indices)} edit / {len(split.eval_indices)} eval (disjoint)")
 
     corruption_configs = config.get('phase4', {}).get('corruption_configs', CORRUPTION_CONFIGS)
 
@@ -203,14 +216,14 @@ def main():
             model.eval()
 
             result = run_multilayer_rome_experiment(
-                model, test_loader, [cfg], device=device
+                model, edit_loader, eval_loader, [cfg], device=device
             )
             all_results[key]['single_layer_recovery'].append(result[key]['single_layer_recovery'])
             all_results[key]['sequential_recovery'].append(result[key]['sequential_recovery'])
             all_results[key]['joint_recovery'].append(result[key]['joint_recovery'])
 
     # Summary
-    print("\n=== MULTI-LAYER ROME SUMMARY ===")
+    print("\n=== MULTI-LAYER RANK-ONE EDIT SUMMARY (EVAL split only) ===")
     header = f"{'Config':>8} {'Single':>12} {'Sequential':>14} {'Joint':>12}"
     print(header)
     print('-' * len(header))

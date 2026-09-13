@@ -8,6 +8,8 @@ import sys
 from pathlib import Path
 import time
 
+import yaml
+
 
 def run(cmd, desc, cwd=None):
     print(f"\n{'='*60}")
@@ -27,7 +29,9 @@ def run(cmd, desc, cwd=None):
 def main():
     parser = argparse.ArgumentParser(description='Reproduce full memorization analysis pipeline')
     parser.add_argument('--config', type=str, default='configs/experiment_config.yaml')
-    parser.add_argument('--seeds', type=int, default=10, help='Number of seeds')
+    parser.add_argument('--seeds', type=int, default=10,
+                        help='Number of seeds drawn FROM THE CONFIG seed list '
+                             '(never range(n); first N of the configured list)')
     parser.add_argument('--skip-training', action='store_true', help='Skip training (use existing checkpoints)')
     parser.add_argument('--skip-scaling', action='store_true', help='Skip scaling experiments')
     parser.add_argument('--skip-analysis', action='store_true', help='Skip analysis')
@@ -38,7 +42,14 @@ def main():
     args = parser.parse_args()
     
     root = Path(__file__).parent
-    seeds = list(range(args.seeds))
+    sys.path.insert(0, str(root / 'src'))
+    from utils.stats import SEEDS as _default_seed_list
+    # Single source of truth: the configured scientific seed list.
+    # --seeds N selects the FIRST N configured seeds; never range(n).
+    _seed_list = _cfg.get('seeds', _default_seed_list)
+    seeds = list(_seed_list[:args.seeds])
+    print(f"Seeds (from config, first {len(seeds)}): {seeds}")
+    assert len(set(seeds)) == len(seeds), "duplicate seeds in config"
     
     # Step 1: Train on clean MNIST
     if not args.skip_training:
@@ -57,10 +68,13 @@ def main():
                 cwd=root
             )
         
-        # Step 3: Scaling experiment
+        # Step 3: Scaling experiment (widths read from config, never hardcoded)
         if not args.skip_scaling:
+            _widths = _cfg.get('scaling', {}).get('hidden_sizes')
+            if not _widths:
+                _widths = [16, 32, 64, 128, 256]
             run(
-                f"python src/scaling/train_scaling.py --config {args.config} --hidden-dims 32 64 128 256 512 1024 --seeds {' '.join(map(str, seeds))} --epochs 20 --output-dir {args.output_dir}/scaling",
+                f"python src/scaling/train_scaling.py --config {args.config} --hidden-dims {' '.join(map(str, _widths))} --seeds {' '.join(map(str, seeds))} --epochs 20 --output-dir {args.output_dir}/scaling",
                 "Running scaling experiments",
                 cwd=root
             )

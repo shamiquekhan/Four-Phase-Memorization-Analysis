@@ -13,18 +13,7 @@ from tqdm import tqdm
 import sys
 sys.path.append(str(Path(__file__).parent.parent))
 from models.model import CIFAR10MLP
-
-
-def corrupt_labels(dataset, noise_rate=0.2, seed=42):
-    np.random.seed(seed)
-    targets = np.array(dataset.targets)
-    n_samples = len(targets)
-    n_corrupt = int(n_samples * noise_rate)
-    corrupt_indices = np.random.choice(n_samples, n_corrupt, replace=False)
-    new_labels = np.random.randint(0, 10, n_corrupt)
-    targets[corrupt_indices] = new_labels
-    dataset.targets = targets.tolist()
-    return dataset, corrupt_indices
+from data.corruption import corrupt_labels_random
 
 
 def get_data_loaders(batch_size=128, noise_rate=0.2, num_workers=4, seed=42):
@@ -34,10 +23,11 @@ def get_data_loaders(batch_size=128, noise_rate=0.2, num_workers=4, seed=42):
     ])
     train_dataset = datasets.CIFAR10('./data/cifar10', train=True, download=True, transform=transform)
     test_dataset = datasets.CIFAR10('./data/cifar10', train=False, download=True, transform=transform)
-    train_dataset, corrupt_indices = corrupt_labels(train_dataset, noise_rate, seed)
+    # Guaranteed-change corruption with provenance
+    train_dataset, provenance = corrupt_labels_random(train_dataset, noise_rate, seed)
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers)
-    return train_loader, test_loader, corrupt_indices
+    return train_loader, test_loader, provenance
 
 
 def train_epoch(model, loader, optimizer, criterion, device):
@@ -105,16 +95,20 @@ def main():
     optimizer = optim.Adam(model.parameters(), lr=config['training']['lr'])
     criterion = nn.CrossEntropyLoss()
 
-    train_loader, test_loader, corrupt_indices = get_data_loaders(
+    train_loader, test_loader, provenance = get_data_loaders(
         batch_size=config['training']['batch_size'],
         noise_rate=args.noise_rate,
         num_workers=config['training']['num_workers'],
         seed=args.seed
     )
+    corrupt_indices = np.array(provenance.changed_indices)
 
     output_dir = Path(args.output_dir) / f"noise_{args.noise_rate}" / f"seed_{args.seed}"
     output_dir.mkdir(parents=True, exist_ok=True)
     np.save(output_dir / 'corrupt_indices.npy', corrupt_indices)
+    provenance.save(output_dir / 'corruption_provenance.json')
+    print(f"Corruption provenance: {len(provenance.changed_indices)} changed "
+          f"(rate {len(provenance.changed_indices)/provenance.n_samples:.4f})")
 
     best_acc = 0
     history = {'train_loss': [], 'train_acc': [], 'test_loss': [], 'test_acc': []}
