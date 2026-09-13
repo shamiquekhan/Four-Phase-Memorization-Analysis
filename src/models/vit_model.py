@@ -1,18 +1,23 @@
 """
 ViT (Vision Transformer) model wrapper for CIFAR-10 using HuggingFace transformers.
 Supports LoRA injection for parameter-efficient unlearning.
+Loads directly from local files to avoid download issues.
 """
 
 import torch
 import torch.nn as nn
+import os
+import json
 from typing import Optional, Dict, List, Tuple
 from transformers import ViTForImageClassification, ViTConfig
 from peft import LoraConfig, get_peft_model, PeftModel
+from safetensors.torch import load_file
 
 
 class ViTWrapper(nn.Module):
     """
     Wrapper for HuggingFace ViT model with CIFAR-10 adaptations.
+    Loads directly from local files to avoid download issues.
     """
     
     def __init__(
@@ -20,19 +25,53 @@ class ViTWrapper(nn.Module):
         model_name: str = "google/vit-base-patch16-224",
         num_classes: int = 10,
         image_size: int = 224,
-        pretrained: bool = True
+        pretrained: bool = True,
+        local_path: Optional[str] = None
     ):
         super().__init__()
         self.model_name = model_name
         self.num_classes = num_classes
         self.image_size = image_size
         
+        # Determine local path
+        if local_path is None:
+            local_path = os.environ.get('VIT_LOCAL_PATH', '/home/shamique/projects/ml-reserch/vit_cache')
+        
         if pretrained:
-            self.vit = ViTForImageClassification.from_pretrained(
-                model_name,
-                num_labels=num_classes,
-                ignore_mismatched_sizes=True
-            )
+            # Load config from local file
+            config_path = os.path.join(local_path, 'config.json')
+            with open(config_path, 'r') as f:
+                config_dict = json.load(f)
+            config = ViTConfig(**config_dict)
+            config.num_labels = num_classes
+            config.image_size = image_size
+            
+            # Create model from config
+            self.vit = ViTForImageClassification(config)
+            
+            # Load weights from local safetensors file
+            weights_path = os.path.join(local_path, 'model.safetensors')
+            if os.path.exists(weights_path):
+                state_dict = load_file(weights_path)
+                # Handle classifier weight mismatch (different num_classes)
+                if 'classifier.weight' in state_dict and state_dict['classifier.weight'].shape[0] != num_classes:
+                    # Remove classifier weights to reinitialize
+                    del state_dict['classifier.weight']
+                    del state_dict['classifier.bias']
+                self.vit.load_state_dict(state_dict, strict=False)
+                print(f"Loaded ViT weights from {weights_path}")
+            else:
+                # Fallback to pytorch_model.bin
+                weights_path = os.path.join(local_path, 'pytorch_model.bin')
+                if os.path.exists(weights_path):
+                    state_dict = torch.load(weights_path, map_location='cpu')
+                    if 'classifier.weight' in state_dict and state_dict['classifier.weight'].shape[0] != num_classes:
+                        del state_dict['classifier.weight']
+                        del state_dict['classifier.bias']
+                    self.vit.load_state_dict(state_dict, strict=False)
+                    print(f"Loaded ViT weights from {weights_path}")
+                else:
+                    raise FileNotFoundError(f"No weights found in {local_path}")
         else:
             config = ViTConfig.from_pretrained(model_name)
             config.num_labels = num_classes
@@ -148,8 +187,9 @@ def create_vit_model(
     num_classes: int = 10,
     image_size: int = 224,
     pretrained: bool = True,
-    device: str = 'cuda'
+    device: str = 'cuda',
+    local_path: Optional[str] = None
 ) -> ViTWrapper:
     """Factory function to create ViT model."""
-    model = ViTWrapper(model_name, num_classes, image_size, pretrained)
+    model = ViTWrapper(model_name, num_classes, image_size, pretrained, local_path)
     return model.to(device)

@@ -42,3 +42,15 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+
+# HF model caches (large binaries)
+vit_cache/
+vit_tiny_cache/
+
+# Archived exploratory outputs (keep snapshots, not regenerable junk)
+outputs/phase5/
+outputs/phase5_test/
+
+# HF model caches (large binaries, keep local)
+vit_cache/
+vit_tiny_cache/

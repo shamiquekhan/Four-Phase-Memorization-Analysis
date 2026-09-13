@@ -1,6 +1,7 @@
 """
 Train Vision Transformer on CIFAR-10.
 Supports clean training and corrupted label training.
+Optimized with AMP and Gradient Accumulation for 3.6GB GPU.
 """
 
 import argparse
@@ -9,10 +10,12 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
+from torch.cuda.amp import autocast, GradScaler
 from pathlib import Path
 import numpy as np
 from tqdm import tqdm
 import sys
+import os
 
 sys.path.append(str(Path(__file__).parent.parent))
 from models.vit_model import create_vit_model
@@ -119,50 +122,94 @@ def evaluate(model, test_loader, device, per_class=False):
     return acc
 
 
-def train_epoch(model, train_loader, optimizer, criterion, device, scheduler=None):
-    """Train for one epoch."""
+def train_epoch(model, train_loader, optimizer, criterion, device, scheduler=None, 
+                scaler=None, grad_accum_steps=1, use_amp=False):
+    """Train for one epoch with optional AMP and gradient accumulation."""
     model.train()
     total_loss = 0
     correct = 0
     total = 0
     
-    for x, y in tqdm(train_loader, desc="Training", leave=False):
+    optimizer.zero_grad()
+    
+    for i, (x, y) in enumerate(tqdm(train_loader, desc="Training", leave=False)):
         x, y = x.to(device), y.to(device)
-        optimizer.zero_grad()
-        logits = model(x)
-        loss = criterion(logits, y)
-        loss.backward()
-        optimizer.step()
-        if scheduler:
-            scheduler.step()
         
-        total_loss += loss.item() * x.size(0)
-        correct += (logits.argmax(dim=1) == y).sum().item()
+        if use_amp:
+            with autocast():
+                logits = model(x)
+                loss = criterion(logits, y)
+                loss = loss / grad_accum_steps
+            scaler.scale(loss).backward()
+        else:
+            logits = model(x)
+            loss = criterion(logits, y) / grad_accum_steps
+            loss.backward()
+        
+        # Gradient accumulation step
+        if (i + 1) % grad_accum_steps == 0:
+            if use_amp:
+                scaler.step(optimizer)
+                scaler.update()
+            else:
+                optimizer.step()
+            optimizer.zero_grad()
+            if scheduler:
+                scheduler.step()
+        
+        total_loss += loss.item() * grad_accum_steps * x.size(0)
+        if use_amp:
+            with torch.no_grad():
+                correct += (logits.argmax(dim=1) == y).sum().item()
+        else:
+            correct += (logits.argmax(dim=1) == y).sum().item()
         total += x.size(0)
+    
+    # Handle remaining gradients if not divisible by grad_accum_steps
+    if len(train_loader) % grad_accum_steps != 0:
+        if use_amp:
+            scaler.step(optimizer)
+            scaler.update()
+        else:
+            optimizer.step()
+        optimizer.zero_grad()
     
     return total_loss / total, correct / total
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Train ViT on CIFAR-10')
+    parser = argparse.ArgumentParser(description='Train ViT on CIFAR-10 with AMP and Gradient Accumulation')
     parser.add_argument('--config', type=str, default='configs/experiment_config.yaml')
     parser.add_argument('--seed', type=int, default=42)
     parser.add_argument('--output-dir', type=str, default='outputs/cifar10/vit')
     parser.add_argument('--noise-rate', type=float, default=0.0)
     parser.add_argument('--epochs', type=int, default=20)
-    parser.add_argument('--batch-size', type=int, default=128)
+    parser.add_argument('--batch-size', type=int, default=16)
     parser.add_argument('--lr', type=float, default=1e-4)
     parser.add_argument('--weight-decay', type=float, default=0.01)
     parser.add_argument('--image-size', type=int, default=224)
-    parser.add_argument('--model-name', type=str, default='google/vit-base-patch16-224')
+    parser.add_argument('--model-name', type=str, default='WinKawaks/vit-tiny-patch16-224')
+    parser.add_argument('--grad-accum-steps', type=int, default=4, help='Gradient accumulation steps')
+    parser.add_argument('--use-amp', action='store_true', default=True, help='Use Automatic Mixed Precision')
+    parser.add_argument('--no-amp', action='store_true', help='Disable AMP')
     args = parser.parse_args()
+    
+    # Handle --no-amp flag
+    use_amp = args.use_amp and not args.no_amp
     
     torch.manual_seed(args.seed)
     np.random.seed(args.seed)
     
+    # Use local model cache to avoid slow downloads
+    os.environ['HF_HOME'] = '/home/shamique/projects/ml-reserch/vit_cache'
+    os.environ['TRANSFORMERS_OFFLINE'] = '1'
+    
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"Using device: {device}")
     print(f"Seed: {args.seed}, Noise rate: {args.noise_rate}")
+    print(f"Model: {args.model_name}")
+    print(f"Batch size: {args.batch_size}, Grad accum: {args.grad_accum_steps}, Effective batch: {args.batch_size * args.grad_accum_steps}")
+    print(f"AMP: {use_amp}")
     
     output_dir = Path(args.output_dir) / f"seed_{args.seed}"
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -183,27 +230,36 @@ def main():
             image_size=args.image_size
         )
     
-    # Model
+    # Model - load from HF cache (pre-populated)
+    local_path = '/home/shamique/projects/ml-reserch/vit_tiny_cache' if 'tiny' in args.model_name.lower() else '/home/shamique/projects/ml-reserch/vit_cache'
     model = create_vit_model(
         model_name=args.model_name,
         num_classes=10,
         image_size=args.image_size,
-        pretrained=True
+        pretrained=True,
+        local_path=local_path
     ).to(device)
     
     # Optimizer
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
     criterion = nn.CrossEntropyLoss()
     
-    # Scheduler
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.epochs * len(train_loader))
+    # Scheduler - step per optimizer step (after accumulation)
+    steps_per_epoch = len(train_loader) // args.grad_accum_steps + (1 if len(train_loader) % args.grad_accum_steps else 0)
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.epochs * steps_per_epoch)
+    
+    # AMP scaler
+    scaler = GradScaler() if use_amp else None
     
     # Training loop
     best_acc = 0
     history = {'train_loss': [], 'train_acc': [], 'test_acc': []}
     
     for epoch in range(args.epochs):
-        train_loss, train_acc = train_epoch(model, train_loader, optimizer, criterion, device, scheduler)
+        train_loss, train_acc = train_epoch(
+            model, train_loader, optimizer, criterion, device, scheduler,
+            scaler=scaler, grad_accum_steps=args.grad_accum_steps, use_amp=use_amp
+        )
         test_acc = evaluate(model, test_loader, device)
         
         history['train_loss'].append(train_loss)

@@ -1,0 +1,251 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.24.0",
+    "script_metadata_hash": null
+  },
+  "cells": [
+    {
+      "id": "Hbol",
+      "code_hash": "39c318de74a9f43b6544b8027a40a930",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "fa4bc219840ba62d164a89e693fe2291",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"four-phase-memorization-analysis-vit-base-on-cifar-10\">Four Phase Memorization Analysis ViT Base on CIFAR 10</h1>\n<span class=\"paragraph\"><strong>Complete Pipeline:</strong> EDA to Spectral Tracking to CKA Collapse to Influence Localization to LoRA Unlearning</span>\n<span class=\"paragraph\"><strong>Architecture:</strong> ViT Base Patch16 224 (86M params, 12 transformer blocks)</span>\n<span class=\"paragraph\"><strong>Reactive:</strong> Every phase is reactive. Drag any slider and all downstream metrics cascade.</span>\n<span class=\"paragraph\"><strong>v2 changes:</strong> fixed an in-place dataset mutation bug in Phase 1 noise injection, made\ndiagnostic training length configurable instead of a hardcoded 50-batch cap, added a\nKL-divergence anchor against a frozen reference model in Phase 4 unlearning, and replaced\nthe Phase 3 confidence heuristic with a LiSSA-approximated inverse-Hessian-vector-product\ninfluence score (restricted to the classifier head for tractability).</span>\n<span class=\"paragraph\"><strong>v3 changes:</strong> added mixed precision (AMP) training, gradient accumulation, cosine LR\nscheduling with warmup, gradient clipping, early stopping for unlearning, full test-set\nevaluation, and reproducibility seeding.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": "6a826547eed7fc4f367394d7993dce80",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"global-controls\">Global Controls</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "bkHC",
+      "code_hash": "9faccf4752ba0db089c895b0459e8cd5",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "lEQa",
+      "code_hash": "e5576f075ec8766b8722a4d01051e6bb",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "PKri",
+      "code_hash": "a069abd1340f7df20b98eae2e1e9457e",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"section-1-exploratory-data-analysis\">Section 1: Exploratory Data Analysis</h1>\n<span class=\"paragraph\">Load CIFAR 10, visualize samples, class distributions, and dataset statistics.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Xref",
+      "code_hash": "9abe612fa10f0268e3438dc3a81f22b4",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "SFPL",
+      "code_hash": "d3b6b0340813ef84534c07d3496bdbcb",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "BYtC",
+      "code_hash": "b3c7a689335bd53a1098bfec09ebc15e",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "RGSE",
+      "code_hash": "dfe60f42d0ea90ea28d79fc80117d225",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Kclp",
+      "code_hash": "e652845eed939fb1f7114f387f22530f",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"section-2-phase-1-attention-vs-mlp-spectral-tracking\">Section 2: Phase 1 Attention vs MLP Spectral Tracking</h1>\n<span class=\"paragraph\">Previous experiments established that 20 percent random label noise reduces weight spectral norms in shallow fully connected networks, dropping from 12.56 to 10.28 in the first layer and 5.00 to 2.76 in the second layer[cite: 4, 5, 6]. This phase maps that geometric fingerprint to a deep Vision Transformer by tracking the spectral norm independently for attention projections and Feed Forward Network blocks.</span>\n<span class=\"paragraph\"><strong>Note on diagnostic training length:</strong> the noisy model is fine-tuned for a <em>fixed, small</em>\nnumber of steps (controlled by the \"Diagnostic Train Steps\" slider above) rather than to\nfull convergence. This keeps the notebook interactive, but the resulting spectral norms\nshould be read as an early-training signature, not a converged one. For publication-quality\nfigures, increase the step count toward a full epoch (~780 steps at batch size 64) or load\na separately pre-trained noisy checkpoint.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "emfo",
+      "code_hash": "390bfa38636b5dea79557c72e9ae7a37",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Hstk",
+      "code_hash": "4179b23e98ff84f7860b59652d1c2e7f",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "nWHF",
+      "code_hash": "2ad5a4d32e60feb48d77f432ebb6dd84",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "iLit",
+      "code_hash": "44a8a3da6f307d8796393bb150101f79",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"section-3-phase-2-cka-collapse-mapping-in-depth\">Section 3: Phase 2 CKA Collapse Mapping in Depth</h1>\n<span class=\"paragraph\">Prior research established that Centered Kernel Alignment between pre activation and post activation representations drops sharply under corruption from 0.850 to 0.690[cite: 4, 5, 6]. This phase computes CKA between clean and corrupted activations at each GELU layer across all 12 transformer blocks to pinpoint where representational geometry diverges in deep architectures.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ZHCJ",
+      "code_hash": "a92504fcb779e703bf258593112d7857",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "ROlb",
+      "code_hash": "70f1dfc18494fb7b7d793a2faac64b3b",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "qnkX",
+      "code_hash": "9feed330eca35049099a0e196c993fbc",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "TqIu",
+      "code_hash": "e1efe958c63592d48c32c8071e0a7094",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Vxnm",
+      "code_hash": "4811cf497fa034484095446594dc962a",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "DnEU",
+      "code_hash": "ee53edc1383288cc46f7c24cf2187748",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"section-4-phase-3-subspace-localization-via-influence\">Section 4: Phase 3 Subspace Localization via Influence</h1>\n<span class=\"paragraph\">Following the methodology that isolated a high loss population of memorized samples with a measured loss gap of negative 0.051[cite: 4, 5, 6], this phase computes influence scores using LiSSA-approximated inverse-Hessian-vector products (iHVP) to identify which ViT representations are most responsible for memorization.</span>\n<span class=\"paragraph\"><strong>Scope of the approximation:</strong> computing a true iHVP over all 86M ViT parameters is\nintractable in an interactive notebook (each Hessian-vector product would require a\nfull backward pass through the entire network, repeated for every LiSSA iteration and\nevery scored sample). Following standard practice for large-model influence functions,\nthis implementation restricts the parameter space to the <strong>classifier head</strong> (<code>model.head</code>,\n~7.7K parameters) and treats the frozen ViT backbone as a fixed feature extractor. This is\na real second-order computation (double backprop through the head loss), not a heuristic,\nbut it only captures curvature in the head's decision boundary, not the full network.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ulZA",
+      "code_hash": "23d7a16e086ce8c704be604704350fc2",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "ecfG",
+      "code_hash": "485df99be28bac5896e503a110eeec8b",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Pvdt",
+      "code_hash": "5085e95dca98043b9c304bd49c07352c",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"section-5-phase-4-targeted-lora-unlearning-surgery\">Section 5: Phase 4 Targeted LoRA Unlearning Surgery</h1>\n<span class=\"paragraph\">Rank one model editing previously recovered 9.7 to 19.5 percentage points of accuracy, while rank eight weight approximations recovered approximately 90 percent of full performance[cite: 4, 5, 6]. This phase injects LoRA adapters into the ViT and applies a negative example gradient objective, anchored by a KL-divergence penalty against a frozen reference model, to unlearn specific classes without the catastrophic side effects of unconstrained algebraic edits.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ZBYS",
+      "code_hash": "9b66a8fcbf331fac9f1a75d0e99072fb",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "aLJB",
+      "code_hash": "a809ce7334e57f51e6c7fb3f95aaa0c5",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "nHfw",
+      "code_hash": "cddc6c6073d74ae4498a1360e315681a",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "xXTn",
+      "code_hash": "bb11c71d3702bf087e50055e65376ba9",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "AjVT",
+      "code_hash": "2fa50a3872475107c4f8c3ecb42ee47f",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "pHFh",
+      "code_hash": "0d080661b0ffb620497aedee30d6b0b9",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "NCOB",
+      "code_hash": "191630586acf1c2beac2b39e52d8d79c",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"final-summary\">Final Summary</h1>\n<h2 id=\"v3-optimizations-applied\">v3 Optimizations Applied</h2>\n<table>\n<thead>\n<tr>\n<th style=\"text-align: left;\">Optimization</th>\n<th style=\"text-align: left;\">Impact</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td style=\"text-align: left;\">Mixed Precision (AMP)</td>\n<td style=\"text-align: left;\">~1.5-2x training speedup on GPU</td>\n</tr>\n<tr>\n<td style=\"text-align: left;\">Gradient Accumulation</td>\n<td style=\"text-align: left;\">Effective batch size doubled without extra VRAM</td>\n</tr>\n<tr>\n<td style=\"text-align: left;\">Cosine LR Schedule</td>\n<td style=\"text-align: left;\">Smooth convergence with linear warmup</td>\n</tr>\n<tr>\n<td style=\"text-align: left;\">Gradient Clipping</td>\n<td style=\"text-align: left;\">Max-norm 1.0 prevents exploding gradients</td>\n</tr>\n<tr>\n<td style=\"text-align: left;\">Early Stopping</td>\n<td style=\"text-align: left;\">Stops unlearning when forget loss plateaus</td>\n</tr>\n<tr>\n<td style=\"text-align: left;\">Full Test Evaluation</td>\n<td style=\"text-align: left;\">Evaluates on all 10K test samples</td>\n</tr>\n<tr>\n<td style=\"text-align: left;\">Reproducibility Seed</td>\n<td style=\"text-align: left;\">Deterministic results across runs</td>\n</tr>\n</tbody>\n</table>\n<h2 id=\"pipeline-results\">Pipeline Results</h2>\n<table>\n<thead>\n<tr>\n<th style=\"text-align: left;\">Phase</th>\n<th style=\"text-align: left;\">Key Finding</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td style=\"text-align: left;\"><strong>Phase 1</strong></td>\n<td style=\"text-align: left;\">Spectral norm decay under label noise is isolated in MLP blocks. Optimized training with AMP + cosine LR produces stable spectral fingerprints.</td>\n</tr>\n<tr>\n<td style=\"text-align: left;\"><strong>Phase 2</strong></td>\n<td style=\"text-align: left;\">CKA collapse identifies deep transformer blocks as most affected by geometric memorization.</td>\n</tr>\n<tr>\n<td style=\"text-align: left;\"><strong>Phase 3</strong></td>\n<td style=\"text-align: left;\">Influence scores from LiSSA-approximated iHVP over the classifier head. Restricted to head for tractability.</td>\n</tr>\n<tr>\n<td style=\"text-align: left;\"><strong>Phase 4</strong></td>\n<td style=\"text-align: left;\">LoRA unlearning with KL anchor + early stopping efficiently forgets target class while preserving retain classes. Full test set evaluation confirms results.</td>\n</tr>\n</tbody>\n</table>\n<span class=\"paragraph\"><strong>Known remaining limitation:</strong> Phase 3's influence scores are restricted to the\nclassifier head (last-layer approximation) rather than the full 86M-parameter network,\nwhich is standard practice for tractability but should be stated explicitly in any\nwrite-up citing these numbers.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    }
+  ]
+}
