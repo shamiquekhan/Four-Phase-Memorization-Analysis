@@ -1,0 +1,114 @@
+{
+  "cka_drift": {
+    "paired_drift": {
+      "input": {
+        "mean": 0.0,
+        "ci_lo": 0.0,
+        "ci_hi": 0.0
+      },
+      "fc1_pre_activation": {
+        "mean": 0.03503742218017578,
+        "ci_lo": 0.021569615713642954,
+        "ci_hi": 0.048505228646708615
+      },
+      "fc1_post_activation": {
+        "mean": 0.061126208305358885,
+        "ci_lo": 0.03430114313275323,
+        "ci_hi": 0.08795127347796454
+      },
+      "fc2_pre_activation": {
+        "mean": 0.07520898580551147,
+        "ci_lo": 0.018709537556921556,
+        "ci_hi": 0.13170843405410138
+      },
+      "fc2_post_activation": {
+        "mean": 0.5785145342350007,
+        "ci_lo": 0.5553374527410004,
+        "ci_hi": 0.6016916157290009
+      },
+      "output": {
+        "mean": 0.6287451207637786,
+        "ci_lo": 0.5785867187714187,
+        "ci_hi": 0.6789035227561386
+      }
+    },
+    "seed_floors": {
+      "clean_clean": {
+        "input": 0.0,
+        "fc1_pre_activation": 0.02104374170303345,
+        "fc1_post_activation": 0.04741394519805908,
+        "fc2_pre_activation": 0.051804572343826294,
+        "fc2_post_activation": 0.43003441095352174,
+        "output": 0.2728447914123535
+      },
+      "corrupted_corrupted": {
+        "input": 0.0,
+        "fc1_pre_activation": 0.028638297319412233,
+        "fc1_post_activation": 0.05339105129241943,
+        "fc2_pre_activation": 0.06670375466346741,
+        "fc2_post_activation": 0.6757677763700485,
+        "output": 0.7519644886255265
+      }
+    }
+  },
+  "rank1": {
+    "7\u21921": {
+      "clean_recovery": 0.08399999999999999,
+      "corrupted_recovery": 0.03680000000000001,
+      "corrupted_side_effects": 0.09248888888888888,
+      "p": 0.01025541795939034,
+      "n_clean": 5,
+      "n_corr": 5
+    },
+    "1\u21927": {
+      "clean_recovery": 0.10280000000000003,
+      "corrupted_recovery": 0.008399999999999996,
+      "corrupted_side_effects": 0.092,
+      "p": 0.04089894169330714,
+      "n_clean": 5,
+      "n_corr": 5
+    }
+  },
+  "rank_ablation": {
+    "1": {
+      "clean_acc": 14.559999999999999,
+      "corrupted_acc": 12.392,
+      "gap": 2.1679999999999993
+    },
+    "2": {
+      "clean_acc": 20.895999999999997,
+      "corrupted_acc": 15.16,
+      "gap": 5.735999999999997
+    },
+    "3": {
+      "clean_acc": 25.964,
+      "corrupted_acc": 20.483999999999998,
+      "gap": 5.48
+    },
+    "4": {
+      "clean_acc": 29.880000000000003,
+      "corrupted_acc": 24.732,
+      "gap": 5.148000000000003
+    },
+    "5": {
+      "clean_acc": 34.344,
+      "corrupted_acc": 26.836000000000002,
+      "gap": 7.507999999999999
+    },
+    "6": {
+      "clean_acc": 37.828,
+      "corrupted_acc": 30.744,
+      "gap": 7.084000000000003
+    },
+    "8": {
+      "clean_acc": 44.912,
+      "corrupted_acc": 38.092,
+      "gap": 6.82
+    },
+    "10": {
+      "clean_acc": 51.104,
+      "corrupted_acc": 44.3,
+      "gap": 6.804000000000002
+    }
+  }
+}

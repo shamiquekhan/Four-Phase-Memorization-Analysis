@@ -17,20 +17,28 @@ import sys
 sys.path.append(str(Path(__file__).parent.parent))
 from models.model import MNISTNet
 from utils.stats import SEEDS
+from data.corruption import corrupt_labels_random
 
 
-def get_data_loaders(batch_size=128, num_workers=4):
+def get_data_loaders(batch_size=128, num_workers=4, noise_rate=0.0, seed=42):
     transform = transforms.Compose([
         transforms.ToTensor(),
         transforms.Normalize((0.1307,), (0.3081,))
     ])
     train_dataset = datasets.MNIST('./data', train=True, download=True, transform=transform)
     test_dataset = datasets.MNIST('./data', train=False, download=True, transform=transform)
-    
+
+    provenance = None
+    if noise_rate > 0:
+        # v2: guaranteed-change corruption with provenance (seed-DEPENDENT
+        # so each scaling seed gets its own corruption draw, consistent with
+        # the main corrupted training)
+        train_dataset, provenance = corrupt_labels_random(train_dataset, noise_rate, seed)
+
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers)
-    
-    return train_loader, test_loader
+
+    return train_loader, test_loader, provenance
 
 
 def train_epoch(model, loader, optimizer, criterion, device):
@@ -79,6 +87,8 @@ def main():
     parser.add_argument('--hidden-dims', type=int, nargs='+', default=[16, 32, 64, 128, 256])
     parser.add_argument('--seeds', type=int, nargs='+', default=SEEDS[:5])
     parser.add_argument('--epochs', type=int, default=20)
+    parser.add_argument('--noise-rate', type=float, default=0.0,
+                        help='Label noise rate (0 = clean; v2 adds corruption + provenance)')
     parser.add_argument('--output-dir', type=str, default='outputs/scaling')
     args = parser.parse_args()
     
@@ -88,26 +98,28 @@ def main():
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"Using device: {device}")
     
-    train_loader, test_loader = get_data_loaders(
-        batch_size=config['training']['batch_size'],
-        num_workers=config['training']['num_workers']
-    )
-    
     criterion = nn.CrossEntropyLoss()
-    output_dir = Path(args.output_dir)
+    output_dir = Path(args.output_dir) / (f"noise_{args.noise_rate}" if args.noise_rate > 0 else "clean")
     output_dir.mkdir(parents=True, exist_ok=True)
-    
+
     all_results = {}
-    
+
     for hidden_dim in args.hidden_dims:
-        print(f"\n=== Hidden Dim: {hidden_dim} ===")
+        print(f"\n=== Hidden Dim: {hidden_dim} (noise={args.noise_rate}) ===")
         all_results[hidden_dim] = {}
-        
+
         for seed in args.seeds:
             torch.manual_seed(seed)
             np.random.seed(seed)
             if torch.cuda.is_available():
                 torch.cuda.manual_seed(seed)
+
+            train_loader, test_loader, provenance = get_data_loaders(
+                batch_size=config['training']['batch_size'],
+                num_workers=config['training']['num_workers'],
+                noise_rate=args.noise_rate,
+                seed=seed
+            )
             
             model = MNISTNet(
                 input_dim=config['model']['input_dim'],
@@ -120,6 +132,9 @@ def main():
             
             seed_dir = output_dir / f"hidden_{hidden_dim}" / f"seed_{seed}"
             seed_dir.mkdir(parents=True, exist_ok=True)
+            if provenance is not None:
+                provenance.save(seed_dir / 'corruption_provenance.json')
+                np.save(seed_dir / 'corrupt_indices.npy', np.array(provenance.changed_indices))
             
             best_acc = 0
             history = {'train_loss': [], 'train_acc': [], 'test_loss': [], 'test_acc': []}
@@ -145,7 +160,23 @@ def main():
                 'final_test_acc': test_acc,
                 'history': history
             }
-            
+
+            # v2: behavioral memorization audit (noisy-label fit) on train set
+            if provenance is not None:
+                import importlib.util
+                _tc_path = Path(__file__).parent.parent / 'training' / 'train_corrupted.py'
+                _spec = importlib.util.spec_from_file_location('train_corrupted', _tc_path)
+                _tc = importlib.util.module_from_spec(_spec)
+                _spec.loader.exec_module(_tc)
+                try:
+                    audit = _tc.audit_behavioral_memorization(
+                        model, train_loader.dataset, provenance, device)
+                    all_results[hidden_dim][seed]['behavioral_memorization'] = audit
+                    print(f"    behavioral memorization: "
+                          f"{audit['memorized_fraction_of_changed']*100:.2f}% of changed")
+                except Exception as e:
+                    print(f"    behavioral audit failed: {e}")
+
             print(f"  Seed {seed}: Best Test Acc = {best_acc:.2f}%")
     
     # Aggregate results
