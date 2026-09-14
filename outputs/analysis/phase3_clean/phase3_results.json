@@ -1,67 +1,282 @@
 {
-  "0": {
-    "memorization": {
-      "mean_loss": 0.12473280727863312,
-      "std_loss": 0.5961374044418335,
-      "accuracy": 0.9644666666666667,
-      "memorized_fraction": 0.24998333333333334,
-      "forgotten_fraction": 0.25,
-      "loss_gap": 0.488115519285202,
-      "memorized_mean_loss": 6.821155693614855e-05,
-      "non_memorized_mean_loss": 0.48818373680114746,
-      "definition": "loss_quantile"
-    }
+  "42": {
+    "behavioral": {
+      "n_samples": 60000,
+      "n_changed": 12000,
+      "memorized_count": 46,
+      "memorized_fraction_of_changed": 0.003833333333333333,
+      "memorized_fraction_of_all": 0.0007666666666666667,
+      "changed_fit_noisy_label": 0.003833333333333333,
+      "changed_fit_original_label": 0.9605833333333333,
+      "clean_train_acc": 0.9602083333333333
+    },
+    "loss_gap": {
+      "mean_loss": 3.0438854694366455,
+      "std_loss": 6.836881160736084,
+      "memorized_mean_loss": 14.690519332885742,
+      "non_memorized_mean_loss": 0.1322268545627594,
+      "loss_gap": -14.558292388916016,
+      "definition": "ground_truth"
+    },
+    "gradient_alignment_group": 0.24746307730674744,
+    "tracin_self_influence": {
+      "n_scored": 9,
+      "mean_cosine_noisy_vs_orig_grad": -0.2069895797305637,
+      "std": 0.7030847018375788,
+      "frac_anti_aligned": 0.6666666666666666
+    },
+    "definition": "behavioral: changed AND pred==noisy AND pred!=orig"
   },
-  "1": {
-    "memorization": {
-      "mean_loss": 0.11294908821582794,
-      "std_loss": 0.5490418076515198,
-      "accuracy": 0.96665,
-      "memorized_fraction": 0.24998333333333334,
-      "forgotten_fraction": 0.25,
-      "loss_gap": 0.44354677200317383,
-      "memorized_mean_loss": 6.851836951682344e-05,
-      "non_memorized_mean_loss": 0.44361528754234314,
-      "definition": "loss_quantile"
-    }
+  "123": {
+    "behavioral": {
+      "n_samples": 60000,
+      "n_changed": 12000,
+      "memorized_count": 53,
+      "memorized_fraction_of_changed": 0.004416666666666667,
+      "memorized_fraction_of_all": 0.0008833333333333333,
+      "changed_fit_noisy_label": 0.004416666666666667,
+      "changed_fit_original_label": 0.9650833333333333,
+      "clean_train_acc": 0.966375
+    },
+    "loss_gap": {
+      "mean_loss": 3.1489317417144775,
+      "std_loss": 7.076507091522217,
+      "memorized_mean_loss": 15.306992530822754,
+      "non_memorized_mean_loss": 0.10941681265830994,
+      "loss_gap": -15.197575569152832,
+      "definition": "ground_truth"
+    },
+    "gradient_alignment_group": 0.16368606686592102,
+    "tracin_self_influence": {
+      "n_scored": 14,
+      "mean_cosine_noisy_vs_orig_grad": -0.2718099635094404,
+      "std": 0.5186625173833304,
+      "frac_anti_aligned": 0.7142857142857143
+    },
+    "definition": "behavioral: changed AND pred==noisy AND pred!=orig"
   },
-  "2": {
-    "memorization": {
-      "mean_loss": 0.10622751712799072,
-      "std_loss": 0.5359130501747131,
-      "accuracy": 0.96875,
-      "memorized_fraction": 0.24993333333333334,
-      "forgotten_fraction": 0.25,
-      "loss_gap": 0.4170673191547394,
-      "memorized_mean_loss": 6.067601862014271e-05,
-      "non_memorized_mean_loss": 0.4171279966831207,
-      "definition": "loss_quantile"
-    }
+  "456": {
+    "behavioral": {
+      "n_samples": 60000,
+      "n_changed": 12000,
+      "memorized_count": 63,
+      "memorized_fraction_of_changed": 0.00525,
+      "memorized_fraction_of_all": 0.00105,
+      "changed_fit_noisy_label": 0.00525,
+      "changed_fit_original_label": 0.96675,
+      "clean_train_acc": 0.967125
+    },
+    "loss_gap": {
+      "mean_loss": 3.052722454071045,
+      "std_loss": 6.776580333709717,
+      "memorized_mean_loss": 14.829164505004883,
+      "non_memorized_mean_loss": 0.10861223191022873,
+      "loss_gap": -14.720552444458008,
+      "definition": "ground_truth"
+    },
+    "gradient_alignment_group": 0.1208627000451088,
+    "tracin_self_influence": {
+      "n_scored": 10,
+      "mean_cosine_noisy_vs_orig_grad": -0.1677937924861908,
+      "std": 0.6837471802813417,
+      "frac_anti_aligned": 0.6
+    },
+    "definition": "behavioral: changed AND pred==noisy AND pred!=orig"
   },
-  "3": {
-    "memorization": {
-      "mean_loss": 0.11453982442617416,
-      "std_loss": 0.5637598037719727,
-      "accuracy": 0.9666833333333333,
-      "memorized_fraction": 0.25,
-      "forgotten_fraction": 0.25,
-      "loss_gap": 0.4507271945476532,
-      "memorized_mean_loss": 5.439487358671613e-05,
-      "non_memorized_mean_loss": 0.45078158378601074,
-      "definition": "loss_quantile"
-    }
+  "789": {
+    "behavioral": {
+      "n_samples": 60000,
+      "n_changed": 12000,
+      "memorized_count": 38,
+      "memorized_fraction_of_changed": 0.0031666666666666666,
+      "memorized_fraction_of_all": 0.0006333333333333333,
+      "changed_fit_noisy_label": 0.0031666666666666666,
+      "changed_fit_original_label": 0.9694166666666667,
+      "clean_train_acc": 0.9685
+    },
+    "loss_gap": {
+      "mean_loss": 2.8802895545959473,
+      "std_loss": 6.349579334259033,
+      "memorized_mean_loss": 13.980864524841309,
+      "non_memorized_mean_loss": 0.10514592379331589,
+      "loss_gap": -13.87571907043457,
+      "definition": "ground_truth"
+    },
+    "gradient_alignment_group": -0.10747595876455307,
+    "tracin_self_influence": {
+      "n_scored": 13,
+      "mean_cosine_noisy_vs_orig_grad": -0.2028763615168058,
+      "std": 0.6400517807526386,
+      "frac_anti_aligned": 0.6923076923076923
+    },
+    "definition": "behavioral: changed AND pred==noisy AND pred!=orig"
   },
-  "4": {
-    "memorization": {
-      "mean_loss": 0.10790330171585083,
-      "std_loss": 0.5558015704154968,
-      "accuracy": 0.9687,
-      "memorized_fraction": 0.24998333333333334,
-      "forgotten_fraction": 0.25,
-      "loss_gap": 0.42411908507347107,
-      "memorized_mean_loss": 3.860245124087669e-05,
-      "non_memorized_mean_loss": 0.42415767908096313,
-      "definition": "loss_quantile"
-    }
+  "1024": {
+    "behavioral": {
+      "n_samples": 60000,
+      "n_changed": 12000,
+      "memorized_count": 53,
+      "memorized_fraction_of_changed": 0.004416666666666667,
+      "memorized_fraction_of_all": 0.0008833333333333333,
+      "changed_fit_noisy_label": 0.004416666666666667,
+      "changed_fit_original_label": 0.966,
+      "clean_train_acc": 0.9668958333333333
+    },
+    "loss_gap": {
+      "mean_loss": 3.066157341003418,
+      "std_loss": 6.82630729675293,
+      "memorized_mean_loss": 14.896000862121582,
+      "non_memorized_mean_loss": 0.10869665443897247,
+      "loss_gap": -14.787303924560547,
+      "definition": "ground_truth"
+    },
+    "gradient_alignment_group": -0.07238824665546417,
+    "tracin_self_influence": {
+      "n_scored": 7,
+      "mean_cosine_noisy_vs_orig_grad": -0.5554653129407338,
+      "std": 0.20353217237282958,
+      "frac_anti_aligned": 1.0
+    },
+    "definition": "behavioral: changed AND pred==noisy AND pred!=orig"
+  },
+  "2048": {
+    "behavioral": {
+      "n_samples": 60000,
+      "n_changed": 12000,
+      "memorized_count": 36,
+      "memorized_fraction_of_changed": 0.003,
+      "memorized_fraction_of_all": 0.0006,
+      "changed_fit_noisy_label": 0.003,
+      "changed_fit_original_label": 0.9630833333333333,
+      "clean_train_acc": 0.9634375
+    },
+    "loss_gap": {
+      "mean_loss": 3.0820083618164062,
+      "std_loss": 6.899372577667236,
+      "memorized_mean_loss": 14.917473793029785,
+      "non_memorized_mean_loss": 0.12314154207706451,
+      "loss_gap": -14.794332504272461,
+      "definition": "ground_truth"
+    },
+    "gradient_alignment_group": 0.2722543179988861,
+    "tracin_self_influence": {
+      "n_scored": 12,
+      "mean_cosine_noisy_vs_orig_grad": -0.20768610388040543,
+      "std": 0.6873616501886176,
+      "frac_anti_aligned": 0.5833333333333334
+    },
+    "definition": "behavioral: changed AND pred==noisy AND pred!=orig"
+  },
+  "3141": {
+    "behavioral": {
+      "n_samples": 60000,
+      "n_changed": 12000,
+      "memorized_count": 54,
+      "memorized_fraction_of_changed": 0.0045,
+      "memorized_fraction_of_all": 0.0009,
+      "changed_fit_noisy_label": 0.0045,
+      "changed_fit_original_label": 0.9643333333333334,
+      "clean_train_acc": 0.9659791666666667
+    },
+    "loss_gap": {
+      "mean_loss": 3.002201795578003,
+      "std_loss": 6.811056613922119,
+      "memorized_mean_loss": 14.5360689163208,
+      "non_memorized_mean_loss": 0.11873495578765869,
+      "loss_gap": -14.417333602905273,
+      "definition": "ground_truth"
+    },
+    "gradient_alignment_group": 0.010434325784444809,
+    "tracin_self_influence": {
+      "n_scored": 13,
+      "mean_cosine_noisy_vs_orig_grad": -0.36459519083683306,
+      "std": 0.6220934616050988,
+      "frac_anti_aligned": 0.8461538461538461
+    },
+    "definition": "behavioral: changed AND pred==noisy AND pred!=orig"
+  },
+  "5555": {
+    "behavioral": {
+      "n_samples": 60000,
+      "n_changed": 12000,
+      "memorized_count": 53,
+      "memorized_fraction_of_changed": 0.004416666666666667,
+      "memorized_fraction_of_all": 0.0008833333333333333,
+      "changed_fit_noisy_label": 0.004416666666666667,
+      "changed_fit_original_label": 0.9653333333333334,
+      "clean_train_acc": 0.9690208333333333
+    },
+    "loss_gap": {
+      "mean_loss": 3.1356146335601807,
+      "std_loss": 7.061619281768799,
+      "memorized_mean_loss": 15.263927459716797,
+      "non_memorized_mean_loss": 0.10353626310825348,
+      "loss_gap": -15.160390853881836,
+      "definition": "ground_truth"
+    },
+    "gradient_alignment_group": 0.06707755476236343,
+    "tracin_self_influence": {
+      "n_scored": 9,
+      "mean_cosine_noisy_vs_orig_grad": -0.22859795639912286,
+      "std": 0.3560646217882103,
+      "frac_anti_aligned": 0.8888888888888888
+    },
+    "definition": "behavioral: changed AND pred==noisy AND pred!=orig"
+  },
+  "7777": {
+    "behavioral": {
+      "n_samples": 60000,
+      "n_changed": 12000,
+      "memorized_count": 45,
+      "memorized_fraction_of_changed": 0.00375,
+      "memorized_fraction_of_all": 0.00075,
+      "changed_fit_noisy_label": 0.00375,
+      "changed_fit_original_label": 0.9708333333333333,
+      "clean_train_acc": 0.969875
+    },
+    "loss_gap": {
+      "mean_loss": 3.073563575744629,
+      "std_loss": 6.8701701164245605,
+      "memorized_mean_loss": 14.970627784729004,
+      "non_memorized_mean_loss": 0.0992974266409874,
+      "loss_gap": -14.871330261230469,
+      "definition": "ground_truth"
+    },
+    "gradient_alignment_group": 0.38282907009124756,
+    "tracin_self_influence": {
+      "n_scored": 11,
+      "mean_cosine_noisy_vs_orig_grad": -0.3248947940089486,
+      "std": 0.6411205603035633,
+      "frac_anti_aligned": 0.8181818181818182
+    },
+    "definition": "behavioral: changed AND pred==noisy AND pred!=orig"
+  },
+  "9999": {
+    "behavioral": {
+      "n_samples": 60000,
+      "n_changed": 12000,
+      "memorized_count": 50,
+      "memorized_fraction_of_changed": 0.004166666666666667,
+      "memorized_fraction_of_all": 0.0008333333333333334,
+      "changed_fit_noisy_label": 0.004166666666666667,
+      "changed_fit_original_label": 0.9634166666666667,
+      "clean_train_acc": 0.9667291666666666
+    },
+    "loss_gap": {
+      "mean_loss": 3.015807867050171,
+      "std_loss": 6.74550724029541,
+      "memorized_mean_loss": 14.643482208251953,
+      "non_memorized_mean_loss": 0.10888928174972534,
+      "loss_gap": -14.534592628479004,
+      "definition": "ground_truth"
+    },
+    "gradient_alignment_group": -0.00711179431527853,
+    "tracin_self_influence": {
+      "n_scored": 9,
+      "mean_cosine_noisy_vs_orig_grad": -0.01623649150133133,
+      "std": 0.6103335826975494,
+      "frac_anti_aligned": 0.6666666666666666
+    },
+    "definition": "behavioral: changed AND pred==noisy AND pred!=orig"
   }
 }

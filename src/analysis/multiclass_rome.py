@@ -140,12 +140,12 @@ def apply_random_edit(model, layer_name: str, delta_norm: float, seed: int = Non
     model_copy = deepcopy(model)
     W = getattr(model_copy, layer_name).weight.data
 
-    u = torch.randn(W.shape[1])
-    v = torch.randn(W.shape[0])
+    u = torch.randn(W.shape[1], device=W.device)
+    v = torch.randn(W.shape[0], device=W.device)
     u = u / u.norm()
     v = v / v.norm()
 
-    delta = delta_norm * torch.outer(v, u)
+    delta = delta_norm * torch.outer(v, u).to(W.device)
     W.add_(delta)
 
     return model_copy

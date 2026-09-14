@@ -1,0 +1,67 @@
+{
+  "0": {
+    "memorization": {
+      "mean_loss": 0.41442185640335083,
+      "std_loss": 0.49417275190353394,
+      "accuracy": 0.9379333333333333,
+      "memorized_fraction": 0.2,
+      "forgotten_fraction": 0.8,
+      "loss_gap": -0.030804455280303955,
+      "memorized_mean_loss": 0.4390653967857361,
+      "non_memorized_mean_loss": 0.40826094150543213,
+      "definition": "ground_truth"
+    }
+  },
+  "1": {
+    "memorization": {
+      "mean_loss": 0.4082157015800476,
+      "std_loss": 0.47319552302360535,
+      "accuracy": 0.9430166666666666,
+      "memorized_fraction": 0.2,
+      "forgotten_fraction": 0.8,
+      "loss_gap": -0.05840831995010376,
+      "memorized_mean_loss": 0.45494234561920166,
+      "non_memorized_mean_loss": 0.3965340256690979,
+      "definition": "ground_truth"
+    }
+  },
+  "2": {
+    "memorization": {
+      "mean_loss": 0.394900381565094,
+      "std_loss": 0.47556158900260925,
+      "accuracy": 0.9438333333333333,
+      "memorized_fraction": 0.2,
+      "forgotten_fraction": 0.8,
+      "loss_gap": -0.05582287907600403,
+      "memorized_mean_loss": 0.4395587146282196,
+      "non_memorized_mean_loss": 0.3837358355522156,
+      "definition": "ground_truth"
+    }
+  },
+  "3": {
+    "memorization": {
+      "mean_loss": 0.4380451738834381,
+      "std_loss": 0.49655431509017944,
+      "accuracy": 0.9379,
+      "memorized_fraction": 0.2,
+      "forgotten_fraction": 0.8,
+      "loss_gap": -0.0529668927192688,
+      "memorized_mean_loss": 0.48041871190071106,
+      "non_memorized_mean_loss": 0.42745181918144226,
+      "definition": "ground_truth"
+    }
+  },
+  "4": {
+    "memorization": {
+      "mean_loss": 0.4158925712108612,
+      "std_loss": 0.46700534224510193,
+      "accuracy": 0.9441,
+      "memorized_fraction": 0.2,
+      "forgotten_fraction": 0.8,
+      "loss_gap": -0.049416542053222656,
+      "memorized_mean_loss": 0.45542582869529724,
+      "non_memorized_mean_loss": 0.4060092866420746,
+      "definition": "ground_truth"
+    }
+  }
+}

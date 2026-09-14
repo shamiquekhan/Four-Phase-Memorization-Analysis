@@ -1,0 +1,101 @@
+==== v2 campaign start Mon Sep 14 02:21:40 AM IST 2026 ====
+---- clean seed 123
+---- clean seed 456
+---- clean seed 789
+---- clean seed 1024
+---- clean seed 2048
+---- clean seed 3141
+---- clean seed 5555
+---- clean seed 7777
+---- clean seed 9999
+---- corrupt r=0.05 seed 42
+---- corrupt r=0.05 seed 123
+---- corrupt r=0.05 seed 456
+---- corrupt r=0.05 seed 789
+---- corrupt r=0.05 seed 1024
+---- corrupt r=0.05 seed 2048
+---- corrupt r=0.05 seed 3141
+---- corrupt r=0.05 seed 5555
+---- corrupt r=0.05 seed 7777
+---- corrupt r=0.05 seed 9999
+---- corrupt r=0.1 seed 42
+---- corrupt r=0.1 seed 123
+---- corrupt r=0.1 seed 456
+---- corrupt r=0.1 seed 789
+---- corrupt r=0.1 seed 1024
+---- corrupt r=0.1 seed 2048
+---- corrupt r=0.1 seed 3141
+---- corrupt r=0.1 seed 5555
+---- corrupt r=0.1 seed 7777
+---- corrupt r=0.1 seed 9999
+---- corrupt r=0.2 seed 42
+---- corrupt r=0.2 seed 123
+---- corrupt r=0.2 seed 456
+---- corrupt r=0.2 seed 789
+---- corrupt r=0.2 seed 1024
+---- corrupt r=0.2 seed 2048
+---- corrupt r=0.2 seed 3141
+---- corrupt r=0.2 seed 5555
+---- corrupt r=0.2 seed 7777
+---- corrupt r=0.2 seed 9999
+---- corrupt r=0.3 seed 42
+---- corrupt r=0.3 seed 123
+---- corrupt r=0.3 seed 456
+---- corrupt r=0.3 seed 789
+---- corrupt r=0.3 seed 1024
+---- corrupt r=0.3 seed 2048
+---- corrupt r=0.3 seed 3141
+---- corrupt r=0.3 seed 5555
+---- corrupt r=0.3 seed 7777
+---- corrupt r=0.3 seed 9999
+---- corrupt r=0.4 seed 42
+---- corrupt r=0.4 seed 123
+---- corrupt r=0.4 seed 456
+---- corrupt r=0.4 seed 789
+---- corrupt r=0.4 seed 1024
+---- corrupt r=0.4 seed 2048
+---- corrupt r=0.4 seed 3141
+---- corrupt r=0.4 seed 5555
+---- corrupt r=0.4 seed 7777
+---- corrupt r=0.4 seed 9999
+---- corrupt r=0.5 seed 42
+---- corrupt r=0.5 seed 123
+---- corrupt r=0.5 seed 456
+---- corrupt r=0.5 seed 789
+---- corrupt r=0.5 seed 1024
+---- corrupt r=0.5 seed 2048
+---- corrupt r=0.5 seed 3141
+---- corrupt r=0.5 seed 5555
+---- corrupt r=0.5 seed 7777
+---- corrupt r=0.5 seed 9999
+---- targeted s7->t1 seed 42
+---- targeted s7->t1 seed 123
+---- targeted s7->t1 seed 456
+---- targeted s7->t1 seed 789
+---- targeted s7->t1 seed 1024
+---- targeted s1->t7 seed 42
+---- targeted s1->t7 seed 123
+---- targeted s1->t7 seed 456
+---- targeted s1->t7 seed 789
+---- targeted s1->t7 seed 1024
+---- targeted s5->t6 seed 42
+---- targeted s5->t6 seed 123
+---- targeted s5->t6 seed 456
+---- targeted s5->t6 seed 789
+---- targeted s5->t6 seed 1024
+---- targeted s0->t8 seed 42
+---- targeted s0->t8 seed 123
+---- targeted s0->t8 seed 456
+---- targeted s0->t8 seed 789
+---- targeted s0->t8 seed 1024
+---- phase1 clean
+---- phase2 clean
+---- phase3 clean
+---- phase4 clean
+---- phase1 corrupted
+---- phase2 corrupted
+---- phase3 corrupted
+---- phase4 corrupted
+---- rank ablation
+---- multiclass rank1
+FAILED: multiclass rank1

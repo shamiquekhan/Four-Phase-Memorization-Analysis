@@ -1,0 +1,67 @@
+{
+  "0": {
+    "memorization": {
+      "mean_loss": 0.12473280727863312,
+      "std_loss": 0.5961374044418335,
+      "accuracy": 0.9644666666666667,
+      "memorized_fraction": 0.24998333333333334,
+      "forgotten_fraction": 0.25,
+      "loss_gap": 0.488115519285202,
+      "memorized_mean_loss": 6.821155693614855e-05,
+      "non_memorized_mean_loss": 0.48818373680114746,
+      "definition": "loss_quantile"
+    }
+  },
+  "1": {
+    "memorization": {
+      "mean_loss": 0.11294908821582794,
+      "std_loss": 0.5490418076515198,
+      "accuracy": 0.96665,
+      "memorized_fraction": 0.24998333333333334,
+      "forgotten_fraction": 0.25,
+      "loss_gap": 0.44354677200317383,
+      "memorized_mean_loss": 6.851836951682344e-05,
+      "non_memorized_mean_loss": 0.44361528754234314,
+      "definition": "loss_quantile"
+    }
+  },
+  "2": {
+    "memorization": {
+      "mean_loss": 0.10622751712799072,
+      "std_loss": 0.5359130501747131,
+      "accuracy": 0.96875,
+      "memorized_fraction": 0.24993333333333334,
+      "forgotten_fraction": 0.25,
+      "loss_gap": 0.4170673191547394,
+      "memorized_mean_loss": 6.067601862014271e-05,
+      "non_memorized_mean_loss": 0.4171279966831207,
+      "definition": "loss_quantile"
+    }
+  },
+  "3": {
+    "memorization": {
+      "mean_loss": 0.11453982442617416,
+      "std_loss": 0.5637598037719727,
+      "accuracy": 0.9666833333333333,
+      "memorized_fraction": 0.25,
+      "forgotten_fraction": 0.25,
+      "loss_gap": 0.4507271945476532,
+      "memorized_mean_loss": 5.439487358671613e-05,
+      "non_memorized_mean_loss": 0.45078158378601074,
+      "definition": "loss_quantile"
+    }
+  },
+  "4": {
+    "memorization": {
+      "mean_loss": 0.10790330171585083,
+      "std_loss": 0.5558015704154968,
+      "accuracy": 0.9687,
+      "memorized_fraction": 0.24998333333333334,
+      "forgotten_fraction": 0.25,
+      "loss_gap": 0.42411908507347107,
+      "memorized_mean_loss": 3.860245124087669e-05,
+      "non_memorized_mean_loss": 0.42415767908096313,
+      "definition": "loss_quantile"
+    }
+  }
+}

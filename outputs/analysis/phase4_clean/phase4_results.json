@@ -1,1261 +1,1061 @@
 {
-  "0": {
+  "42": {
     "fc1": {
       "0": {
-        "delta_norm": 19.791362762451172,
-        "effect_on_target": -15.244953155517578,
-        "rank1_update_norm": 0.9999998211860657,
-        "target_class": 0
+        "delta_norm": 0.8390631079673767,
+        "effect_on_target": 46.38549041748047,
+        "layer": "fc1"
       },
       "1": {
-        "delta_norm": 20.536701202392578,
-        "effect_on_target": 35.76606369018555,
-        "rank1_update_norm": 0.9999998807907104,
-        "target_class": 1
+        "delta_norm": 0.6815595626831055,
+        "effect_on_target": 18.166851043701172,
+        "layer": "fc1"
       },
       "2": {
-        "delta_norm": 17.510725021362305,
-        "effect_on_target": -7.460389137268066,
-        "rank1_update_norm": 0.9999998807907104,
-        "target_class": 2
+        "delta_norm": 0.7843977808952332,
+        "effect_on_target": 32.0103645324707,
+        "layer": "fc1"
       },
       "3": {
-        "delta_norm": 13.982518196105957,
-        "effect_on_target": -13.342978477478027,
-        "rank1_update_norm": 0.9999998807907104,
-        "target_class": 3
+        "delta_norm": 0.5307179093360901,
+        "effect_on_target": 20.780412673950195,
+        "layer": "fc1"
       },
       "4": {
-        "delta_norm": 15.145471572875977,
-        "effect_on_target": -8.153905868530273,
-        "rank1_update_norm": 0.9999997615814209,
-        "target_class": 4
+        "delta_norm": 0.5838979482650757,
+        "effect_on_target": 30.127098083496094,
+        "layer": "fc1"
       },
       "5": {
-        "delta_norm": 12.075072288513184,
-        "effect_on_target": -71.95140075683594,
-        "rank1_update_norm": 0.9999995827674866,
-        "target_class": 5
+        "delta_norm": 0.7109231352806091,
+        "effect_on_target": 29.196819305419922,
+        "layer": "fc1"
       },
       "6": {
-        "delta_norm": 16.12289810180664,
-        "effect_on_target": -13.631779670715332,
-        "rank1_update_norm": 0.9999998807907104,
-        "target_class": 6
+        "delta_norm": 0.6681221723556519,
+        "effect_on_target": 34.434722900390625,
+        "layer": "fc1"
       },
       "7": {
-        "delta_norm": 17.214698791503906,
-        "effect_on_target": -13.52431869506836,
-        "rank1_update_norm": 0.9999998807907104,
-        "target_class": 7
+        "delta_norm": 0.8056371212005615,
+        "effect_on_target": 34.367977142333984,
+        "layer": "fc1"
       },
       "8": {
-        "delta_norm": 11.200973510742188,
-        "effect_on_target": 31.99074935913086,
-        "rank1_update_norm": 0.9999997615814209,
-        "target_class": 8
+        "delta_norm": 0.43509984016418457,
+        "effect_on_target": 22.016746520996094,
+        "layer": "fc1"
       },
       "9": {
-        "delta_norm": 13.078371047973633,
-        "effect_on_target": 19.228200912475586,
-        "rank1_update_norm": 1.000000238418579,
-        "target_class": 9
+        "delta_norm": 0.47899317741394043,
+        "effect_on_target": 24.802757263183594,
+        "layer": "fc1"
       }
     },
     "fc2": {
       "0": {
-        "delta_norm": 22.185222625732422,
-        "effect_on_target": -7.425142765045166,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 0
+        "delta_norm": 0.9344121813774109,
+        "effect_on_target": 43.04039001464844,
+        "layer": "fc2"
       },
       "1": {
-        "delta_norm": 20.668901443481445,
-        "effect_on_target": 7.499647617340088,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 1
+        "delta_norm": 0.5935388207435608,
+        "effect_on_target": 13.362589836120605,
+        "layer": "fc2"
       },
       "2": {
-        "delta_norm": 19.76096534729004,
-        "effect_on_target": 1.721250057220459,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 2
+        "delta_norm": 0.8789604306221008,
+        "effect_on_target": 21.066246032714844,
+        "layer": "fc2"
       },
       "3": {
-        "delta_norm": 17.701366424560547,
-        "effect_on_target": -2.5126352310180664,
-        "rank1_update_norm": 1.0,
-        "target_class": 3
+        "delta_norm": 0.723889172077179,
+        "effect_on_target": 26.661699295043945,
+        "layer": "fc2"
       },
       "4": {
-        "delta_norm": 19.64625358581543,
-        "effect_on_target": -12.058876991271973,
-        "rank1_update_norm": 1.0,
-        "target_class": 4
+        "delta_norm": 0.6618028879165649,
+        "effect_on_target": 21.958799362182617,
+        "layer": "fc2"
       },
       "5": {
-        "delta_norm": 16.687318801879883,
-        "effect_on_target": 6.880282878875732,
-        "rank1_update_norm": 1.0,
-        "target_class": 5
+        "delta_norm": 0.8467978835105896,
+        "effect_on_target": 49.2968864440918,
+        "layer": "fc2"
       },
       "6": {
-        "delta_norm": 22.496061325073242,
-        "effect_on_target": -13.041238784790039,
-        "rank1_update_norm": 1.0,
-        "target_class": 6
+        "delta_norm": 0.7514339685440063,
+        "effect_on_target": 33.889957427978516,
+        "layer": "fc2"
       },
       "7": {
-        "delta_norm": 20.728219985961914,
-        "effect_on_target": 0.7994346618652344,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 7
+        "delta_norm": 0.9686055779457092,
+        "effect_on_target": 20.58591079711914,
+        "layer": "fc2"
       },
       "8": {
-        "delta_norm": 10.039114952087402,
-        "effect_on_target": -10.53024959564209,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 8
+        "delta_norm": 0.5578219294548035,
+        "effect_on_target": 24.513710021972656,
+        "layer": "fc2"
       },
       "9": {
-        "delta_norm": 19.574100494384766,
-        "effect_on_target": -13.211202621459961,
-        "rank1_update_norm": 0.9999998807907104,
-        "target_class": 9
+        "delta_norm": 0.7120420932769775,
+        "effect_on_target": 19.219314575195312,
+        "layer": "fc2"
       }
     }
   },
-  "1": {
+  "123": {
     "fc1": {
       "0": {
-        "delta_norm": 24.139127731323242,
-        "effect_on_target": 31.92386245727539,
-        "rank1_update_norm": 0.9999997615814209,
-        "target_class": 0
+        "delta_norm": 1.0074882507324219,
+        "effect_on_target": 58.334503173828125,
+        "layer": "fc1"
       },
       "1": {
-        "delta_norm": 15.549598693847656,
-        "effect_on_target": -1.8769828081130981,
-        "rank1_update_norm": 1.0,
-        "target_class": 1
+        "delta_norm": 1.1878244876861572,
+        "effect_on_target": 31.500259399414062,
+        "layer": "fc1"
       },
       "2": {
-        "delta_norm": 15.465476989746094,
-        "effect_on_target": 38.96465301513672,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 2
+        "delta_norm": 0.9349005222320557,
+        "effect_on_target": 47.557804107666016,
+        "layer": "fc1"
       },
       "3": {
-        "delta_norm": 13.031244277954102,
-        "effect_on_target": -20.640012741088867,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 3
+        "delta_norm": 0.5438764095306396,
+        "effect_on_target": 29.173450469970703,
+        "layer": "fc1"
       },
       "4": {
-        "delta_norm": 12.824216842651367,
-        "effect_on_target": -11.517582893371582,
-        "rank1_update_norm": 1.0,
-        "target_class": 4
+        "delta_norm": 0.7183181643486023,
+        "effect_on_target": 36.929630279541016,
+        "layer": "fc1"
       },
       "5": {
-        "delta_norm": 11.586639404296875,
-        "effect_on_target": -41.1453857421875,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 5
+        "delta_norm": 0.5697584748268127,
+        "effect_on_target": 29.836383819580078,
+        "layer": "fc1"
       },
       "6": {
-        "delta_norm": 15.27554702758789,
-        "effect_on_target": -19.018604278564453,
-        "rank1_update_norm": 1.0,
-        "target_class": 6
+        "delta_norm": 0.8840627074241638,
+        "effect_on_target": 44.486873626708984,
+        "layer": "fc1"
       },
       "7": {
-        "delta_norm": 18.42035484313965,
-        "effect_on_target": -41.25505447387695,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 7
+        "delta_norm": 0.7536281943321228,
+        "effect_on_target": 31.6494197845459,
+        "layer": "fc1"
       },
       "8": {
-        "delta_norm": 9.49976634979248,
-        "effect_on_target": -5.032668590545654,
-        "rank1_update_norm": 0.9999997019767761,
-        "target_class": 8
+        "delta_norm": 0.6077349185943604,
+        "effect_on_target": 31.967199325561523,
+        "layer": "fc1"
       },
       "9": {
-        "delta_norm": 11.986248016357422,
-        "effect_on_target": -17.75467300415039,
-        "rank1_update_norm": 0.9999997019767761,
-        "target_class": 9
+        "delta_norm": 0.6141170859336853,
+        "effect_on_target": 28.247432708740234,
+        "layer": "fc1"
       }
     },
     "fc2": {
       "0": {
-        "delta_norm": 23.091806411743164,
-        "effect_on_target": 13.856550216674805,
-        "rank1_update_norm": 1.0,
-        "target_class": 0
+        "delta_norm": 0.8665310144424438,
+        "effect_on_target": 28.828582763671875,
+        "layer": "fc2"
       },
       "1": {
-        "delta_norm": 18.664270401000977,
-        "effect_on_target": -5.390432357788086,
-        "rank1_update_norm": 1.0,
-        "target_class": 1
+        "delta_norm": 0.5939900279045105,
+        "effect_on_target": 3.6101632118225098,
+        "layer": "fc2"
       },
       "2": {
-        "delta_norm": 22.748952865600586,
-        "effect_on_target": -1.3998584747314453,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 2
+        "delta_norm": 0.9256069660186768,
+        "effect_on_target": 32.68119812011719,
+        "layer": "fc2"
       },
       "3": {
-        "delta_norm": 19.441635131835938,
-        "effect_on_target": 8.5465669631958,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 3
+        "delta_norm": 0.7429937124252319,
+        "effect_on_target": 26.29627227783203,
+        "layer": "fc2"
       },
       "4": {
-        "delta_norm": 23.81110954284668,
-        "effect_on_target": -17.8509464263916,
-        "rank1_update_norm": 0.9999998807907104,
-        "target_class": 4
+        "delta_norm": 0.5996125340461731,
+        "effect_on_target": -16.41065216064453,
+        "layer": "fc2"
       },
       "5": {
-        "delta_norm": 16.88763999938965,
-        "effect_on_target": 15.45046615600586,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 5
+        "delta_norm": 0.6627065539360046,
+        "effect_on_target": 7.139203071594238,
+        "layer": "fc2"
       },
       "6": {
-        "delta_norm": 22.189437866210938,
-        "effect_on_target": -7.4618120193481445,
-        "rank1_update_norm": 1.0,
-        "target_class": 6
+        "delta_norm": 0.7100511193275452,
+        "effect_on_target": 5.828976631164551,
+        "layer": "fc2"
       },
       "7": {
-        "delta_norm": 24.337507247924805,
-        "effect_on_target": 14.195404052734375,
-        "rank1_update_norm": 0.9999998807907104,
-        "target_class": 7
+        "delta_norm": 0.7918788194656372,
+        "effect_on_target": 16.47125244140625,
+        "layer": "fc2"
       },
       "8": {
-        "delta_norm": 11.432294845581055,
-        "effect_on_target": -6.37177848815918,
-        "rank1_update_norm": 1.0,
-        "target_class": 8
+        "delta_norm": 0.4825925827026367,
+        "effect_on_target": 18.4671573638916,
+        "layer": "fc2"
       },
       "9": {
-        "delta_norm": 20.86557388305664,
-        "effect_on_target": -19.030719757080078,
-        "rank1_update_norm": 1.0,
-        "target_class": 9
+        "delta_norm": 0.5895758867263794,
+        "effect_on_target": 0.36896538734436035,
+        "layer": "fc2"
       }
     }
   },
-  "2": {
+  "456": {
     "fc1": {
       "0": {
-        "delta_norm": 20.458770751953125,
-        "effect_on_target": -60.16617965698242,
-        "rank1_update_norm": 1.0,
-        "target_class": 0
+        "delta_norm": 0.8939217925071716,
+        "effect_on_target": 53.87444305419922,
+        "layer": "fc1"
       },
       "1": {
-        "delta_norm": 15.760435104370117,
-        "effect_on_target": -25.396434783935547,
-        "rank1_update_norm": 1.0000003576278687,
-        "target_class": 1
+        "delta_norm": 0.5855138897895813,
+        "effect_on_target": 18.061298370361328,
+        "layer": "fc1"
       },
       "2": {
-        "delta_norm": 14.250731468200684,
-        "effect_on_target": 6.628897190093994,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 2
+        "delta_norm": 1.0049817562103271,
+        "effect_on_target": 47.93898010253906,
+        "layer": "fc1"
       },
       "3": {
-        "delta_norm": 14.816617965698242,
-        "effect_on_target": -55.12559509277344,
-        "rank1_update_norm": 1.000000238418579,
-        "target_class": 3
+        "delta_norm": 0.6829153299331665,
+        "effect_on_target": 37.14313888549805,
+        "layer": "fc1"
       },
       "4": {
-        "delta_norm": 16.196949005126953,
-        "effect_on_target": -13.223308563232422,
-        "rank1_update_norm": 1.0,
-        "target_class": 4
+        "delta_norm": 0.7663772106170654,
+        "effect_on_target": 31.563730239868164,
+        "layer": "fc1"
       },
       "5": {
-        "delta_norm": 9.887323379516602,
-        "effect_on_target": -41.64569091796875,
-        "rank1_update_norm": 0.9999997615814209,
-        "target_class": 5
+        "delta_norm": 0.7363326549530029,
+        "effect_on_target": 34.74688720703125,
+        "layer": "fc1"
       },
       "6": {
-        "delta_norm": 16.381681442260742,
-        "effect_on_target": -14.753326416015625,
-        "rank1_update_norm": 0.9999998211860657,
-        "target_class": 6
+        "delta_norm": 0.6881977915763855,
+        "effect_on_target": 36.104217529296875,
+        "layer": "fc1"
       },
       "7": {
-        "delta_norm": 16.052093505859375,
-        "effect_on_target": -14.7786865234375,
-        "rank1_update_norm": 1.000000238418579,
-        "target_class": 7
+        "delta_norm": 0.6538790464401245,
+        "effect_on_target": 29.505908966064453,
+        "layer": "fc1"
       },
       "8": {
-        "delta_norm": 8.274807929992676,
-        "effect_on_target": -22.13772201538086,
-        "rank1_update_norm": 1.0,
-        "target_class": 8
+        "delta_norm": 0.5805186629295349,
+        "effect_on_target": 27.552833557128906,
+        "layer": "fc1"
       },
       "9": {
-        "delta_norm": 13.419893264770508,
-        "effect_on_target": -25.608373641967773,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 9
+        "delta_norm": 0.6363539695739746,
+        "effect_on_target": 29.263530731201172,
+        "layer": "fc1"
       }
     },
     "fc2": {
       "0": {
-        "delta_norm": 22.54049301147461,
-        "effect_on_target": -27.18435287475586,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 0
+        "delta_norm": 0.8946321606636047,
+        "effect_on_target": 29.76430320739746,
+        "layer": "fc2"
       },
       "1": {
-        "delta_norm": 17.416664123535156,
-        "effect_on_target": -8.114858627319336,
-        "rank1_update_norm": 1.0,
-        "target_class": 1
+        "delta_norm": 0.7892123460769653,
+        "effect_on_target": 33.90495681762695,
+        "layer": "fc2"
       },
       "2": {
-        "delta_norm": 22.13313865661621,
-        "effect_on_target": 9.534357070922852,
-        "rank1_update_norm": 1.0,
-        "target_class": 2
+        "delta_norm": 0.8276374936103821,
+        "effect_on_target": 35.06691360473633,
+        "layer": "fc2"
       },
       "3": {
-        "delta_norm": 16.55135154724121,
-        "effect_on_target": -3.725947380065918,
-        "rank1_update_norm": 0.9999998807907104,
-        "target_class": 3
+        "delta_norm": 1.040405035018921,
+        "effect_on_target": 53.07525634765625,
+        "layer": "fc2"
       },
       "4": {
-        "delta_norm": 18.820371627807617,
-        "effect_on_target": -14.094152450561523,
-        "rank1_update_norm": 1.0,
-        "target_class": 4
+        "delta_norm": 0.8576119542121887,
+        "effect_on_target": 57.628414154052734,
+        "layer": "fc2"
       },
       "5": {
-        "delta_norm": 16.381633758544922,
-        "effect_on_target": -15.250836372375488,
-        "rank1_update_norm": 0.9999998807907104,
-        "target_class": 5
+        "delta_norm": 1.1638826131820679,
+        "effect_on_target": 53.74000549316406,
+        "layer": "fc2"
       },
       "6": {
-        "delta_norm": 21.94843101501465,
-        "effect_on_target": -40.276573181152344,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 6
+        "delta_norm": 0.6449530720710754,
+        "effect_on_target": 27.627059936523438,
+        "layer": "fc2"
       },
       "7": {
-        "delta_norm": 17.173431396484375,
-        "effect_on_target": -0.13589119911193848,
-        "rank1_update_norm": 1.0,
-        "target_class": 7
+        "delta_norm": 1.1151765584945679,
+        "effect_on_target": 74.80775451660156,
+        "layer": "fc2"
       },
       "8": {
-        "delta_norm": 13.288627624511719,
-        "effect_on_target": -15.964963912963867,
-        "rank1_update_norm": 1.0,
-        "target_class": 8
+        "delta_norm": 0.7579110264778137,
+        "effect_on_target": 50.773193359375,
+        "layer": "fc2"
       },
       "9": {
-        "delta_norm": 17.9752197265625,
-        "effect_on_target": -12.387062072753906,
-        "rank1_update_norm": 1.0,
-        "target_class": 9
+        "delta_norm": 1.0301614999771118,
+        "effect_on_target": 69.75741577148438,
+        "layer": "fc2"
       }
     }
   },
-  "3": {
+  "789": {
     "fc1": {
       "0": {
-        "delta_norm": 19.541812896728516,
-        "effect_on_target": 11.828899383544922,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 0
+        "delta_norm": 0.8591488599777222,
+        "effect_on_target": 50.465614318847656,
+        "layer": "fc1"
       },
       "1": {
-        "delta_norm": 13.256657600402832,
-        "effect_on_target": -2.368446111679077,
-        "rank1_update_norm": 1.0,
-        "target_class": 1
+        "delta_norm": 0.6927495002746582,
+        "effect_on_target": 25.25814437866211,
+        "layer": "fc1"
       },
       "2": {
-        "delta_norm": 13.538127899169922,
-        "effect_on_target": 8.52338695526123,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 2
+        "delta_norm": 0.788314938545227,
+        "effect_on_target": 41.17273712158203,
+        "layer": "fc1"
       },
       "3": {
-        "delta_norm": 11.605985641479492,
-        "effect_on_target": -26.06307601928711,
-        "rank1_update_norm": 1.0,
-        "target_class": 3
+        "delta_norm": 0.6441596150398254,
+        "effect_on_target": 33.30278778076172,
+        "layer": "fc1"
       },
       "4": {
-        "delta_norm": 12.658955574035645,
-        "effect_on_target": 10.695487022399902,
-        "rank1_update_norm": 0.9999998211860657,
-        "target_class": 4
+        "delta_norm": 0.5995697379112244,
+        "effect_on_target": 26.952011108398438,
+        "layer": "fc1"
       },
       "5": {
-        "delta_norm": 10.273655891418457,
-        "effect_on_target": -23.66366958618164,
-        "rank1_update_norm": 1.0,
-        "target_class": 5
+        "delta_norm": 0.691253662109375,
+        "effect_on_target": 29.924545288085938,
+        "layer": "fc1"
       },
       "6": {
-        "delta_norm": 16.28423309326172,
-        "effect_on_target": -19.114559173583984,
-        "rank1_update_norm": 1.000000238418579,
-        "target_class": 6
+        "delta_norm": 0.5684806704521179,
+        "effect_on_target": 27.875080108642578,
+        "layer": "fc1"
       },
       "7": {
-        "delta_norm": 17.015453338623047,
-        "effect_on_target": -14.218368530273438,
-        "rank1_update_norm": 0.9999996423721313,
-        "target_class": 7
+        "delta_norm": 0.463335245847702,
+        "effect_on_target": 21.685993194580078,
+        "layer": "fc1"
       },
       "8": {
-        "delta_norm": 10.631997108459473,
-        "effect_on_target": -29.677370071411133,
-        "rank1_update_norm": 0.9999998807907104,
-        "target_class": 8
+        "delta_norm": 0.48835402727127075,
+        "effect_on_target": 24.68500518798828,
+        "layer": "fc1"
       },
       "9": {
-        "delta_norm": 11.481438636779785,
-        "effect_on_target": -23.638347625732422,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 9
+        "delta_norm": 0.4339372515678406,
+        "effect_on_target": 19.479679107666016,
+        "layer": "fc1"
       }
     },
     "fc2": {
       "0": {
-        "delta_norm": 22.330951690673828,
-        "effect_on_target": -30.366878509521484,
-        "rank1_update_norm": 1.0,
-        "target_class": 0
+        "delta_norm": 0.47385692596435547,
+        "effect_on_target": 27.212303161621094,
+        "layer": "fc2"
       },
       "1": {
-        "delta_norm": 19.85023307800293,
-        "effect_on_target": -0.04530477523803711,
-        "rank1_update_norm": 1.0,
-        "target_class": 1
+        "delta_norm": 0.8890063166618347,
+        "effect_on_target": 34.76286315917969,
+        "layer": "fc2"
       },
       "2": {
-        "delta_norm": 21.02583122253418,
-        "effect_on_target": -17.12723731994629,
-        "rank1_update_norm": 1.0,
-        "target_class": 2
+        "delta_norm": 1.0262587070465088,
+        "effect_on_target": 56.0174560546875,
+        "layer": "fc2"
       },
       "3": {
-        "delta_norm": 16.822311401367188,
-        "effect_on_target": -12.275745391845703,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 3
+        "delta_norm": 0.643963634967804,
+        "effect_on_target": 22.28675651550293,
+        "layer": "fc2"
       },
       "4": {
-        "delta_norm": 21.049226760864258,
-        "effect_on_target": -9.37484073638916,
-        "rank1_update_norm": 1.0,
-        "target_class": 4
+        "delta_norm": 0.7926715612411499,
+        "effect_on_target": 43.51522445678711,
+        "layer": "fc2"
       },
       "5": {
-        "delta_norm": 18.877197265625,
-        "effect_on_target": -19.392499923706055,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 5
+        "delta_norm": 0.6910853385925293,
+        "effect_on_target": 23.383819580078125,
+        "layer": "fc2"
       },
       "6": {
-        "delta_norm": 20.83856201171875,
-        "effect_on_target": -10.637504577636719,
-        "rank1_update_norm": 1.0,
-        "target_class": 6
+        "delta_norm": 0.9346520304679871,
+        "effect_on_target": 72.6781005859375,
+        "layer": "fc2"
       },
       "7": {
-        "delta_norm": 19.710693359375,
-        "effect_on_target": 8.901742935180664,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 7
+        "delta_norm": 0.6600239872932434,
+        "effect_on_target": 26.402328491210938,
+        "layer": "fc2"
       },
       "8": {
-        "delta_norm": 10.145705223083496,
-        "effect_on_target": -11.78829574584961,
-        "rank1_update_norm": 1.0,
-        "target_class": 8
+        "delta_norm": 0.5757991671562195,
+        "effect_on_target": 32.965782165527344,
+        "layer": "fc2"
       },
       "9": {
-        "delta_norm": 17.7205753326416,
-        "effect_on_target": -22.996482849121094,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 9
+        "delta_norm": 0.6849905848503113,
+        "effect_on_target": 24.386568069458008,
+        "layer": "fc2"
       }
     }
   },
-  "4": {
+  "1024": {
     "fc1": {
       "0": {
-        "delta_norm": 23.21357536315918,
-        "effect_on_target": -33.30653381347656,
-        "rank1_update_norm": 0.9999997615814209,
-        "target_class": 0
+        "delta_norm": 1.3912802934646606,
+        "effect_on_target": 78.53948974609375,
+        "layer": "fc1"
       },
       "1": {
-        "delta_norm": 17.432117462158203,
-        "effect_on_target": 9.98348331451416,
-        "rank1_update_norm": 0.9999996423721313,
-        "target_class": 1
+        "delta_norm": 0.4704627990722656,
+        "effect_on_target": 16.29690933227539,
+        "layer": "fc1"
       },
       "2": {
-        "delta_norm": 16.35651206970215,
-        "effect_on_target": 3.4239165782928467,
-        "rank1_update_norm": 0.9999998211860657,
-        "target_class": 2
+        "delta_norm": 1.2920646667480469,
+        "effect_on_target": 57.852149963378906,
+        "layer": "fc1"
       },
       "3": {
-        "delta_norm": 14.51336669921875,
-        "effect_on_target": -43.10300064086914,
-        "rank1_update_norm": 0.9999998807907104,
-        "target_class": 3
+        "delta_norm": 1.1821019649505615,
+        "effect_on_target": 48.69194793701172,
+        "layer": "fc1"
       },
       "4": {
-        "delta_norm": 15.518616676330566,
-        "effect_on_target": -10.796442985534668,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 4
+        "delta_norm": 0.8049188852310181,
+        "effect_on_target": 38.41415023803711,
+        "layer": "fc1"
       },
       "5": {
-        "delta_norm": 12.013341903686523,
-        "effect_on_target": -74.56914520263672,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 5
+        "delta_norm": 1.1252307891845703,
+        "effect_on_target": 46.97028350830078,
+        "layer": "fc1"
       },
       "6": {
-        "delta_norm": 16.74913787841797,
-        "effect_on_target": -20.178058624267578,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 6
+        "delta_norm": 1.2007145881652832,
+        "effect_on_target": 58.948394775390625,
+        "layer": "fc1"
       },
       "7": {
-        "delta_norm": 18.38739776611328,
-        "effect_on_target": 15.20201301574707,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 7
+        "delta_norm": 0.5478597283363342,
+        "effect_on_target": 25.846818923950195,
+        "layer": "fc1"
       },
       "8": {
-        "delta_norm": 10.245827674865723,
-        "effect_on_target": -13.312925338745117,
-        "rank1_update_norm": 0.9999998211860657,
-        "target_class": 8
+        "delta_norm": 0.7106700539588928,
+        "effect_on_target": 33.862144470214844,
+        "layer": "fc1"
       },
       "9": {
-        "delta_norm": 13.641704559326172,
-        "effect_on_target": -27.63297462463379,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 9
+        "delta_norm": 0.5494197010993958,
+        "effect_on_target": 27.887611389160156,
+        "layer": "fc1"
       }
     },
     "fc2": {
       "0": {
-        "delta_norm": 23.440916061401367,
-        "effect_on_target": -35.59773254394531,
-        "rank1_update_norm": 1.0,
-        "target_class": 0
+        "delta_norm": 0.6474714279174805,
+        "effect_on_target": -16.631059646606445,
+        "layer": "fc2"
       },
       "1": {
-        "delta_norm": 16.198810577392578,
-        "effect_on_target": -7.748009204864502,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 1
+        "delta_norm": 0.6488451957702637,
+        "effect_on_target": 4.46439266204834,
+        "layer": "fc2"
       },
       "2": {
-        "delta_norm": 18.628150939941406,
-        "effect_on_target": -0.5672998428344727,
-        "rank1_update_norm": 1.0,
-        "target_class": 2
+        "delta_norm": 0.6177913546562195,
+        "effect_on_target": 1.9570026397705078,
+        "layer": "fc2"
       },
       "3": {
-        "delta_norm": 18.847671508789062,
-        "effect_on_target": 19.009830474853516,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 3
+        "delta_norm": 0.704204261302948,
+        "effect_on_target": 20.580615997314453,
+        "layer": "fc2"
       },
       "4": {
-        "delta_norm": 21.97222137451172,
-        "effect_on_target": -18.493263244628906,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 4
+        "delta_norm": 0.617504894733429,
+        "effect_on_target": -14.268060684204102,
+        "layer": "fc2"
       },
       "5": {
-        "delta_norm": 21.0692081451416,
-        "effect_on_target": 40.13274002075195,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 5
+        "delta_norm": 0.6539131999015808,
+        "effect_on_target": 0.2884857654571533,
+        "layer": "fc2"
       },
       "6": {
-        "delta_norm": 22.301637649536133,
-        "effect_on_target": -7.184757709503174,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 6
+        "delta_norm": 0.6882232427597046,
+        "effect_on_target": -19.586807250976562,
+        "layer": "fc2"
       },
       "7": {
-        "delta_norm": 20.306116104125977,
-        "effect_on_target": -11.770861625671387,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 7
+        "delta_norm": 0.6713903546333313,
+        "effect_on_target": 6.416895866394043,
+        "layer": "fc2"
       },
       "8": {
-        "delta_norm": 11.194195747375488,
-        "effect_on_target": -13.027944564819336,
-        "rank1_update_norm": 1.0,
-        "target_class": 8
+        "delta_norm": 0.5492619872093201,
+        "effect_on_target": -9.667250633239746,
+        "layer": "fc2"
       },
       "9": {
-        "delta_norm": 18.78071403503418,
-        "effect_on_target": -22.552602767944336,
-        "rank1_update_norm": 1.0,
-        "target_class": 9
+        "delta_norm": 0.7592540979385376,
+        "effect_on_target": -2.024827480316162,
+        "layer": "fc2"
       }
     }
   },
-  "5": {
+  "2048": {
     "fc1": {
       "0": {
-        "delta_norm": 21.61405372619629,
-        "effect_on_target": -45.24385070800781,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 0
+        "delta_norm": 1.0877814292907715,
+        "effect_on_target": 50.865074157714844,
+        "layer": "fc1"
       },
       "1": {
-        "delta_norm": 17.914955139160156,
-        "effect_on_target": 10.696955680847168,
-        "rank1_update_norm": 0.9999998807907104,
-        "target_class": 1
+        "delta_norm": 0.660541832447052,
+        "effect_on_target": 23.994224548339844,
+        "layer": "fc1"
       },
       "2": {
-        "delta_norm": 14.795418739318848,
-        "effect_on_target": 0.5456888675689697,
-        "rank1_update_norm": 0.9999995827674866,
-        "target_class": 2
+        "delta_norm": 0.7231407165527344,
+        "effect_on_target": 37.76895523071289,
+        "layer": "fc1"
       },
       "3": {
-        "delta_norm": 13.76258659362793,
-        "effect_on_target": 26.56547737121582,
-        "rank1_update_norm": 0.9999998807907104,
-        "target_class": 3
+        "delta_norm": 0.6813477873802185,
+        "effect_on_target": 35.825889587402344,
+        "layer": "fc1"
       },
       "4": {
-        "delta_norm": 14.3665771484375,
-        "effect_on_target": -42.20981216430664,
-        "rank1_update_norm": 1.0,
-        "target_class": 4
+        "delta_norm": 0.7398897409439087,
+        "effect_on_target": 33.43532180786133,
+        "layer": "fc1"
       },
       "5": {
-        "delta_norm": 11.774529457092285,
-        "effect_on_target": -54.67012023925781,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 5
+        "delta_norm": 0.7345005869865417,
+        "effect_on_target": 31.807140350341797,
+        "layer": "fc1"
       },
       "6": {
-        "delta_norm": 16.27444076538086,
-        "effect_on_target": -17.043087005615234,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 6
+        "delta_norm": 0.8157048225402832,
+        "effect_on_target": 48.65068817138672,
+        "layer": "fc1"
       },
       "7": {
-        "delta_norm": 13.328424453735352,
-        "effect_on_target": -15.172922134399414,
-        "rank1_update_norm": 0.9999998211860657,
-        "target_class": 7
+        "delta_norm": 0.6288028955459595,
+        "effect_on_target": 28.475494384765625,
+        "layer": "fc1"
       },
       "8": {
-        "delta_norm": 10.524354934692383,
-        "effect_on_target": -76.03718566894531,
-        "rank1_update_norm": 0.9999998211860657,
-        "target_class": 8
+        "delta_norm": 0.6545539498329163,
+        "effect_on_target": 27.739789962768555,
+        "layer": "fc1"
       },
       "9": {
-        "delta_norm": 11.565072059631348,
-        "effect_on_target": 40.87872314453125,
-        "rank1_update_norm": 0.9999998807907104,
-        "target_class": 9
+        "delta_norm": 0.6234810948371887,
+        "effect_on_target": 27.2384090423584,
+        "layer": "fc1"
       }
     },
     "fc2": {
       "0": {
-        "delta_norm": 25.662282943725586,
-        "effect_on_target": -12.034626007080078,
-        "rank1_update_norm": 1.0,
-        "target_class": 0
+        "delta_norm": 0.6410028338432312,
+        "effect_on_target": 28.935924530029297,
+        "layer": "fc2"
       },
       "1": {
-        "delta_norm": 19.384273529052734,
-        "effect_on_target": -1.8270633220672607,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 1
+        "delta_norm": 0.6546401977539062,
+        "effect_on_target": 30.58382797241211,
+        "layer": "fc2"
       },
       "2": {
-        "delta_norm": 20.291011810302734,
-        "effect_on_target": -5.712735652923584,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 2
+        "delta_norm": 0.626132607460022,
+        "effect_on_target": 21.443376541137695,
+        "layer": "fc2"
       },
       "3": {
-        "delta_norm": 24.697734832763672,
-        "effect_on_target": 1.0575342178344727,
-        "rank1_update_norm": 1.0,
-        "target_class": 3
+        "delta_norm": 0.6035616993904114,
+        "effect_on_target": 25.036317825317383,
+        "layer": "fc2"
       },
       "4": {
-        "delta_norm": 25.372161865234375,
-        "effect_on_target": -13.760068893432617,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 4
+        "delta_norm": 0.5861068367958069,
+        "effect_on_target": 40.80896759033203,
+        "layer": "fc2"
       },
       "5": {
-        "delta_norm": 19.533781051635742,
-        "effect_on_target": 23.439266204833984,
-        "rank1_update_norm": 1.0,
-        "target_class": 5
+        "delta_norm": 0.6694280505180359,
+        "effect_on_target": 36.512046813964844,
+        "layer": "fc2"
       },
       "6": {
-        "delta_norm": 20.617528915405273,
-        "effect_on_target": -6.2469377517700195,
-        "rank1_update_norm": 1.0,
-        "target_class": 6
+        "delta_norm": 0.6967638731002808,
+        "effect_on_target": 28.26089859008789,
+        "layer": "fc2"
       },
       "7": {
-        "delta_norm": 18.44663429260254,
-        "effect_on_target": -16.330116271972656,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 7
+        "delta_norm": 0.8997026085853577,
+        "effect_on_target": 30.99130630493164,
+        "layer": "fc2"
       },
       "8": {
-        "delta_norm": 9.50345230102539,
-        "effect_on_target": -9.07568359375,
-        "rank1_update_norm": 1.0,
-        "target_class": 8
+        "delta_norm": 0.43783387541770935,
+        "effect_on_target": 33.706459045410156,
+        "layer": "fc2"
       },
       "9": {
-        "delta_norm": 17.695323944091797,
-        "effect_on_target": -3.0372018814086914,
-        "rank1_update_norm": 1.0,
-        "target_class": 9
+        "delta_norm": 0.7493191361427307,
+        "effect_on_target": 47.690025329589844,
+        "layer": "fc2"
       }
     }
   },
-  "6": {
+  "3141": {
     "fc1": {
       "0": {
-        "delta_norm": 22.620849609375,
-        "effect_on_target": -27.013826370239258,
-        "rank1_update_norm": 0.9999997019767761,
-        "target_class": 0
+        "delta_norm": 0.818740963935852,
+        "effect_on_target": 54.801673889160156,
+        "layer": "fc1"
       },
       "1": {
-        "delta_norm": 14.859949111938477,
-        "effect_on_target": -1.5375113487243652,
-        "rank1_update_norm": 0.9999998211860657,
-        "target_class": 1
+        "delta_norm": 0.6045874953269958,
+        "effect_on_target": 23.87763214111328,
+        "layer": "fc1"
       },
       "2": {
-        "delta_norm": 13.736618995666504,
-        "effect_on_target": 5.486305236816406,
-        "rank1_update_norm": 0.9999997615814209,
-        "target_class": 2
+        "delta_norm": 1.119762897491455,
+        "effect_on_target": 56.793182373046875,
+        "layer": "fc1"
       },
       "3": {
-        "delta_norm": 12.24535083770752,
-        "effect_on_target": -17.972999572753906,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 3
+        "delta_norm": 0.6374149322509766,
+        "effect_on_target": 35.53993225097656,
+        "layer": "fc1"
       },
       "4": {
-        "delta_norm": 13.5189847946167,
-        "effect_on_target": -4.674732208251953,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 4
+        "delta_norm": 0.7107513546943665,
+        "effect_on_target": 29.300079345703125,
+        "layer": "fc1"
       },
       "5": {
-        "delta_norm": 9.347234725952148,
-        "effect_on_target": -17.448976516723633,
-        "rank1_update_norm": 0.9999998807907104,
-        "target_class": 5
+        "delta_norm": 0.586421012878418,
+        "effect_on_target": 31.068262100219727,
+        "layer": "fc1"
       },
       "6": {
-        "delta_norm": 14.551654815673828,
-        "effect_on_target": -16.6185245513916,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 6
+        "delta_norm": 0.6683334708213806,
+        "effect_on_target": 37.2591667175293,
+        "layer": "fc1"
       },
       "7": {
-        "delta_norm": 15.66476058959961,
-        "effect_on_target": -9.795083999633789,
-        "rank1_update_norm": 1.0,
-        "target_class": 7
+        "delta_norm": 0.679927408695221,
+        "effect_on_target": 32.16473388671875,
+        "layer": "fc1"
       },
       "8": {
-        "delta_norm": 8.218149185180664,
-        "effect_on_target": -14.833118438720703,
-        "rank1_update_norm": 1.0,
-        "target_class": 8
+        "delta_norm": 0.6396334171295166,
+        "effect_on_target": 32.78057861328125,
+        "layer": "fc1"
       },
       "9": {
-        "delta_norm": 12.68228816986084,
-        "effect_on_target": -1.7867388725280762,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 9
+        "delta_norm": 0.5177935361862183,
+        "effect_on_target": 21.175704956054688,
+        "layer": "fc1"
       }
     },
     "fc2": {
       "0": {
-        "delta_norm": 21.471494674682617,
-        "effect_on_target": -10.401676177978516,
-        "rank1_update_norm": 1.0,
-        "target_class": 0
+        "delta_norm": 0.9747881293296814,
+        "effect_on_target": 11.844073295593262,
+        "layer": "fc2"
       },
       "1": {
-        "delta_norm": 18.75959587097168,
-        "effect_on_target": 6.235345840454102,
-        "rank1_update_norm": 1.0,
-        "target_class": 1
+        "delta_norm": 0.5378016829490662,
+        "effect_on_target": 3.5360565185546875,
+        "layer": "fc2"
       },
       "2": {
-        "delta_norm": 19.970327377319336,
-        "effect_on_target": 19.223918914794922,
-        "rank1_update_norm": 1.0,
-        "target_class": 2
+        "delta_norm": 0.863923192024231,
+        "effect_on_target": 11.9619140625,
+        "layer": "fc2"
       },
       "3": {
-        "delta_norm": 16.317317962646484,
-        "effect_on_target": -12.373991012573242,
-        "rank1_update_norm": 1.0,
-        "target_class": 3
+        "delta_norm": 0.940397322177887,
+        "effect_on_target": 34.45441436767578,
+        "layer": "fc2"
       },
       "4": {
-        "delta_norm": 19.309396743774414,
-        "effect_on_target": -1.5754327774047852,
-        "rank1_update_norm": 1.0,
-        "target_class": 4
+        "delta_norm": 0.8727360367774963,
+        "effect_on_target": 7.674595832824707,
+        "layer": "fc2"
       },
       "5": {
-        "delta_norm": 16.52729606628418,
-        "effect_on_target": 8.321718215942383,
-        "rank1_update_norm": 1.0,
-        "target_class": 5
+        "delta_norm": 0.9842021465301514,
+        "effect_on_target": 42.230987548828125,
+        "layer": "fc2"
       },
       "6": {
-        "delta_norm": 21.958045959472656,
-        "effect_on_target": -10.314477920532227,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 6
+        "delta_norm": 0.9163854122161865,
+        "effect_on_target": -7.007080078125,
+        "layer": "fc2"
       },
       "7": {
-        "delta_norm": 23.28543472290039,
-        "effect_on_target": 6.246285438537598,
-        "rank1_update_norm": 1.0,
-        "target_class": 7
+        "delta_norm": 1.041917324066162,
+        "effect_on_target": 42.16680145263672,
+        "layer": "fc2"
       },
       "8": {
-        "delta_norm": 11.103464126586914,
-        "effect_on_target": -8.172235488891602,
-        "rank1_update_norm": 1.0,
-        "target_class": 8
+        "delta_norm": 0.5885011553764343,
+        "effect_on_target": 26.565336227416992,
+        "layer": "fc2"
       },
       "9": {
-        "delta_norm": 18.8072509765625,
-        "effect_on_target": -19.128650665283203,
-        "rank1_update_norm": 1.0,
-        "target_class": 9
+        "delta_norm": 0.8482270240783691,
+        "effect_on_target": 28.60785675048828,
+        "layer": "fc2"
       }
     }
   },
-  "7": {
+  "5555": {
     "fc1": {
       "0": {
-        "delta_norm": 21.81235122680664,
-        "effect_on_target": -67.5939712524414,
-        "rank1_update_norm": 1.0,
-        "target_class": 0
+        "delta_norm": 1.0195152759552002,
+        "effect_on_target": 49.541786193847656,
+        "layer": "fc1"
       },
       "1": {
-        "delta_norm": 18.72037696838379,
-        "effect_on_target": -25.614187240600586,
-        "rank1_update_norm": 1.000000238418579,
-        "target_class": 1
+        "delta_norm": 0.6883971095085144,
+        "effect_on_target": 23.76234245300293,
+        "layer": "fc1"
       },
       "2": {
-        "delta_norm": 11.943522453308105,
-        "effect_on_target": -1.6646640300750732,
-        "rank1_update_norm": 1.0,
-        "target_class": 2
+        "delta_norm": 0.9249539375305176,
+        "effect_on_target": 41.83085250854492,
+        "layer": "fc1"
       },
       "3": {
-        "delta_norm": 11.415992736816406,
-        "effect_on_target": -29.533401489257812,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 3
+        "delta_norm": 0.5233007669448853,
+        "effect_on_target": 25.228099822998047,
+        "layer": "fc1"
       },
       "4": {
-        "delta_norm": 13.902137756347656,
-        "effect_on_target": -3.954106330871582,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 4
+        "delta_norm": 0.7374379634857178,
+        "effect_on_target": 30.290847778320312,
+        "layer": "fc1"
       },
       "5": {
-        "delta_norm": 12.246540069580078,
-        "effect_on_target": -21.044448852539062,
-        "rank1_update_norm": 0.9999998211860657,
-        "target_class": 5
+        "delta_norm": 0.5732023119926453,
+        "effect_on_target": 25.010269165039062,
+        "layer": "fc1"
       },
       "6": {
-        "delta_norm": 15.391502380371094,
-        "effect_on_target": -3.0355310440063477,
-        "rank1_update_norm": 0.9999998807907104,
-        "target_class": 6
+        "delta_norm": 0.9868952631950378,
+        "effect_on_target": 42.07365798950195,
+        "layer": "fc1"
       },
       "7": {
-        "delta_norm": 14.113984107971191,
-        "effect_on_target": -8.550348281860352,
-        "rank1_update_norm": 0.9999998211860657,
-        "target_class": 7
+        "delta_norm": 0.6231520175933838,
+        "effect_on_target": 28.491872787475586,
+        "layer": "fc1"
       },
       "8": {
-        "delta_norm": 9.601705551147461,
-        "effect_on_target": 56.56163024902344,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 8
+        "delta_norm": 0.4481969177722931,
+        "effect_on_target": 20.990346908569336,
+        "layer": "fc1"
       },
       "9": {
-        "delta_norm": 11.976605415344238,
-        "effect_on_target": -33.41802978515625,
-        "rank1_update_norm": 0.9999995231628418,
-        "target_class": 9
+        "delta_norm": 0.5400987267494202,
+        "effect_on_target": 22.663301467895508,
+        "layer": "fc1"
       }
     },
     "fc2": {
       "0": {
-        "delta_norm": 18.213895797729492,
-        "effect_on_target": -12.732166290283203,
-        "rank1_update_norm": 1.0,
-        "target_class": 0
+        "delta_norm": 0.7743743658065796,
+        "effect_on_target": 76.82069396972656,
+        "layer": "fc2"
       },
       "1": {
-        "delta_norm": 16.229598999023438,
-        "effect_on_target": -0.9207069873809814,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 1
+        "delta_norm": 0.9367156624794006,
+        "effect_on_target": 45.771968841552734,
+        "layer": "fc2"
       },
       "2": {
-        "delta_norm": 18.13630485534668,
-        "effect_on_target": -10.718780517578125,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 2
+        "delta_norm": 1.053227424621582,
+        "effect_on_target": 90.89469909667969,
+        "layer": "fc2"
       },
       "3": {
-        "delta_norm": 14.444673538208008,
-        "effect_on_target": -19.451156616210938,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 3
+        "delta_norm": 1.1721646785736084,
+        "effect_on_target": 87.21587371826172,
+        "layer": "fc2"
       },
       "4": {
-        "delta_norm": 19.14275360107422,
-        "effect_on_target": -18.01987075805664,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 4
+        "delta_norm": 1.2025748491287231,
+        "effect_on_target": 76.57130432128906,
+        "layer": "fc2"
       },
       "5": {
-        "delta_norm": 21.055301666259766,
-        "effect_on_target": 19.745378494262695,
-        "rank1_update_norm": 1.0,
-        "target_class": 5
+        "delta_norm": 0.9618074297904968,
+        "effect_on_target": 67.56278228759766,
+        "layer": "fc2"
       },
       "6": {
-        "delta_norm": 22.833864212036133,
-        "effect_on_target": -23.916044235229492,
-        "rank1_update_norm": 1.0,
-        "target_class": 6
+        "delta_norm": 0.9293216466903687,
+        "effect_on_target": 56.63949203491211,
+        "layer": "fc2"
       },
       "7": {
-        "delta_norm": 20.17068862915039,
-        "effect_on_target": -6.5384135246276855,
-        "rank1_update_norm": 1.0,
-        "target_class": 7
+        "delta_norm": 1.088644027709961,
+        "effect_on_target": 67.04906463623047,
+        "layer": "fc2"
       },
       "8": {
-        "delta_norm": 10.50865364074707,
-        "effect_on_target": -20.20627784729004,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 8
+        "delta_norm": 0.8780778050422668,
+        "effect_on_target": 68.0615463256836,
+        "layer": "fc2"
       },
       "9": {
-        "delta_norm": 17.561914443969727,
-        "effect_on_target": -15.973148345947266,
-        "rank1_update_norm": 0.9999998807907104,
-        "target_class": 9
+        "delta_norm": 1.20176362991333,
+        "effect_on_target": 81.86553955078125,
+        "layer": "fc2"
       }
     }
   },
-  "8": {
+  "7777": {
     "fc1": {
       "0": {
-        "delta_norm": 26.21462059020996,
-        "effect_on_target": 1.9466516971588135,
-        "rank1_update_norm": 0.9999998807907104,
-        "target_class": 0
+        "delta_norm": 0.9419811367988586,
+        "effect_on_target": 53.57445526123047,
+        "layer": "fc1"
       },
       "1": {
-        "delta_norm": 16.269357681274414,
-        "effect_on_target": -0.4510180950164795,
-        "rank1_update_norm": 0.9999998211860657,
-        "target_class": 1
+        "delta_norm": 0.8095186352729797,
+        "effect_on_target": 30.314624786376953,
+        "layer": "fc1"
       },
       "2": {
-        "delta_norm": 14.23136043548584,
-        "effect_on_target": -67.43316650390625,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 2
+        "delta_norm": 1.4176270961761475,
+        "effect_on_target": 62.99504852294922,
+        "layer": "fc1"
       },
       "3": {
-        "delta_norm": 13.000247955322266,
-        "effect_on_target": 13.497928619384766,
-        "rank1_update_norm": 0.9999998807907104,
-        "target_class": 3
+        "delta_norm": 1.0577278137207031,
+        "effect_on_target": 49.22584533691406,
+        "layer": "fc1"
       },
       "4": {
-        "delta_norm": 14.446812629699707,
-        "effect_on_target": 19.990699768066406,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 4
+        "delta_norm": 0.7759016156196594,
+        "effect_on_target": 33.57981491088867,
+        "layer": "fc1"
       },
       "5": {
-        "delta_norm": 10.368619918823242,
-        "effect_on_target": -3.9058175086975098,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 5
+        "delta_norm": 0.8520994782447815,
+        "effect_on_target": 40.15382385253906,
+        "layer": "fc1"
       },
       "6": {
-        "delta_norm": 17.723983764648438,
-        "effect_on_target": -44.879547119140625,
-        "rank1_update_norm": 0.9999998807907104,
-        "target_class": 6
+        "delta_norm": 0.8297158479690552,
+        "effect_on_target": 40.775691986083984,
+        "layer": "fc1"
       },
       "7": {
-        "delta_norm": 14.782662391662598,
-        "effect_on_target": -25.544719696044922,
-        "rank1_update_norm": 1.0,
-        "target_class": 7
+        "delta_norm": 0.7303636074066162,
+        "effect_on_target": 31.93299102783203,
+        "layer": "fc1"
       },
       "8": {
-        "delta_norm": 10.482840538024902,
-        "effect_on_target": 1.851186752319336,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 8
+        "delta_norm": 0.7305107712745667,
+        "effect_on_target": 36.95944595336914,
+        "layer": "fc1"
       },
       "9": {
-        "delta_norm": 13.380974769592285,
-        "effect_on_target": -47.76514434814453,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 9
+        "delta_norm": 0.5698900818824768,
+        "effect_on_target": 29.378917694091797,
+        "layer": "fc1"
       }
     },
     "fc2": {
       "0": {
-        "delta_norm": 24.453609466552734,
-        "effect_on_target": -6.396066665649414,
-        "rank1_update_norm": 1.0,
-        "target_class": 0
+        "delta_norm": 0.8665632009506226,
+        "effect_on_target": 71.12437438964844,
+        "layer": "fc2"
       },
       "1": {
-        "delta_norm": 16.274721145629883,
-        "effect_on_target": 5.849910736083984,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 1
+        "delta_norm": 1.0074620246887207,
+        "effect_on_target": 60.317291259765625,
+        "layer": "fc2"
       },
       "2": {
-        "delta_norm": 24.05190086364746,
-        "effect_on_target": 0.12668704986572266,
-        "rank1_update_norm": 1.0,
-        "target_class": 2
+        "delta_norm": 1.207983136177063,
+        "effect_on_target": 92.29692077636719,
+        "layer": "fc2"
       },
       "3": {
-        "delta_norm": 17.624116897583008,
-        "effect_on_target": 15.012922286987305,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 3
+        "delta_norm": 1.2287474870681763,
+        "effect_on_target": 92.76173400878906,
+        "layer": "fc2"
       },
       "4": {
-        "delta_norm": 20.988338470458984,
-        "effect_on_target": -21.94038200378418,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 4
+        "delta_norm": 1.0436558723449707,
+        "effect_on_target": 76.22899627685547,
+        "layer": "fc2"
       },
       "5": {
-        "delta_norm": 16.934375762939453,
-        "effect_on_target": -3.260354518890381,
-        "rank1_update_norm": 1.0,
-        "target_class": 5
+        "delta_norm": 1.0335506200790405,
+        "effect_on_target": 80.71758270263672,
+        "layer": "fc2"
       },
       "6": {
-        "delta_norm": 21.699371337890625,
-        "effect_on_target": -8.016122817993164,
-        "rank1_update_norm": 1.0,
-        "target_class": 6
+        "delta_norm": 1.0734927654266357,
+        "effect_on_target": 74.45061492919922,
+        "layer": "fc2"
       },
       "7": {
-        "delta_norm": 18.90797996520996,
-        "effect_on_target": 2.0526866912841797,
-        "rank1_update_norm": 1.0,
-        "target_class": 7
+        "delta_norm": 1.2089014053344727,
+        "effect_on_target": 67.3123550415039,
+        "layer": "fc2"
       },
       "8": {
-        "delta_norm": 11.244383811950684,
-        "effect_on_target": -13.407014846801758,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 8
+        "delta_norm": 0.8644781708717346,
+        "effect_on_target": 68.87843322753906,
+        "layer": "fc2"
       },
       "9": {
-        "delta_norm": 19.313207626342773,
-        "effect_on_target": -14.296479225158691,
-        "rank1_update_norm": 1.0,
-        "target_class": 9
+        "delta_norm": 1.174120545387268,
+        "effect_on_target": 84.25253295898438,
+        "layer": "fc2"
       }
     }
   },
-  "9": {
+  "9999": {
     "fc1": {
       "0": {
-        "delta_norm": 16.805585861206055,
-        "effect_on_target": -27.877864837646484,
-        "rank1_update_norm": 0.9999998807907104,
-        "target_class": 0
+        "delta_norm": 1.369788408279419,
+        "effect_on_target": 68.17971801757812,
+        "layer": "fc1"
       },
       "1": {
-        "delta_norm": 15.304594993591309,
-        "effect_on_target": 5.305061340332031,
-        "rank1_update_norm": 1.0,
-        "target_class": 1
+        "delta_norm": 0.44944098591804504,
+        "effect_on_target": 16.499528884887695,
+        "layer": "fc1"
       },
       "2": {
-        "delta_norm": 12.364463806152344,
-        "effect_on_target": -47.19437789916992,
-        "rank1_update_norm": 1.0,
-        "target_class": 2
+        "delta_norm": 0.8836740851402283,
+        "effect_on_target": 44.644287109375,
+        "layer": "fc1"
       },
       "3": {
-        "delta_norm": 12.023453712463379,
-        "effect_on_target": 31.72062873840332,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 3
+        "delta_norm": 0.46847885847091675,
+        "effect_on_target": 24.693998336791992,
+        "layer": "fc1"
       },
       "4": {
-        "delta_norm": 12.491562843322754,
-        "effect_on_target": -2.907777786254883,
-        "rank1_update_norm": 1.0,
-        "target_class": 4
+        "delta_norm": 0.5251990556716919,
+        "effect_on_target": 24.4423828125,
+        "layer": "fc1"
       },
       "5": {
-        "delta_norm": 10.000350952148438,
-        "effect_on_target": -23.01392364501953,
-        "rank1_update_norm": 1.0,
-        "target_class": 5
+        "delta_norm": 0.5349868535995483,
+        "effect_on_target": 25.35609245300293,
+        "layer": "fc1"
       },
       "6": {
-        "delta_norm": 13.612691879272461,
-        "effect_on_target": -12.256715774536133,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 6
+        "delta_norm": 0.6518914103507996,
+        "effect_on_target": 30.50262451171875,
+        "layer": "fc1"
       },
       "7": {
-        "delta_norm": 14.931714057922363,
-        "effect_on_target": -21.184982299804688,
-        "rank1_update_norm": 0.9999998807907104,
-        "target_class": 7
+        "delta_norm": 0.627790629863739,
+        "effect_on_target": 26.543813705444336,
+        "layer": "fc1"
       },
       "8": {
-        "delta_norm": 9.579965591430664,
-        "effect_on_target": -13.995849609375,
-        "rank1_update_norm": 1.0000001192092896,
-        "target_class": 8
+        "delta_norm": 0.3417252004146576,
+        "effect_on_target": 18.584835052490234,
+        "layer": "fc1"
       },
       "9": {
-        "delta_norm": 11.816121101379395,
-        "effect_on_target": 8.24791145324707,
-        "rank1_update_norm": 0.9999998211860657,
-        "target_class": 9
+        "delta_norm": 0.336289644241333,
+        "effect_on_target": 15.85760498046875,
+        "layer": "fc1"
       }
     },
     "fc2": {
       "0": {
-        "delta_norm": 21.206348419189453,
-        "effect_on_target": -21.784008026123047,
-        "rank1_update_norm": 1.0,
-        "target_class": 0
+        "delta_norm": 0.5671892166137695,
+        "effect_on_target": 30.693727493286133,
+        "layer": "fc2"
       },
       "1": {
-        "delta_norm": 17.702110290527344,
-        "effect_on_target": 11.668703079223633,
-        "rank1_update_norm": 0.9999998807907104,
-        "target_class": 1
+        "delta_norm": 0.48598092794418335,
+        "effect_on_target": 13.650527000427246,
+        "layer": "fc2"
       },
       "2": {
-        "delta_norm": 23.392337799072266,
-        "effect_on_target": 27.49241065979004,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 2
+        "delta_norm": 0.8121253848075867,
+        "effect_on_target": 43.54747009277344,
+        "layer": "fc2"
       },
       "3": {
-        "delta_norm": 17.108549118041992,
-        "effect_on_target": 32.25553894042969,
-        "rank1_update_norm": 0.9999998807907104,
-        "target_class": 3
+        "delta_norm": 0.6111499667167664,
+        "effect_on_target": 24.667301177978516,
+        "layer": "fc2"
       },
       "4": {
-        "delta_norm": 20.276260375976562,
-        "effect_on_target": -20.366609573364258,
-        "rank1_update_norm": 1.0,
-        "target_class": 4
+        "delta_norm": 0.7968138456344604,
+        "effect_on_target": 39.94287109375,
+        "layer": "fc2"
       },
       "5": {
-        "delta_norm": 16.603137969970703,
-        "effect_on_target": 4.188231468200684,
-        "rank1_update_norm": 1.0,
-        "target_class": 5
+        "delta_norm": 0.5239807367324829,
+        "effect_on_target": 15.94727897644043,
+        "layer": "fc2"
       },
       "6": {
-        "delta_norm": 22.19028091430664,
-        "effect_on_target": -20.684614181518555,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 6
+        "delta_norm": 0.6539263129234314,
+        "effect_on_target": 26.608318328857422,
+        "layer": "fc2"
       },
       "7": {
-        "delta_norm": 21.17731285095215,
-        "effect_on_target": -0.17786121368408203,
-        "rank1_update_norm": 0.9999999403953552,
-        "target_class": 7
+        "delta_norm": 0.7444136142730713,
+        "effect_on_target": 23.517309188842773,
+        "layer": "fc2"
       },
       "8": {
-        "delta_norm": 9.422333717346191,
-        "effect_on_target": -9.684968948364258,
-        "rank1_update_norm": 0.9999998807907104,
-        "target_class": 8
+        "delta_norm": 0.4706466495990753,
+        "effect_on_target": 24.28833770751953,
+        "layer": "fc2"
       },
       "9": {
-        "delta_norm": 21.943714141845703,
-        "effect_on_target": -3.508061408996582,
-        "rank1_update_norm": 1.0,
-        "target_class": 9
+        "delta_norm": 0.7941860556602478,
+        "effect_on_target": 40.25585174560547,
+        "layer": "fc2"
       }
     }
   }

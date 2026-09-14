@@ -1,0 +1,19 @@
+{
+  "seeds": [
+    42,
+    123,
+    456,
+    789,
+    1024,
+    2048,
+    3141,
+    5555,
+    7777,
+    9999
+  ],
+  "split_seed": 42,
+  "layer_default": "fc2",
+  "edit_n": 5001,
+  "eval_n": 4999,
+  "method": "class-mean rank-one closed-form edit (ROME-inspired; not Meng et al. 2022)"
+}
