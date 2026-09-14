@@ -1,0 +1,613 @@
+==== v2.1 Phase 5 start Mon Sep 14 08:04:22 PM IST 2026 ====
+/home/shamique/projects/ml-reserch/src/analysis/phase5_lora_comparison.py:94: DeprecationWarning: __array__ implementation doesn't accept a copy keyword, so passing copy=False failed. __array__ must implement 'dtype' and 'copy' keyword arguments. To learn more, see the migration guide https://numpy.org/devdocs/numpy_2_0_migration_guide.html#adapting-to-changes-in-the-copy-keyword
+  targets = np.array(test_dataset.targets)
+Using device: cuda
+Seeds: [42, 123, 456, 789, 1024]
+Ranks: [1, 2, 4, 8]
+Layer: fc2
+Correction examples per class: 100
+
+  Config: 7→1, Seed: 42, Rank: 1, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0934, side_effects=0.1525, norm=1.0986
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9532, norm=3.9193, epochs=20
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 7→1, Seed: 123, Rank: 1, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1109, side_effects=0.2048, norm=1.0596
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9452, norm=2.9531, epochs=17
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 7→1, Seed: 456, Rank: 1, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1770, side_effects=0.1869, norm=1.0986
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.8504, norm=2.4898, epochs=19
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 7→1, Seed: 789, Rank: 1, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0875, side_effects=0.2198, norm=1.0317
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.8909, norm=3.1889, epochs=17
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 7→1, Seed: 1024, Rank: 1, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1537, side_effects=0.2030, norm=1.0039
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9506, norm=3.4421, epochs=20
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 7→1, Seed: 42, Rank: 2, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0934, side_effects=0.1525, norm=1.0986
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9582, norm=4.3774, epochs=15
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 7→1, Seed: 123, Rank: 2, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1109, side_effects=0.2048, norm=1.0596
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9517, norm=3.3147, epochs=13
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 7→1, Seed: 456, Rank: 2, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1770, side_effects=0.1869, norm=1.0986
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9182, norm=2.7688, epochs=14
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 7→1, Seed: 789, Rank: 2, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0875, side_effects=0.2198, norm=1.0317
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9451, norm=3.6213, epochs=14
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 7→1, Seed: 1024, Rank: 2, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1537, side_effects=0.2030, norm=1.0039
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9540, norm=3.8605, epochs=16
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 7→1, Seed: 42, Rank: 4, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0934, side_effects=0.1525, norm=1.0986
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9588, norm=5.0266, epochs=12
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 7→1, Seed: 123, Rank: 4, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1109, side_effects=0.2048, norm=1.0596
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9530, norm=3.9110, epochs=11
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 7→1, Seed: 456, Rank: 4, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1770, side_effects=0.1869, norm=1.0986
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9496, norm=3.3151, epochs=12
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 7→1, Seed: 789, Rank: 4, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0875, side_effects=0.2198, norm=1.0317
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9468, norm=4.2035, epochs=12
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 7→1, Seed: 1024, Rank: 4, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1537, side_effects=0.2030, norm=1.0039
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9553, norm=4.6144, epochs=13
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 7→1, Seed: 42, Rank: 8, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0934, side_effects=0.1525, norm=1.0986
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9588, norm=6.1520, epochs=10
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 7→1, Seed: 123, Rank: 8, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1109, side_effects=0.2048, norm=1.0596
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9530, norm=4.6855, epochs=9
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 7→1, Seed: 456, Rank: 8, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1770, side_effects=0.1869, norm=1.0986
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9507, norm=4.0143, epochs=10
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 7→1, Seed: 789, Rank: 8, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0875, side_effects=0.2198, norm=1.0317
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9468, norm=5.0783, epochs=10
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 7→1, Seed: 1024, Rank: 8, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1537, side_effects=0.2030, norm=1.0039
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9553, norm=5.4090, epochs=10
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 1→7, Seed: 42, Rank: 1, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1693, side_effects=0.1482, norm=0.7608
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.8031, norm=2.6605, epochs=17
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 1→7, Seed: 123, Rank: 1, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1252, side_effects=0.1538, norm=1.1126
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.8799, norm=3.4185, epochs=20
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 1→7, Seed: 456, Rank: 1, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.2257, side_effects=0.1376, norm=0.8622
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.8863, norm=2.9882, epochs=18
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 1→7, Seed: 789, Rank: 1, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0423, side_effects=0.2629, norm=0.9020
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9418, norm=2.9122, epochs=17
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 1→7, Seed: 1024, Rank: 1, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1552, side_effects=0.1744, norm=0.6864
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9152, norm=2.6390, epochs=15
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 1→7, Seed: 42, Rank: 2, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1693, side_effects=0.1482, norm=0.7608
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.8604, norm=3.1846, epochs=13
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 1→7, Seed: 123, Rank: 2, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1252, side_effects=0.1538, norm=1.1126
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9369, norm=3.9763, epochs=15
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 1→7, Seed: 456, Rank: 2, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.2257, side_effects=0.1376, norm=0.8622
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9332, norm=3.3608, epochs=14
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 1→7, Seed: 789, Rank: 2, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0423, side_effects=0.2629, norm=0.9020
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9465, norm=3.4470, epochs=14
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 1→7, Seed: 1024, Rank: 2, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1552, side_effects=0.1744, norm=0.6864
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9434, norm=2.9910, epochs=13
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 1→7, Seed: 42, Rank: 4, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1693, side_effects=0.1482, norm=0.7608
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9066, norm=3.7043, epochs=11
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 1→7, Seed: 123, Rank: 4, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1252, side_effects=0.1538, norm=1.1126
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9540, norm=4.6594, epochs=11
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 1→7, Seed: 456, Rank: 4, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.2257, side_effects=0.1376, norm=0.8622
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9517, norm=3.9671, epochs=11
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 1→7, Seed: 789, Rank: 4, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0423, side_effects=0.2629, norm=0.9020
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9482, norm=4.0548, epochs=11
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 1→7, Seed: 1024, Rank: 4, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1552, side_effects=0.1744, norm=0.6864
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9504, norm=3.4957, epochs=10
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 1→7, Seed: 42, Rank: 8, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1693, side_effects=0.1482, norm=0.7608
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9312, norm=4.3199, epochs=9
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 1→7, Seed: 123, Rank: 8, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1252, side_effects=0.1538, norm=1.1126
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9545, norm=5.9806, epochs=10
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 1→7, Seed: 456, Rank: 8, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.2257, side_effects=0.1376, norm=0.8622
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9519, norm=4.7382, epochs=9
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 1→7, Seed: 789, Rank: 8, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0423, side_effects=0.2629, norm=0.9020
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9482, norm=4.6504, epochs=9
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 1→7, Seed: 1024, Rank: 8, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1552, side_effects=0.1744, norm=0.6864
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9516, norm=4.5567, epochs=9
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 5→6, Seed: 42, Rank: 1, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0987, side_effects=0.1950, norm=1.0004
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9394, norm=2.9272, epochs=16
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 5→6, Seed: 123, Rank: 1, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0964, side_effects=0.2484, norm=1.0335
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9197, norm=3.1791, epochs=19
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 5→6, Seed: 456, Rank: 1, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1749, side_effects=0.2988, norm=1.1794
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.8762, norm=2.7799, epochs=20
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 5→6, Seed: 789, Rank: 1, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0874, side_effects=0.1815, norm=1.0409
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9430, norm=2.9303, epochs=18
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 5→6, Seed: 1024, Rank: 1, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0762, side_effects=0.2708, norm=1.0082
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9447, norm=3.1312, epochs=19
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 5→6, Seed: 42, Rank: 2, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0987, side_effects=0.1950, norm=1.0004
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9543, norm=3.2183, epochs=13
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 5→6, Seed: 123, Rank: 2, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0964, side_effects=0.2484, norm=1.0335
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9575, norm=3.6416, epochs=15
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 5→6, Seed: 456, Rank: 2, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1749, side_effects=0.2988, norm=1.1794
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9436, norm=3.4170, epochs=15
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 5→6, Seed: 789, Rank: 2, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0874, side_effects=0.1815, norm=1.0409
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9527, norm=3.5588, epochs=14
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 5→6, Seed: 1024, Rank: 2, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0762, side_effects=0.2708, norm=1.0082
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9583, norm=3.5316, epochs=14
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 5→6, Seed: 42, Rank: 4, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0987, side_effects=0.1950, norm=1.0004
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9568, norm=3.8707, epochs=11
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 5→6, Seed: 123, Rank: 4, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0964, side_effects=0.2484, norm=1.0335
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9586, norm=4.1853, epochs=12
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 5→6, Seed: 456, Rank: 4, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1749, side_effects=0.2988, norm=1.1794
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9560, norm=3.8204, epochs=12
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 5→6, Seed: 789, Rank: 4, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0874, side_effects=0.1815, norm=1.0409
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9527, norm=3.8786, epochs=11
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 5→6, Seed: 1024, Rank: 4, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0762, side_effects=0.2708, norm=1.0082
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9583, norm=4.0422, epochs=11
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 5→6, Seed: 42, Rank: 8, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0987, side_effects=0.1950, norm=1.0004
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9568, norm=4.7504, epochs=9
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 5→6, Seed: 123, Rank: 8, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0964, side_effects=0.2484, norm=1.0335
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9586, norm=5.0789, epochs=10
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 5→6, Seed: 456, Rank: 8, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1749, side_effects=0.2988, norm=1.1794
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9562, norm=4.7829, epochs=10
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 5→6, Seed: 789, Rank: 8, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0874, side_effects=0.1815, norm=1.0409
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9527, norm=4.7888, epochs=10
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 5→6, Seed: 1024, Rank: 8, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0762, side_effects=0.2708, norm=1.0082
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9583, norm=5.1094, epochs=10
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 0→8, Seed: 42, Rank: 1, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1469, side_effects=0.1210, norm=0.9297
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9248, norm=3.1804, epochs=17
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 0→8, Seed: 123, Rank: 1, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0694, side_effects=0.1412, norm=0.9756
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.8174, norm=2.7580, epochs=20
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 0→8, Seed: 456, Rank: 1, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.2041, side_effects=0.1551, norm=1.1684
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9475, norm=3.3159, epochs=17
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 0→8, Seed: 789, Rank: 1, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.2102, side_effects=0.1540, norm=1.0553
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9488, norm=3.5249, epochs=20
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 0→8, Seed: 1024, Rank: 1, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1510, side_effects=0.1936, norm=0.9164
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9248, norm=3.3330, epochs=20
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 0→8, Seed: 42, Rank: 2, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1469, side_effects=0.1210, norm=0.9297
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9521, norm=3.4762, epochs=14
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 0→8, Seed: 123, Rank: 2, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0694, side_effects=0.1412, norm=0.9756
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9237, norm=3.2387, epochs=15
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 0→8, Seed: 456, Rank: 2, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.2041, side_effects=0.1551, norm=1.1684
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9514, norm=3.7159, epochs=14
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 0→8, Seed: 789, Rank: 2, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.2102, side_effects=0.1540, norm=1.0553
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9525, norm=4.0083, epochs=15
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 0→8, Seed: 1024, Rank: 2, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1510, side_effects=0.1936, norm=0.9164
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9496, norm=3.7819, epochs=15
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 0→8, Seed: 42, Rank: 4, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1469, side_effects=0.1210, norm=0.9297
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9541, norm=4.1747, epochs=11
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 0→8, Seed: 123, Rank: 4, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0694, side_effects=0.1412, norm=0.9756
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9431, norm=3.6162, epochs=12
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 0→8, Seed: 456, Rank: 4, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.2041, side_effects=0.1551, norm=1.1684
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9518, norm=4.3451, epochs=12
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 0→8, Seed: 789, Rank: 4, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.2102, side_effects=0.1540, norm=1.0553
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9528, norm=4.7402, epochs=12
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 0→8, Seed: 1024, Rank: 4, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1510, side_effects=0.1936, norm=0.9164
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9515, norm=4.3258, epochs=12
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 0→8, Seed: 42, Rank: 8, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1469, side_effects=0.1210, norm=0.9297
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9541, norm=4.9352, epochs=9
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 0→8, Seed: 123, Rank: 8, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.0694, side_effects=0.1412, norm=0.9756
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9508, norm=4.6415, epochs=10
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 0→8, Seed: 456, Rank: 8, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.2041, side_effects=0.1551, norm=1.1684
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9518, norm=5.2402, epochs=10
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 0→8, Seed: 789, Rank: 8, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.2102, side_effects=0.1540, norm=1.0553
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9528, norm=5.4905, epochs=10
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+  Config: 0→8, Seed: 1024, Rank: 8, Layer: fc2
+    Running rank-one edit...
+      rank1: recovery=+0.1510, side_effects=0.1936, norm=0.9164
+    Running LoRA...
+      LoRA: recovery=+1.0000, side_effects=0.9518, norm=5.1613, epochs=10
+      Subspace overlap: 1.0000 (angle: 0.00°)
+
+Raw results saved to outputs/phase5/raw_results.json
+
+=== AGGREGATED RESULTS (Table III; matched edit sets, EVAL split only) ===
+  Config Rank      Rank1 Rec       LoRA Rec     Rank1 SE      LoRA SE   Rank1 Norm    LoRA Norm    Overlap   Epochs
+-------------------------------------------------------------------------------------------------------------------
+     0→8    1 +0.1563 [+0.0859, +0.2267] +1.0000 [+1.0000, +1.0000]       0.1530       0.9126       1.0091       3.2225     1.0000  18.8000
+     0→8    2 +0.1563 [+0.0859, +0.2267] +1.0000 [+1.0000, +1.0000]       0.1530       0.9459       1.0091       3.6442     1.0000  14.6000
+     0→8    4 +0.1563 [+0.0859, +0.2267] +1.0000 [+1.0000, +1.0000]       0.1530       0.9506       1.0091       4.2404     1.0000  11.8000
+     0→8    8 +0.1563 [+0.0859, +0.2267] +1.0000 [+1.0000, +1.0000]       0.1530       0.9522       1.0091       5.0938     1.0000   9.8000
+     1→7    1 +0.1436 [+0.0600, +0.2272] +1.0000 [+1.0000, +1.0000]       0.1754       0.8853       0.8648       2.9237     1.0000  17.4000
+     1→7    2 +0.1436 [+0.0600, +0.2272] +1.0000 [+1.0000, +1.0000]       0.1754       0.9241       0.8648       3.3919     1.0000  13.8000
+     1→7    4 +0.1436 [+0.0600, +0.2272] +1.0000 [+1.0000, +1.0000]       0.1754       0.9422       0.8648       3.9763     1.0000  10.8000
+     1→7    8 +0.1436 [+0.0600, +0.2272] +1.0000 [+1.0000, +1.0000]       0.1754       0.9475       0.8648       4.8492     1.0000   9.2000
+     5→6    1 +0.1067 [+0.0582, +0.1553] +1.0000 [+1.0000, +1.0000]       0.2389       0.9246       1.0525       2.9896     1.0000  18.4000
+     5→6    2 +0.1067 [+0.0582, +0.1553] +1.0000 [+1.0000, +1.0000]       0.2389       0.9533       1.0525       3.4735     1.0000  14.2000
+     5→6    4 +0.1067 [+0.0582, +0.1553] +1.0000 [+1.0000, +1.0000]       0.2389       0.9565       1.0525       3.9594     1.0000  11.4000
+     5→6    8 +0.1067 [+0.0582, +0.1553] +1.0000 [+1.0000, +1.0000]       0.2389       0.9565       1.0525       4.9021     1.0000   9.8000
+     7→1    1 +0.1245 [+0.0759, +0.1731] +1.0000 [+1.0000, +1.0000]       0.1934       0.9181       1.0585       3.1986     1.0000  18.6000
+     7→1    2 +0.1245 [+0.0759, +0.1731] +1.0000 [+1.0000, +1.0000]       0.1934       0.9454       1.0585       3.5885     1.0000  14.4000
+     7→1    4 +0.1245 [+0.0759, +0.1731] +1.0000 [+1.0000, +1.0000]       0.1934       0.9527       1.0585       4.2141     1.0000  12.0000
+     7→1    8 +0.1245 [+0.0759, +0.1731] +1.0000 [+1.0000, +1.0000]       0.1934       0.9529       1.0585       5.0678     1.0000   9.8000
+
+Table saved to outputs/phase5/table3_lora_vs_rome.csv
+
+=== PAIRED T-TEST: rank-one vs LoRA Recovery (EVAL split) ===
+  0→8 rank=1: t=-33.274, p=0.0000 *** (Bonferroni α=0.0031)
+  0→8 rank=2: t=-33.274, p=0.0000 *** (Bonferroni α=0.0031)
+  0→8 rank=4: t=-33.274, p=0.0000 *** (Bonferroni α=0.0031)
+  0→8 rank=8: t=-33.274, p=0.0000 *** (Bonferroni α=0.0031)
+  1→7 rank=1: t=-28.439, p=0.0000 *** (Bonferroni α=0.0031)
+  1→7 rank=2: t=-28.439, p=0.0000 *** (Bonferroni α=0.0031)
+  1→7 rank=4: t=-28.439, p=0.0000 *** (Bonferroni α=0.0031)
+  1→7 rank=8: t=-28.439, p=0.0000 *** (Bonferroni α=0.0031)
+  5→6 rank=1: t=-51.069, p=0.0000 *** (Bonferroni α=0.0031)
+  5→6 rank=2: t=-51.069, p=0.0000 *** (Bonferroni α=0.0031)
+  5→6 rank=4: t=-51.069, p=0.0000 *** (Bonferroni α=0.0031)
+  5→6 rank=8: t=-51.069, p=0.0000 *** (Bonferroni α=0.0031)
+  7→1 rank=1: t=-50.000, p=0.0000 *** (Bonferroni α=0.0031)
+  7→1 rank=2: t=-50.000, p=0.0000 *** (Bonferroni α=0.0031)
+  7→1 rank=4: t=-50.000, p=0.0000 *** (Bonferroni α=0.0031)
+  7→1 rank=8: t=-50.000, p=0.0000 *** (Bonferroni α=0.0031)
+
+Phase 5 complete. Results in outputs/phase5
+==== v2.1 Phase 5 COMPLETE Mon Sep 14 08:08:00 PM IST 2026 ====
