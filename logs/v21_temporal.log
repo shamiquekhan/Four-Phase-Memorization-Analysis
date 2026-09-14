@@ -1,0 +1,284 @@
+==== v2.1 Temporal start Mon Sep 14 08:45:27 PM IST 2026 ====
+Traceback (most recent call last):
+  File "/tmp/train_temporal.py", line 9, in <module>
+    from models.model import MNISTNet
+ModuleNotFoundError: No module named 'models.model'
+clean temporal seed 42 done
+Traceback (most recent call last):
+  File "/tmp/train_temporal.py", line 9, in <module>
+    from models.model import MNISTNet
+ModuleNotFoundError: No module named 'models.model'
+clean temporal seed 123 done
+Traceback (most recent call last):
+  File "/tmp/train_temporal.py", line 9, in <module>
+    from models.model import MNISTNet
+ModuleNotFoundError: No module named 'models.model'
+clean temporal seed 456 done
+Traceback (most recent call last):
+  File "/tmp/train_temporal.py", line 9, in <module>
+    from models.model import MNISTNet
+ModuleNotFoundError: No module named 'models.model'
+clean temporal seed 789 done
+Traceback (most recent call last):
+  File "/tmp/train_temporal.py", line 9, in <module>
+    from models.model import MNISTNet
+ModuleNotFoundError: No module named 'models.model'
+clean temporal seed 1024 done
+Traceback (most recent call last):
+  File "/tmp/train_temporal.py", line 9, in <module>
+    from models.model import MNISTNet
+ModuleNotFoundError: No module named 'models.model'
+corr temporal seed 42 done
+Traceback (most recent call last):
+  File "/tmp/train_temporal.py", line 9, in <module>
+    from models.model import MNISTNet
+ModuleNotFoundError: No module named 'models.model'
+corr temporal seed 123 done
+Traceback (most recent call last):
+  File "/tmp/train_temporal.py", line 9, in <module>
+    from models.model import MNISTNet
+ModuleNotFoundError: No module named 'models.model'
+corr temporal seed 456 done
+Traceback (most recent call last):
+  File "/tmp/train_temporal.py", line 9, in <module>
+    from models.model import MNISTNet
+ModuleNotFoundError: No module named 'models.model'
+corr temporal seed 789 done
+Traceback (most recent call last):
+  File "/tmp/train_temporal.py", line 9, in <module>
+    from models.model import MNISTNet
+ModuleNotFoundError: No module named 'models.model'
+corr temporal seed 1024 done
+==== v2.1 Temporal COMPLETE Mon Sep 14 08:45:57 PM IST 2026 ====
+==== v2.1 Temporal start Mon Sep 14 09:17:21 PM IST 2026 ====
+Using device: cuda, noise=0.0
+Epoch 1/20: Train 84.92%, Test 92.25%
+Epoch 2/20: Train 92.82%, Test 93.12%
+Epoch 3/20: Train 93.69%, Test 93.90%
+Epoch 4/20: Train 94.16%, Test 94.16%
+Epoch 5/20: Train 94.50%, Test 94.37%
+Epoch 6/20: Train 94.80%, Test 94.25%
+Epoch 7/20: Train 94.89%, Test 94.68%
+Epoch 8/20: Train 95.06%, Test 94.59%
+Epoch 9/20: Train 95.25%, Test 94.55%
+Epoch 10/20: Train 95.27%, Test 94.46%
+Epoch 11/20: Train 95.38%, Test 94.67%
+Epoch 12/20: Train 95.45%, Test 94.54%
+Epoch 13/20: Train 95.63%, Test 94.67%
+Epoch 14/20: Train 95.62%, Test 94.46%
+Epoch 15/20: Train 95.76%, Test 94.53%
+Epoch 16/20: Train 95.75%, Test 94.95%
+Epoch 17/20: Train 95.83%, Test 94.89%
+Epoch 18/20: Train 95.99%, Test 94.95%
+Epoch 19/20: Train 95.97%, Test 95.14%
+Epoch 20/20: Train 96.02%, Test 94.66%
+Temporal checkpoints saved to outputs/temporal/clean/seed_42
+clean temporal seed 42 done
+Using device: cuda, noise=0.0
+Epoch 1/20: Train 84.92%, Test 91.74%
+Epoch 2/20: Train 92.61%, Test 93.53%
+Epoch 3/20: Train 93.74%, Test 94.00%
+Epoch 4/20: Train 94.39%, Test 94.26%
+Epoch 5/20: Train 94.83%, Test 94.79%
+Epoch 6/20: Train 95.06%, Test 94.74%
+Epoch 7/20: Train 95.35%, Test 94.89%
+Epoch 8/20: Train 95.52%, Test 95.03%
+Epoch 9/20: Train 95.63%, Test 95.10%
+Epoch 10/20: Train 95.76%, Test 95.04%
+Epoch 11/20: Train 95.95%, Test 95.45%
+Epoch 12/20: Train 95.97%, Test 95.51%
+Epoch 13/20: Train 96.10%, Test 95.44%
+Epoch 14/20: Train 96.31%, Test 95.67%
+Epoch 15/20: Train 96.31%, Test 95.46%
+Epoch 16/20: Train 96.38%, Test 95.27%
+Epoch 17/20: Train 96.52%, Test 95.46%
+Epoch 18/20: Train 96.51%, Test 95.43%
+Epoch 19/20: Train 96.55%, Test 95.77%
+Epoch 20/20: Train 96.63%, Test 95.47%
+Temporal checkpoints saved to outputs/temporal/clean/seed_123
+clean temporal seed 123 done
+Using device: cuda, noise=0.0
+Epoch 1/20: Train 85.00%, Test 92.32%
+Epoch 2/20: Train 92.69%, Test 93.52%
+Epoch 3/20: Train 93.75%, Test 93.91%
+Epoch 4/20: Train 94.32%, Test 94.36%
+Epoch 5/20: Train 94.73%, Test 94.49%
+Epoch 6/20: Train 95.05%, Test 94.65%
+Epoch 7/20: Train 95.20%, Test 94.98%
+Epoch 8/20: Train 95.33%, Test 95.18%
+Epoch 9/20: Train 95.63%, Test 95.24%
+Epoch 10/20: Train 95.66%, Test 95.12%
+Epoch 11/20: Train 95.82%, Test 95.24%
+Epoch 12/20: Train 95.83%, Test 94.96%
+Epoch 13/20: Train 96.00%, Test 95.46%
+Epoch 14/20: Train 96.13%, Test 95.53%
+Epoch 15/20: Train 96.12%, Test 95.59%
+Epoch 16/20: Train 96.17%, Test 95.55%
+Epoch 17/20: Train 96.29%, Test 95.52%
+Epoch 18/20: Train 96.29%, Test 95.25%
+Epoch 19/20: Train 96.45%, Test 95.39%
+Epoch 20/20: Train 96.47%, Test 95.49%
+Temporal checkpoints saved to outputs/temporal/clean/seed_456
+clean temporal seed 456 done
+Using device: cuda, noise=0.0
+Epoch 1/20: Train 83.55%, Test 92.21%
+Epoch 2/20: Train 92.63%, Test 93.09%
+Epoch 3/20: Train 93.79%, Test 93.94%
+Epoch 4/20: Train 94.38%, Test 94.30%
+Epoch 5/20: Train 94.69%, Test 94.61%
+Epoch 6/20: Train 94.98%, Test 94.67%
+Epoch 7/20: Train 95.17%, Test 94.61%
+Epoch 8/20: Train 95.30%, Test 95.00%
+Epoch 9/20: Train 95.55%, Test 95.14%
+Epoch 10/20: Train 95.53%, Test 95.37%
+Epoch 11/20: Train 95.73%, Test 95.43%
+Epoch 12/20: Train 95.86%, Test 95.10%
+Epoch 13/20: Train 96.02%, Test 95.12%
+Epoch 14/20: Train 96.13%, Test 95.42%
+Epoch 15/20: Train 96.17%, Test 95.19%
+Epoch 16/20: Train 96.10%, Test 95.64%
+Epoch 17/20: Train 96.26%, Test 95.34%
+Epoch 18/20: Train 96.43%, Test 95.26%
+Epoch 19/20: Train 96.44%, Test 95.59%
+Epoch 20/20: Train 96.42%, Test 95.62%
+Temporal checkpoints saved to outputs/temporal/clean/seed_789
+clean temporal seed 789 done
+Using device: cuda, noise=0.0
+Epoch 1/20: Train 83.42%, Test 91.70%
+Epoch 2/20: Train 92.57%, Test 93.08%
+Epoch 3/20: Train 93.49%, Test 93.72%
+Epoch 4/20: Train 94.08%, Test 94.29%
+Epoch 5/20: Train 94.53%, Test 94.44%
+Epoch 6/20: Train 94.88%, Test 94.47%
+Epoch 7/20: Train 95.10%, Test 94.54%
+Epoch 8/20: Train 95.33%, Test 94.86%
+Epoch 9/20: Train 95.56%, Test 94.91%
+Epoch 10/20: Train 95.64%, Test 94.99%
+Epoch 11/20: Train 95.86%, Test 94.47%
+Epoch 12/20: Train 95.87%, Test 95.05%
+Epoch 13/20: Train 95.96%, Test 95.11%
+Epoch 14/20: Train 96.11%, Test 95.32%
+Epoch 15/20: Train 96.22%, Test 95.25%
+Epoch 16/20: Train 96.23%, Test 95.13%
+Epoch 17/20: Train 96.29%, Test 95.16%
+Epoch 18/20: Train 96.34%, Test 95.06%
+Epoch 19/20: Train 96.40%, Test 95.48%
+Epoch 20/20: Train 96.55%, Test 95.27%
+Temporal checkpoints saved to outputs/temporal/clean/seed_1024
+clean temporal seed 1024 done
+Using device: cuda, noise=0.2
+Epoch 1/20: Train 65.71%, Test 90.41%
+Epoch 2/20: Train 72.77%, Test 91.79%
+Epoch 3/20: Train 73.61%, Test 92.27%
+Epoch 4/20: Train 74.03%, Test 92.61%
+Epoch 5/20: Train 74.28%, Test 92.88%
+Epoch 6/20: Train 74.55%, Test 92.78%
+Epoch 7/20: Train 74.73%, Test 92.96%
+Epoch 8/20: Train 74.85%, Test 93.23%
+Epoch 9/20: Train 74.95%, Test 93.25%
+Epoch 10/20: Train 74.84%, Test 93.10%
+Epoch 11/20: Train 75.11%, Test 92.98%
+Epoch 12/20: Train 75.11%, Test 93.39%
+Epoch 13/20: Train 75.11%, Test 93.36%
+Epoch 14/20: Train 75.20%, Test 93.19%
+Epoch 15/20: Train 75.25%, Test 93.70%
+Epoch 16/20: Train 75.26%, Test 93.31%
+Epoch 17/20: Train 75.25%, Test 93.52%
+Epoch 18/20: Train 75.38%, Test 93.55%
+Epoch 19/20: Train 75.33%, Test 92.53%
+Epoch 20/20: Train 75.44%, Test 93.42%
+Temporal checkpoints saved to outputs/temporal/noise_0.2/seed_42
+corr temporal seed 42 done
+Using device: cuda, noise=0.2
+Epoch 1/20: Train 65.84%, Test 90.06%
+Epoch 2/20: Train 72.57%, Test 91.70%
+Epoch 3/20: Train 73.49%, Test 91.85%
+Epoch 4/20: Train 74.02%, Test 92.15%
+Epoch 5/20: Train 74.21%, Test 92.66%
+Epoch 6/20: Train 74.69%, Test 92.87%
+Epoch 7/20: Train 74.64%, Test 92.61%
+Epoch 8/20: Train 74.83%, Test 93.08%
+Epoch 9/20: Train 75.08%, Test 92.81%
+Epoch 10/20: Train 75.05%, Test 93.08%
+Epoch 11/20: Train 75.13%, Test 92.91%
+Epoch 12/20: Train 75.21%, Test 93.57%
+Epoch 13/20: Train 75.27%, Test 93.17%
+Epoch 14/20: Train 75.40%, Test 93.44%
+Epoch 15/20: Train 75.45%, Test 93.50%
+Epoch 16/20: Train 75.50%, Test 93.40%
+Epoch 17/20: Train 75.45%, Test 93.14%
+Epoch 18/20: Train 75.52%, Test 93.12%
+Epoch 19/20: Train 75.49%, Test 93.56%
+Epoch 20/20: Train 75.62%, Test 93.49%
+Temporal checkpoints saved to outputs/temporal/noise_0.2/seed_123
+corr temporal seed 123 done
+Using device: cuda, noise=0.2
+Epoch 1/20: Train 65.78%, Test 90.00%
+Epoch 2/20: Train 72.70%, Test 91.44%
+Epoch 3/20: Train 73.54%, Test 92.41%
+Epoch 4/20: Train 73.97%, Test 92.40%
+Epoch 5/20: Train 74.41%, Test 92.97%
+Epoch 6/20: Train 74.54%, Test 92.90%
+Epoch 7/20: Train 74.70%, Test 93.35%
+Epoch 8/20: Train 74.91%, Test 93.61%
+Epoch 9/20: Train 75.00%, Test 93.53%
+Epoch 10/20: Train 75.04%, Test 93.67%
+Epoch 11/20: Train 75.18%, Test 93.61%
+Epoch 12/20: Train 75.21%, Test 93.80%
+Epoch 13/20: Train 75.30%, Test 93.77%
+Epoch 14/20: Train 75.27%, Test 93.66%
+Epoch 15/20: Train 75.34%, Test 93.82%
+Epoch 16/20: Train 75.40%, Test 93.92%
+Epoch 17/20: Train 75.39%, Test 94.04%
+Epoch 18/20: Train 75.54%, Test 93.18%
+Epoch 19/20: Train 75.48%, Test 93.97%
+Epoch 20/20: Train 75.62%, Test 94.04%
+Temporal checkpoints saved to outputs/temporal/noise_0.2/seed_456
+corr temporal seed 456 done
+Using device: cuda, noise=0.2
+Epoch 1/20: Train 65.44%, Test 89.80%
+Epoch 2/20: Train 72.86%, Test 91.12%
+Epoch 3/20: Train 73.62%, Test 92.07%
+Epoch 4/20: Train 74.03%, Test 92.51%
+Epoch 5/20: Train 74.48%, Test 92.96%
+Epoch 6/20: Train 74.58%, Test 93.11%
+Epoch 7/20: Train 74.87%, Test 93.45%
+Epoch 8/20: Train 74.98%, Test 93.49%
+Epoch 9/20: Train 75.08%, Test 93.38%
+Epoch 10/20: Train 75.16%, Test 93.28%
+Epoch 11/20: Train 75.24%, Test 93.20%
+Epoch 12/20: Train 75.32%, Test 93.30%
+Epoch 13/20: Train 75.39%, Test 93.59%
+Epoch 14/20: Train 75.41%, Test 93.31%
+Epoch 15/20: Train 75.40%, Test 93.42%
+Epoch 16/20: Train 75.50%, Test 93.72%
+Epoch 17/20: Train 75.56%, Test 93.43%
+Epoch 18/20: Train 75.60%, Test 93.40%
+Epoch 19/20: Train 75.64%, Test 93.73%
+Epoch 20/20: Train 75.67%, Test 93.52%
+Temporal checkpoints saved to outputs/temporal/noise_0.2/seed_789
+corr temporal seed 789 done
+Using device: cuda, noise=0.2
+Epoch 1/20: Train 64.98%, Test 90.34%
+Epoch 2/20: Train 72.73%, Test 91.42%
+Epoch 3/20: Train 73.63%, Test 91.96%
+Epoch 4/20: Train 73.93%, Test 92.07%
+Epoch 5/20: Train 74.27%, Test 92.27%
+Epoch 6/20: Train 74.39%, Test 92.84%
+Epoch 7/20: Train 74.55%, Test 92.55%
+Epoch 8/20: Train 74.61%, Test 92.57%
+Epoch 9/20: Train 74.74%, Test 93.09%
+Epoch 10/20: Train 74.75%, Test 92.89%
+Epoch 11/20: Train 74.81%, Test 93.11%
+Epoch 12/20: Train 74.94%, Test 92.93%
+Epoch 13/20: Train 74.93%, Test 93.12%
+Epoch 14/20: Train 75.00%, Test 92.24%
+Epoch 15/20: Train 75.09%, Test 93.22%
+Epoch 16/20: Train 75.02%, Test 93.05%
+Epoch 17/20: Train 75.06%, Test 93.25%
+Epoch 18/20: Train 75.11%, Test 93.17%
+Epoch 19/20: Train 75.13%, Test 93.12%
+Epoch 20/20: Train 75.19%, Test 92.65%
+Temporal checkpoints saved to outputs/temporal/noise_0.2/seed_1024
+corr temporal seed 1024 done
+==== v2.1 Temporal COMPLETE Mon Sep 14 09:31:44 PM IST 2026 ====
