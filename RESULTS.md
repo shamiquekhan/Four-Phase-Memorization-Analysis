@@ -1,5 +1,21 @@
 # Results: Memorization in Neural Networks
 
+> ## ⚠️ STATUS: tables below are v0 EXPLORATORY
+>
+> The v2 campaign (commit "v2 retraining campaign") retrained 90 models with
+> provenance and the EDIT/EVAL firewall and re-derived all headline numbers.
+> **The v2 numbers differ materially** — see README "Key Results — v2" and
+> `outputs/analysis/` for the authoritative results. Key v2 corrections:
+>
+> - Behavioral memorization is **1.1% of changed examples** (not 20%):
+>   92.8% of corrupted examples still fit their original label.
+> - fc2 stable rank is **unchanged** under corruption (p=0.32); corruption
+>   lowers weight scale, not rank.
+> - Rank-one delta-norm ratios: **1.78×–2.66×** (not 3.4×–6.0×).
+> - Group gradient alignment at convergence is **−0.88** (not +0.99).
+>
+> The v0 tables are retained below for provenance/comparison only.
+
 All values reported as `mean [95% CI]` over seeds unless otherwise noted.
 CI computed via Student's t-distribution: `mean ± t_{0.975, n-1} * SEM`. Paired t-tests used for clean-vs-corrupted comparisons.
 

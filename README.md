@@ -31,43 +31,56 @@ A systematic 4-phase analysis of how label memorization leaves structural finger
 > Meng et al. (2022) (no causal tracing, no key/value covariance constraint).
 > All v0 numbers labeled ROME below are pending v2 re-derivation.
 
-## Key Results (MNIST, 10 seeds, 95% CI)
+## Key Results — v2 (re-derived, 10 seeds, 95% Student-t CI)
 
-| Metric | Clean | Corrupted (20% noise) |
-|--------|:-----:|:---------------------:|
-| **Train Accuracy** | 96.68% [96.60%, 96.77%] | 94.21% [94.02%, 94.40%] |
-| **Test Accuracy** | 95.31% [95.16%, 95.46%] | 93.71% [93.42%, 94.00%] |
-| **FC1 Spectral Norm** | 4.37 [4.24, 4.50] | 3.66 [3.53, 3.79] |
-| **FC2 Spectral Norm** | 2.58 [2.42, 2.75] | 1.39 [1.30, 1.47] |
-| **CKA (fc1_pre→fc1_post)** | 0.850 [0.828, 0.873] | 0.690 [0.669, 0.712] |
-| **ROME fc1 Delta-Norm** | 14.49 (avg) | 7.18 (avg) |
-| **ROME fc2 Delta-Norm** | 19.08 (avg) | 4.40 (avg) |
-| **Loss Gap (corrupted, non-circular)** | — | −0.051 [−0.057, −0.045] |
-| **Rank-5 Gap (ablation)** | — | 6.1 pp worse |
+All numbers below are from the v2 campaign: 90 models retrained with
+provenance, EDIT/EVAL firewall enforced, behavioral memorization definition.
+v0 numbers are archived in `outputs/v0/` and superseded.
 
-All ROME comparisons significant at p < 0.0001 across 10 seeds × 10 classes. CIFAR-10 replicates ROME finding (ratio 1.84×, all classes p < 0.05). See [RESULTS.md](RESULTS.md) for full tables.
+| Metric | Clean | Corrupted (20% noise) | p (paired) |
+|--------|:-----:|:---------------------:|:----------:|
+| **Train Accuracy** | 96.41% | 75.45% (noisy labels) | 2e-17 |
+| **Test Accuracy** | 95.32% | 93.52% | 6e-06 |
+| **FC1 Spectral Norm** | 4.43 | 3.71 | 4e-06 |
+| **FC2 Spectral Norm** | 2.56 | 1.35 | 3e-09 |
+| **FC2 Stable Rank** | 3.82 | 3.97 | 0.32 (n.s.) |
+| **FC2 Effective Rank** | 8.95 | 9.16 | 3e-03 |
+| **FDR (h=16)** | 0.84 | 1.50 | 3e-06 |
+| **Cross-model CKA drift (output)** | — | 0.496 | — |
+| **Rank-one delta-norm (fc2, EDIT split)** | 0.801 | 0.371 | 1e-06 |
 
-### Additional Validations
+**The honest v2 story (differs materially from v0):**
 
-| Analysis | Result |
-|----------|--------|
-| **FDR scaling** | Fisher discriminant ratio: 0.862 (h=16) → 0.387 (h=1024), decreases monotonically (replaces σ) |
-| **Noise rate sweep (ROME fc2)** | Ratio scales monotonically: 3.37× (10%) → 4.34× (20%) → 5.98× (40%) |
-| **Baseline: spectral norm fc2 ratio** | 1.86× (ROME is 2.3× more sensitive) |
-| **Baseline: linear probe AUC** | 0.514 (barely above random — hidden activations don't encode corruption) |
-| **ROME random baseline** | Signal ratio = ∞ (random rank-1 edits recover 0% vs ROME 10–22%) |
-| **Multi-layer ROME** | Sequential (fc2→fc1): 5–18% vs fc2-only 10–22% (adding fc1 after fc2 reduces recovery) |
-| **Gradient anti-alignment** | +0.9944 [0.9926, 0.9961] at convergence (noise-dominated; anti-alignment occurs mid-training) |
-| **0→8 recovery (5 seeds)** | +0.097 (updated from single-seed +0.014) |
-| **CIFAR-10 Phase 3** | Loss gap −2.363 [−2.436, −2.291] (corrupted harder), GradAlign +0.441 |
+1. **The h=16 model does NOT memorize 20% label noise.** Behavioral
+   memorization (changed AND fits noisy label AND ≠ original) is only
+   **1.1% of changed examples** (0.22% of all). 92.8% of corrupted examples
+   still fit their ORIGINAL label — this is underfitting, not memorization.
+   v0's "Memorized Fraction = 0.200" was an artifact of equating
+   corrupted == memorized.
+2. **Corruption lowers weight scale, not rank.** fc2 spectral norm drops
+   47% (p=3e-9) but stable rank is unchanged (p=0.32) and effective rank
+   slightly rises. Confirms the audit's warning: spectral-norm drop ≠
+   lower-rank memorization.
+3. **Separability increases under corruption at h=16** (FDR 0.84 → 1.50).
+4. **Cross-model drift is layer-graded** (output 0.50 > fc1_post 0.36 >
+   fc1_pre 0.23) and exceeds seed noise floors at fc1_post; but output
+   drift ≈ the corrupted-condition seed floor (0.48), i.e. noise mainly
+   inflates readout variance across seeds.
+5. **Rank-one delta-norm dose-response is real but smaller than v0:**
+   ratios 1.78× (5% noise) → 2.66× (50%), monotone, all p<1e-5, n=10 paired
+   seeds (v0 claimed 3.4×–6.0×).
+6. **Rank-one intervention on untouched EVAL data:** recovery +10.9 to
+   +16.9pp (all p<0.02); **fc1-only edits recover exactly 0.0pp** in every
+   config; sequential fc2→fc1 (3.5–8.1pp) is worse than fc2-only.
+7. **Random-null is degenerate** (all 20 norm-matched nulls recover 0.0pp,
+   zero variance): z undefined, empirical p at the permutation floor 1/21.
+   Reported honestly; no "signal ratio = ∞".
+8. **Per-example gradient anti-alignment is measurable:** TracIn
+   cos(noisy-grad, orig-grad) = −0.33 ± 0.09; 76% of changed examples
+   anti-aligned. Group-level fc1 gradient alignment at convergence:
+   −0.88 (v0 wrongly measured +0.99 with clean/corrupt batches mixed).
 
-## Central Findings
-
-1. **Distortion localizes at the deepest pre-output interface** — CKA similarity drops significantly at the ReLU nonlinearity on MNIST (Δ=+0.160, p<0.001), shifting to the output-adjacent layer on CIFAR-10 (Δ=+0.103, p=0.009). The depth scales with architecture.
-2. **FDR reveals true separability scaling** — Unlike σ (which conflates spread with dimensionality), FDR = tr(S_B)/tr(S_W) decreases with width, showing wider networks distribute class information across more dimensions.
-3. **ROME delta-norm is a robust cross-architecture probe** — 10 seeds × 10 classes on MNIST and CIFAR-10 all show clean > corrupted at p<0.05. Ratio scales monotonically with noise rate (3.37× to 5.98×) and outperforms spectral norms (1.86×) and linear probes (AUC 0.514). Random baseline confirms structured edits are meaningful (signal ratio = ∞).
-4. **ROME localizes at the output layer** — fc1-only edits recover 0% across all configs; sequential fc2→fc1 (5–18%) is lower than fc2-only (10–22%), confirming the output-adjacent layer is the primary memorization site rather than distributed across layers.
-5. **Wider networks distribute memorization** — Monosemanticity decreases with width; sparsity converges to 1.0 beyond h=128 (superposition hypothesis alignment).
+See [RESULTS.md](RESULTS.md) for full tables.
 
 ## Project Structure
 
