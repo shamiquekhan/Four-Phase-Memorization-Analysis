@@ -196,16 +196,23 @@ def compute_group_gradient_alignment(model, dataloader, provenance, device):
         clean_grad.unsqueeze(0), corrupt_grad.unsqueeze(0)).item()
 
 
-def compute_tracin_scores(model, dataloader, provenance, device,
-                          max_examples=2000, seed=42):
+def compute_label_objective_gradient_conflict(model, dataloader, provenance, device,
+                                              max_examples=2000, seed=42):
     """
-    TracIn-style self-influence proxy restricted to the fc1 weight block:
+    Compute cosine similarity between per-example gradients w.r.t. the noisy
+    label vs the original label for the fc1 weight block.
 
-        s_i = -g_i(train loss on noisy label) . g_i(train loss on original label)
+    For a changed example:
+      - g_noisy = ∇_θ L(ŷ_i)  (gradient of loss using corrupted label)
+      - g_orig  = ∇_θ L(y_i)  (gradient of loss using original true label)
+      - cos = g_noisy · g_orig / (||g_noisy|| ||g_orig||)
 
-    A changed example whose noisy-label gradient ALIGNS with its original-
-    label gradient is being pulled toward the original class (not memorized);
-    anti-alignment indicates the noisy label dominates (memorization signal).
+    Anti-alignment (cos < 0) means the example's gradient pulls toward the
+    noisy label and away from the true label — a memorization signal.
+    Alignment (cos > 0) means the example still follows the true-label gradient.
+
+    This is NOT TracIn (which uses cross-example influence across time);
+    it is a per-example gradient conflict score at a single checkpoint.
 
     Returns summary stats over changed examples only.
     """
@@ -215,7 +222,6 @@ def compute_tracin_scores(model, dataloader, provenance, device,
                    zip(provenance.changed_indices, provenance.original_labels)}
 
     rng = np.random.default_rng(seed)
-    n_total = len(dataloader.dataset)
     candidates = np.array(sorted(changed_idx))
     if len(candidates) > max_examples:
         candidates = rng.choice(candidates, size=max_examples, replace=False)
@@ -252,10 +258,14 @@ def compute_tracin_scores(model, dataloader, provenance, device,
         return None
     return {
         'n_scored': int(len(sims)),
-        'mean_cosine_noisy_vs_orig_grad': float(sims.mean()),
+        'mean_cosine': float(sims.mean()),
         'std': float(sims.std()),
         'frac_anti_aligned': float((sims < 0).mean()),
     }
+
+
+# Backward compatibility alias
+compute_tracin_scores = compute_label_objective_gradient_conflict
 
 
 def main():
@@ -344,20 +354,21 @@ def main():
         grad_align = compute_group_gradient_alignment(
             model, train_loader, prov, device)
 
-        # 4) TracIn-style self-influence proxy on changed examples
-        tracin = compute_tracin_scores(model, train_loader, prov, device,
-                                        max_examples=args.max_tracin_examples)
+        # 4) Per-example gradient conflict (noisy vs original label gradient)
+        grad_conflict = compute_label_objective_gradient_conflict(
+            model, train_loader, prov, device,
+            max_examples=args.max_tracin_examples)
 
         result = {
             'behavioral': s,
             'loss_gap': lg,
             'gradient_alignment_group': grad_align,
-            'tracin_self_influence': tracin,
+            'gradient_conflict': grad_conflict,
             'definition': 'behavioral: changed AND pred==noisy AND pred!=orig',
         }
         all_results[str(seed)] = result
 
-        ta = f", TracInCos={tracin['mean_cosine_noisy_vs_orig_grad']:+.3f}" if tracin else ""
+        ta = f", GradConflict={grad_conflict['mean_cosine']:+.3f}" if grad_conflict else ""
         print(f"Seed {seed}: AccClean={s['clean_train_acc']:.4f}, "
               f"MemFrac(changed)={s['memorized_fraction_of_changed']:.4f}, "
               f"FitNoisy={s['changed_fit_noisy_label']:.4f}, "
@@ -393,11 +404,11 @@ def main():
         mean, lo, hi = compute_ci(ga_vals)
         print(f"gradient_alignment_group: {mean:.4f} [{lo:.4f}, {hi:.4f}]")
 
-    tr_vals = [all_results[s]['tracin_self_influence']['mean_cosine_noisy_vs_orig_grad']
-               for s in all_results if all_results[s]['tracin_self_influence']]
-    if tr_vals:
-        mean, lo, hi = compute_ci(tr_vals)
-        print(f"tracin mean cosine: {mean:.4f} [{lo:.4f}, {hi:.4f}]")
+    gc_vals = [all_results[s]['gradient_conflict']['mean_cosine']
+                for s in all_results if all_results[s]['gradient_conflict']]
+    if gc_vals:
+        mean, lo, hi = compute_ci(gc_vals)
+        print(f"gradient_conflict mean cosine: {mean:.4f} [{lo:.4f}, {hi:.4f}]")
 
     with open(output_dir / 'phase3_results.json', 'w') as f:
         json.dump(all_results, f, indent=2, default=str)

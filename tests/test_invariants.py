@@ -296,14 +296,19 @@ class TestStatsContract:
 
 
 class TestSeedContract:
-    """P0 fix: config seed list is the single source of truth."""
+    """P0 fix: config seed lists are the single source of truth (decoupled)."""
 
     def test_config_seeds_match_stats_module(self):
         import yaml
         cfg = yaml.safe_load(open(Path(__file__).parent.parent / 'configs' / 'experiment_config.yaml'))
-        from src.utils.stats import SEEDS
-        assert cfg['seeds'] == SEEDS
-        assert len(set(cfg['seeds'])) == len(cfg['seeds']), "duplicate seeds"
+        from src.utils.stats import INITIALIZATION_SEEDS, CORRUPTION_SEEDS, LOADER_SEEDS, SEEDS
+        assert cfg['initialization_seeds'] == INITIALIZATION_SEEDS
+        assert cfg['corruption_seeds'] == CORRUPTION_SEEDS
+        assert cfg['loader_seeds'] == LOADER_SEEDS
+        assert cfg['initialization_seeds'] == SEEDS  # legacy alias
+        assert len(set(cfg['initialization_seeds'])) == len(cfg['initialization_seeds']), "duplicate init seeds"
+        assert len(set(cfg['corruption_seeds'])) == len(cfg['corruption_seeds']), "duplicate corruption seeds"
+        assert len(set(cfg['loader_seeds'])) == len(cfg['loader_seeds']), "duplicate loader seeds"
 
     def test_no_range_n_seed_defaults_remain(self):
         """Grep guard: no script may default to list(range(N)) seeds."""

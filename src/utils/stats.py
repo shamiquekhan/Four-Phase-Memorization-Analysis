@@ -12,15 +12,29 @@ v2 STATISTICAL CONTRACT (one convention for every script):
   - Effect sizes: paired dz = mean(delta) / std(delta).
   - Multiplicity: use holm_correction() for families of p-values instead of
     reporting dozens of raw p < 0.0001 values.
+  - Seed sources: initialization, corruption, loader seeds are DECOUPLED.
+    Load from config/experiment_config.yaml for the canonical lists.
 """
 
 import numpy as np
 import torch
+import yaml
 from scipy import stats
 from typing import Callable, Dict, List, Any, Tuple
+from pathlib import Path
 
 
-SEEDS = [42, 123, 456, 789, 1024, 2048, 3141, 5555, 7777, 9999]
+# Load canonical seed lists from config (single source of truth)
+_CONFIG_PATH = Path(__file__).parent.parent.parent / 'configs' / 'experiment_config.yaml'
+with open(_CONFIG_PATH) as _f:
+    _cfg = yaml.safe_load(_f)
+
+INITIALIZATION_SEEDS = _cfg.get('initialization_seeds', [42, 123, 456, 789, 1024, 2048, 3141, 5555, 7777, 9999])
+CORRUPTION_SEEDS = _cfg.get('corruption_seeds', [7001, 7002, 7003, 7004, 7005, 7006, 7007, 7008, 7009, 7010])
+LOADER_SEEDS = _cfg.get('loader_seeds', [9001, 9002, 9003, 9004, 9005, 9006, 9007, 9008, 9009, 9010])
+
+# Legacy alias for backward compatibility
+SEEDS = INITIALIZATION_SEEDS
 
 
 def compute_ci(values: List[float], confidence: float = 0.95) -> Tuple[float, float, float]:

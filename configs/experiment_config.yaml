@@ -1,9 +1,14 @@
 # Centralized experiment configuration
 # All hyperparameters and settings in one place for reproducibility
 
-# Random seeds for statistical rigor (SINGLE SOURCE OF TRUTH for all runners;
-# scripts default to the first N of this list and never to range(n))
-seeds: [42, 123, 456, 789, 1024, 2048, 3141, 5555, 7777, 9999]
+# Random seeds for statistical rigor — DECOUPLED SOURCES
+# initialization_seeds: weight initialization only
+# corruption_seeds: label corruption only  
+# loader_seeds: data loader shuffle only
+# For paired clean/corrupted: same init + loader seeds, different corruption seed
+initialization_seeds: [42, 123, 456, 789, 1024, 2048, 3141, 5555, 7777, 9999]
+corruption_seeds: [7001, 7002, 7003, 7004, 7005, 7006, 7007, 7008, 7009, 7010]
+loader_seeds: [9001, 9002, 9003, 9004, 9005, 9006, 9007, 9008, 9009, 9010]
 n_primary_seeds: 10
 
 # Model architecture
@@ -22,7 +27,17 @@ training:
   optimizer: "adam"
   loss_fn: "cross_entropy"
   weight_decay: 0.0
-  grad_clip: 1.0
+  grad_clip: null  # Disabled for mechanistic training-dynamics research
+
+# Optimizer comparison (for mechanistic validation)
+optimizers:
+  - name: "adam"
+    lr: 0.001
+    weight_decay: 0.0
+  - name: "sgd"
+    lr: 0.01
+    momentum: 0.9
+    weight_decay: 0.0
 
 # Corrupted training (Phase 4 backdoor injection)
 corrupted_training:
@@ -67,10 +82,10 @@ phase3:
   ablation_threshold: 0.02
   top_k_neurons: 3
 
-# Phase 4: Causal Interventions
+# Phase 4: Causal Interventions (v2: rank-k editing on EDIT_MEM / EVAL_MEM)
 phase4:
-  rome_rank: 1
-  max_rank_ablation: 5
+  edit_ranks: [1, 2, 4, 8, 16]
+  max_rank_ablation: 10
   corruption_configs:
     - source: 7
       target: 1
@@ -84,6 +99,33 @@ phase4:
     - source: 0
       target: 8
       label: "0→8"
+
+# Temporal training protocol (Stage B confirmatory)
+temporal:
+  checkpoint_every: 1
+  log_per_example: true
+  log_gradients: true
+  log_representations: true
+  log_grad_conflict: true
+  max_tracin_examples: 2000
+
+# Regime sweep (Stage A exploratory)
+regime_sweep:
+  hidden_dims: [16, 32, 64, 128, 256, 512]
+  noise_rates: [0.0, 0.1, 0.2, 0.4, 0.6]
+  epochs_list: [20, 50, 100, 200]
+  seeds_per_config: 3
+
+# Early-warning prediction (Stage C)
+early_warning:
+  lookahead_horizons: [5, 10, 20]
+  baselines: ["loss", "csl", "forgetting", "grad_conflict", "representation"]
+  held_out_seeds: true
+
+# Replication (Stage F)
+replication:
+  architectures: ["mlp_64", "mlp_256", "cnn_small"]
+  cifar10n: false  # opt-in for natural label noise
 
 # Visualization settings
 visualization:
