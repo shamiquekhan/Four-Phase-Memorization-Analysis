@@ -1,0 +1,6 @@
+
+=== Analyzing hidden size: 16 ===
+  seed=42: DB=2.3254, mono=0.312, circuit=7.2, sparsity=0.550, acc=94.66%
+  seed=123: DB=2.0754, mono=0.188, circuit=7.1, sparsity=0.556, acc=95.47%
+/home/shamique/projects/ml-reserch/src/utils/metrics.py:210: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r, _ = pearsonr(neuron_acts, class_indicator)

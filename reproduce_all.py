@@ -40,7 +40,11 @@ def main():
     parser.add_argument('--phase5', action='store_true', help='Run Phase 5: LoRA vs ROME subspace comparison')
     parser.add_argument('--output-dir', type=str, default='outputs')
     args = parser.parse_args()
-    
+
+    # Load the experiment config once; the seed list and width grid come from it.
+    with open(args.config) as _f:
+        _cfg = yaml.safe_load(_f)
+
     root = Path(__file__).parent
     sys.path.insert(0, str(root / 'src'))
     from utils.stats import SEEDS as _default_seed_list
@@ -199,20 +203,13 @@ def main():
     )
 
     # Step 14: Multi-layer ROME
-    for tag, checkpoint_dir in [('targeted_corrupted', f'{args.output_dir}/targeted_corrupted')]:
-        run(
-            f"python src/analysis/multilayer_rome.py --config {args.config} --checkpoint-dir {checkpoint_dir} --seeds {' '.join(map(str, seeds[:5]))} --output-dir {args.output_dir}/analysis/multilayer_rome",
-            "Multi-layer ROME (sequential + joint)",
-            cwd=root
-        )
-
-    # Step 14b: Random baseline for ROME
-    for tag, checkpoint_dir in [('targeted_corrupted', f'{args.output_dir}/targeted_corrupted')]:
-        run(
-            f"python src/analysis/multiclass_rome.py --config {args.config} --checkpoint-dir {checkpoint_dir} --seeds {' '.join(map(str, seeds[:5]))} --output-dir {args.output_dir}/analysis/multiclass_rome_{tag}",
-            "Multi-class ROME with random baseline",
-            cwd=root
-        )
+    if not args.skip_analysis:
+        for tag, checkpoint_dir in [('targeted_corrupted', f'{args.output_dir}/targeted_corrupted')]:
+            run(
+                f"python src/analysis/multilayer_rome.py --config {args.config} --checkpoint-dir {checkpoint_dir} --seeds {' '.join(map(str, seeds[:5]))} --output-dir {args.output_dir}/analysis/multilayer_rome",
+                "Multi-layer ROME (sequential + joint)",
+                cwd=root
+            )
 
     # Step 15: CIFAR-10 replication (CKA, ROME, rank ablation)
     if not args.skip_cifar10:

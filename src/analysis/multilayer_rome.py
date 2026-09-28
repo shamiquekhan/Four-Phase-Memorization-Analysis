@@ -49,7 +49,7 @@ def sequential_multilayer_rome(
 
     for layer_name in layers:
         delta, u, v, _ = compute_rank1_edit(
-            model_copy, edit_loader, device, tgt_class, layer_name=layer_name
+            model_copy, edit_loader, device, tgt_class, layer=layer_name
         )
         if delta is None:
             continue

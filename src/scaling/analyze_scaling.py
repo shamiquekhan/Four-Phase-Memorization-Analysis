@@ -34,10 +34,10 @@ def get_test_loader(batch_size=500, num_workers=4):
     return DataLoader(dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers)
 
 
-def run_scaling_analysis(results_dir, hidden_dims, seeds, device='cpu'):
+def run_scaling_analysis(results_dir, hidden_dims, seeds, device='cpu', test_batch_size=500):
     """Run all 4 phases of metrics across hidden sizes."""
     import torch
-    test_loader = get_test_loader()
+    test_loader = get_test_loader(batch_size=test_batch_size)
     results = {}
 
     for h in hidden_dims:
@@ -142,6 +142,9 @@ def main():
     parser.add_argument('--output-dir', type=str, default='outputs/analysis/scaling')
     parser.add_argument('--hidden-dims', type=int, nargs='+', default=[16, 32, 64, 128, 256, 512, 1024])
     parser.add_argument('--seeds', type=int, nargs='+', default=SEEDS[:3])
+    parser.add_argument('--test-batch-size', type=int, default=500,
+                        help='Eval batch size (larger values speed up the per-neuron '
+                             'ablation loop without changing the metric)')
     args = parser.parse_args()
 
     import torch
@@ -150,7 +153,8 @@ def main():
     output_path = Path(args.output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
 
-    results = run_scaling_analysis(args.results_dir, args.hidden_dims, args.seeds, device)
+    results = run_scaling_analysis(args.results_dir, args.hidden_dims, args.seeds, device,
+                                   test_batch_size=args.test_batch_size)
 
     # Save results
     serializable = {}

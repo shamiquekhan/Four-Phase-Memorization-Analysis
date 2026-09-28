@@ -1,0 +1,66 @@
+
+=== Analyzing hidden size: 16 ===
+  seed=42: DB=2.3254, mono=0.312, circuit=7.2, sparsity=0.550, acc=94.66%
+  seed=123: DB=2.0754, mono=0.188, circuit=7.1, sparsity=0.556, acc=95.47%
+/home/shamique/projects/ml-reserch/src/utils/metrics.py:210: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r, _ = pearsonr(neuron_acts, class_indicator)
+  seed=456: DB=2.2177, mono=0.188, circuit=6.3, sparsity=0.606, acc=95.49%
+  seed=789: DB=2.1973, mono=0.188, circuit=7.3, sparsity=0.544, acc=95.62%
+  seed=1024: DB=2.1607, mono=0.250, circuit=7.3, sparsity=0.544, acc=95.27%
+
+=== Analyzing hidden size: 32 ===
+  seed=42: DB=2.3508, mono=0.344, circuit=6.9, sparsity=0.784, acc=96.67%
+  seed=123: DB=2.4222, mono=0.219, circuit=8.0, sparsity=0.750, acc=96.93%
+  seed=456: DB=2.4907, mono=0.250, circuit=8.5, sparsity=0.734, acc=96.75%
+  seed=789: DB=2.5448, mono=0.156, circuit=8.9, sparsity=0.722, acc=96.71%
+  seed=1024: DB=2.4628, mono=0.125, circuit=8.1, sparsity=0.747, acc=96.79%
+
+=== Analyzing hidden size: 64 ===
+  seed=42: DB=2.5995, mono=0.234, circuit=4.8, sparsity=0.925, acc=97.49%
+  seed=123: DB=2.6155, mono=0.234, circuit=4.3, sparsity=0.933, acc=97.43%
+  seed=456: DB=2.6303, mono=0.234, circuit=4.0, sparsity=0.938, acc=97.32%
+  seed=789: DB=2.6344, mono=0.188, circuit=4.5, sparsity=0.930, acc=97.19%
+  seed=1024: DB=2.5403, mono=0.312, circuit=3.6, sparsity=0.944, acc=97.30%
+
+=== Analyzing hidden size: 128 ===
+  seed=42: DB=2.7223, mono=0.164, circuit=0.2, sparsity=0.998, acc=98.04%
+  seed=123: DB=2.7565, mono=0.195, circuit=0.4, sparsity=0.997, acc=97.55%
+  seed=456: DB=2.7240, mono=0.227, circuit=0.1, sparsity=0.999, acc=98.02%
+  seed=789: DB=2.7162, mono=0.172, circuit=0.4, sparsity=0.997, acc=97.81%
+  seed=1024: DB=2.7096, mono=0.180, circuit=0.3, sparsity=0.998, acc=97.83%
+
+=== Analyzing hidden size: 256 ===
+  seed=42: DB=2.8049, mono=0.172, circuit=0.0, sparsity=1.000, acc=98.07%
+  seed=123: DB=2.8421, mono=0.156, circuit=0.0, sparsity=1.000, acc=98.05%
+  seed=456: DB=2.7511, mono=0.195, circuit=0.0, sparsity=1.000, acc=98.01%
+  seed=789: DB=2.8326, mono=0.133, circuit=0.0, sparsity=1.000, acc=97.65%
+  seed=1024: DB=2.8548, mono=0.156, circuit=0.1, sparsity=1.000, acc=97.99%
+
+=== Analyzing hidden size: 512 ===
+  seed=42: DB=2.7498, mono=0.127, circuit=0.1, sparsity=1.000, acc=97.63%
+  seed=123: DB=2.8268, mono=0.143, circuit=0.0, sparsity=1.000, acc=98.05%
+  seed=456: DB=2.8308, mono=0.143, circuit=0.0, sparsity=1.000, acc=98.09%
+  seed=789: DB=2.8793, mono=0.145, circuit=0.0, sparsity=1.000, acc=97.89%
+  seed=1024: DB=2.8591, mono=0.135, circuit=0.0, sparsity=1.000, acc=98.12%
+
+=== Analyzing hidden size: 1024 ===
+  seed=42: DB=2.9320, mono=0.090, circuit=0.0, sparsity=1.000, acc=98.20%
+  seed=123: DB=2.8703, mono=0.114, circuit=0.0, sparsity=1.000, acc=98.29%
+  seed=456: DB=2.8520, mono=0.104, circuit=0.0, sparsity=1.000, acc=98.17%
+  seed=789: DB=2.7965, mono=0.110, circuit=0.1, sparsity=1.000, acc=98.30%
+  seed=1024: DB=2.9176, mono=0.103, circuit=0.0, sparsity=1.000, acc=98.35%
+
+=== SCALING ANALYSIS SUMMARY ===
+Hidden        FDR        σ      Mono%    Circuit       Acc%
+-----------------------------------------------------------
+    16  0.8565  0.6995  0.225     7.0       95.30
+    32  0.6329  0.8260  0.219     8.1       96.77
+    64  0.5610  0.8876  0.241     4.2       97.35
+   128  0.4986  0.9423  0.188     0.3       97.85
+   256  0.4496  0.9930  0.163     0.0       97.95
+   512  0.4065  1.0399  0.138     0.0       97.96
+  1024  0.3931  1.0580  0.104     0.0       98.26
+qt.qpa.plugin: Could not find the Qt platform plugin "wayland" in ""
+  Saved: outputs/analysis/scaling/figure8_scaling_analysis.png
+
+Results saved to outputs/analysis/scaling

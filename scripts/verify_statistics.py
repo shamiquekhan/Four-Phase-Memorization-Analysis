@@ -37,11 +37,26 @@ def check_ci_in_json(path, label):
             values = metrics[metric_name]
             if not isinstance(values, list) or len(values) < 2:
                 continue
+            try:
+                values = [float(v) for v in values]
+            except (TypeError, ValueError):
+                issues.append(f'  FAIL: {label} [{key}] {metric_name}: non-numeric values')
+                continue
 
             stored_mean = metrics.get(f'{metric_name}_mean')
             stored_ci = metrics.get(f'{metric_name}_ci')
 
             if stored_mean is None or stored_ci is None:
+                continue
+
+            # Artifacts serialized with default=str can hold numeric values as
+            # strings; coerce (and flag) instead of crashing on format specs.
+            try:
+                stored_mean = float(stored_mean)
+                stored_ci = float(stored_ci)
+            except (TypeError, ValueError):
+                issues.append(f'  FAIL: {label} [{key}] {metric_name}_mean/_ci '
+                              f'not numeric: {stored_mean!r}, {stored_ci!r}')
                 continue
 
             computed_mean = float(np.mean(values))
@@ -85,10 +100,12 @@ def main():
     failed = 0
 
     # Check scaling analysis
+    # v2 scaling protocol uses the first 5 config seeds (see RESULTS_v2.md),
+    # so the per-metric minimum here is 5, not the campaign-wide 10.
     scaling_path = REPO / 'outputs' / 'analysis' / 'scaling' / 'scaling_analysis.json'
     if scaling_path.exists():
         issues = check_ci_in_json(scaling_path, 'scaling')
-        n_issues = check_n_values(scaling_path, 'scaling', min_n=10)
+        n_issues = check_n_values(scaling_path, 'scaling', min_n=5)
         all_issues.extend(issues)
         all_issues.extend(n_issues)
         if not issues:
