@@ -2,7 +2,7 @@
 
 # Structural Fingerprints of Label Memorization in Shallow Neural Networks
 
-> ## ⚠️ v2 methodology revision in progress — v0 results below are EXPLORATORY
+> ## ⚠️ v2 methodology revision — v0 results are EXPLORATORY
 >
 > An internal audit found methodological defects in the v0 pipeline. The fixes
 > below are implemented in code; **all v0 headline numbers must be re-derived
@@ -80,7 +80,7 @@ v0 numbers are archived in `outputs/v0/` and superseded.
    anti-aligned. Group-level fc1 gradient alignment at convergence:
    −0.88 (v0 wrongly measured +0.99 with clean/corrupt batches mixed).
 
-See [RESULTS.md](RESULTS.md) for full tables.
+See [RESULTS_v2.md](RESULTS_v2.md) for full tables.
 
 ## Project Structure
 
@@ -128,7 +128,7 @@ See [RESULTS.md](RESULTS.md) for full tables.
 ├── tests/test_metrics.py            # 24 unit tests
 ├── tests/test_invariants.py         # 30 scientific-invariant tests (v2)
 ├── reproduce_all.py                 # Single-command pipeline
-├── RESULTS.md                       # Verified result tables
+├── RESULTS_v2.md                    # Verified result tables (authoritative)
 ├── METHODOLOGY.md                   # 4-phase methodology
 ├── PAPER.md                         # Paper-to-code mapping
 ├── README.md
@@ -154,14 +154,18 @@ python reproduce_all.py
 
 # Run tests
 python -m pytest tests/ -v          # 54/54 pass
+
+# Verify consistency
+python scripts/verify_consistency.py
+python scripts/verify_statistics.py
 ```
 
 ## Pipeline
 
-1. **Phase 1: Weight Geometry** — Spectral norms, Frobenius norms, gradient norms, FDR
-2. **Phase 2: Representation Analysis** — CKA similarity between layers, activation statistics
-3. **Phase 3: Influence Functions** — Non-circular memorization scoring, gradient alignment
-4. **Phase 4: ROME Analysis** — Rank-One Model Editing, multi-class validation, random baseline, multi-layer ROME
+1. **Phase 1: Weight Geometry & Spectral Structure** — Spectral norms, Frobenius norms, gradient norms, FDR, stable/effective rank
+2. **Phase 2: Cross-Model Representational Drift** — CKA with seed noise-floor controls
+3. **Phase 3: Memorization Dynamics (non-circular)** — Behavioral memorization, gradient alignment, TracIn-style self-influence
+4. **Phase 4: Rank-One Interventions (ROME-inspired, EDIT/EVAL firewall)** — Class-mean rank-one edits on EDIT half, evaluated on held-out EVAL half
 
 ## Configuration
 
@@ -179,6 +183,6 @@ When publishing this repo on GitHub, add these topics in the repo settings (Sett
 @software{memorization_analysis_2026,
   title = {Structural Fingerprints of Label Memorization in Shallow Neural Networks},
   year = {2026},
-  url = {https://github.com/shamiquekhan/four-phase-memorization-analysis}
+  url = {https://github.com/shamiquekhan/Four-Phase-Memorization-Analysis}
 }
 ```

@@ -1,5 +1,19 @@
 # Changelog
 
+## v2.0.0 — Methodology revision (current)
+- **Corruption provenance**: `selected == changed` guaranteed; `CorruptionProvenance` saved per run (`src/data/corruption.py`)
+- **Behavioral memorization definition**: changed AND fits noisy label AND ≠ original (replaces corrupted == memorized)
+- **EDIT/EVAL firewall**: Stratified disjoint split (`SplitProvenance` saved) — edits built on EDIT, evaluated on held-out EVAL
+- **Terminology**: "ROME-inspired closed-form rank-one edit" everywhere (not Meng et al. 2022 ROME)
+- **Cross-model CKA drift** + cross-seed noise-floor controls replace within-model layer CKA
+- **Influence functions demoted**: Per-batch Hessian + CG replaced by TracIn-style gradient self-influence + behavioral definition
+- **Seeds**: Config list is single source of truth everywhere (no more `range(n)`)
+- **Rank metrics**: Stable rank, effective rank, spectral entropy added; "spectral norm down ⇒ lower rank" inference withdrawn
+- **Statistics**: z vs empirical null, Holm correction, paired d_z effect sizes; no ∞ signal ratios
+- **CI wording**: Paper says Student-t (code was already Student-t); bootstrap available as robustness
+- **Hardened verification**: `verify_consistency.py` hard-fails on missing artifacts; recomputes from raw JSON
+- **Pipeline**: `reproduce_all.py` loads seeds/widths from config; conditional analysis steps
+
 ## v1.1.0 — Reviewer round 2 fixes
 - AUC 0.514 framing: reframed as "existence evidence" rather than "above-chance" detection
 - Regime A/B gap: acknowledged that Phases 1-3 (random noise) differ from Phase 4 (targeted swaps)
