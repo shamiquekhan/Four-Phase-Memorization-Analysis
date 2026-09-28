@@ -104,22 +104,33 @@ def extract_per_example_metrics(model: nn.Module,
     all_indices = []
 
     with torch.no_grad():
+        sample_idx = 0
         for batch_idx, (data, target) in enumerate(dataloader):
             data, target = data.to(device), target.to(device)
+            batch_size = data.size(0)
             logits = model(data)
             loss = criterion(logits, target)
 
             probs = torch.softmax(logits, dim=-1)
             margins = probs.gather(1, target.unsqueeze(1)).squeeze()
 
-            all_losses.extend(loss.cpu().numpy())
-            all_margins.extend(margins.cpu().numpy())
+            # Ensure loss and margins are 1D arrays for proper extension
+            loss_np = loss.detach().cpu().numpy()
+            if loss_np.ndim == 0:
+                loss_np = np.array([loss_np])
+            all_losses.extend(loss_np)
+
+            margins_np = margins.detach().cpu().numpy()
+            if margins_np.ndim == 0:
+                margins_np = np.array([margins_np])
+            all_margins.extend(margins_np)
+
             all_preds.extend(logits.argmax(1).cpu().numpy())
 
-            start_idx = batch_idx * dataloader.batch_size
-            for i in range(len(data)):
-                idx = start_idx + i
+            for i in range(batch_size):
+                idx = sample_idx
                 all_indices.append(idx)
+                sample_idx += 1
                 if idx in orig_by_idx:
                     all_true_labels.append(orig_by_idx[idx])
                     all_noisy_labels.append(target[i].item())
@@ -127,13 +138,13 @@ def extract_per_example_metrics(model: nn.Module,
                     true_target = torch.tensor([orig_by_idx[idx]], device=device)
                     true_loss = criterion(logits[i:i+1], true_target)
                     all_true_losses.append(true_loss.item())
-                    # Noisy-label loss (already in all_losses)
-                    all_noisy_losses.append(loss[i].item())
+                    # Noisy-label loss (use loss_np which is properly 1D)
+                    all_noisy_losses.append(float(loss_np[i]))
                 else:
                     all_true_labels.append(target[i].item())
                     all_noisy_labels.append(target[i].item())
-                    all_true_losses.append(loss[i].item())
-                    all_noisy_losses.append(loss[i].item())
+                    all_true_losses.append(float(loss_np[i]))
+                    all_noisy_losses.append(float(loss_np[i]))
 
     return {
         'indices': np.array(all_indices),
@@ -243,6 +254,8 @@ def aggregate_temporal_metrics(checkpoint_results: List[Dict],
         'forgetting': forgetting,
         'memorization_onset': onset,
         'trajectories': trajectories,
+        'n_memorized': int((onset >= 0).sum()),
+        'n_forgotten': int((forgetting > 0).sum()),
     }
 
 

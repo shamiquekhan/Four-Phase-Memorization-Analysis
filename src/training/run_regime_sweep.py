@@ -50,6 +50,7 @@ def train_and_evaluate(config, hidden_dim, noise_rate, epochs, init_seed, corrup
                            lr=config['training']['lr'],
                            weight_decay=config['training']['weight_decay'])
     criterion = nn.CrossEntropyLoss()
+    criterion_none = nn.CrossEntropyLoss(reduction='none')
 
     # Data
     transform = transforms.Compose([
@@ -133,7 +134,7 @@ def train_and_evaluate(config, hidden_dim, noise_rate, epochs, init_seed, corrup
 
         # Per-example metrics
         epoch_metrics = extract_per_example_metrics(
-            model, eval_loader, provenance, device, criterion)
+            model, eval_loader, provenance, device, criterion_none)
         checkpoint_results.append(epoch_metrics)
 
         if test_acc > best_acc:
