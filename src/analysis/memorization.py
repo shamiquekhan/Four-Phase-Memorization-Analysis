@@ -90,9 +90,15 @@ def extract_per_example_metrics(model: nn.Module,
         criterion = nn.CrossEntropyLoss(reduction='none')
 
     model.eval()
-    changed_idx = set(int(i) for i in provenance.changed_indices)
-    orig_by_idx = {int(i): int(o) for i, o in
-                   zip(provenance.changed_indices, provenance.original_labels)}
+    
+    # Handle clean (no provenance) vs corrupted training
+    if provenance is not None:
+        changed_idx = set(int(i) for i in provenance.changed_indices)
+        orig_by_idx = {int(i): int(o) for i, o in
+                       zip(provenance.changed_indices, provenance.original_labels)}
+    else:
+        changed_idx = set()
+        orig_by_idx = {}
 
     all_losses = []
     all_true_losses = []
@@ -131,7 +137,7 @@ def extract_per_example_metrics(model: nn.Module,
                 idx = sample_idx
                 all_indices.append(idx)
                 sample_idx += 1
-                if idx in orig_by_idx:
+                if idx in changed_idx:
                     all_true_labels.append(orig_by_idx[idx])
                     all_noisy_labels.append(target[i].item())
                     # True-label loss

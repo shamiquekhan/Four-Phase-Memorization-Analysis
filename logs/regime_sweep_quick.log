@@ -1,0 +1,13 @@
+Device: cuda
+Total configurations: 18
+Seeds per config: 3
+Total runs: 54
+Resuming from 4 existing results
+
+[1/18] hidden_dim=16, noise_rate=0.1, epochs=20
+  Seed 0 (init=42): SKIPPED (already completed)
+  Seed 1 (init=123): SKIPPED (already completed)
+  Seed 2 (init=456): SKIPPED (already completed)
+
+[2/18] hidden_dim=16, noise_rate=0.1, epochs=100
+  Seed 0 (init=42): SKIPPED (already completed)

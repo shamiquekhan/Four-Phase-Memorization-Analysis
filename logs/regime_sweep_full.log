@@ -1,0 +1,6 @@
+Device: cuda
+Total configurations: 120
+Seeds per config: 3
+Total runs: 360
+
+[1/120] hidden_dim=16, noise_rate=0.0, epochs=20

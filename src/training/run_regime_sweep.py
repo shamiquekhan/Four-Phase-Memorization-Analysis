@@ -222,7 +222,19 @@ def main():
     print(f"Seeds per config: {seeds_per_config}")
     print(f"Total runs: {len(configs) * seeds_per_config}")
 
-    all_results = []
+    # Load existing results if resuming
+    results_file = output_dir / 'regime_sweep_results.json'
+    if results_file.exists():
+        with open(results_file) as f:
+            all_results = json.load(f)
+        print(f"Resuming from {len(all_results)} existing results")
+    else:
+        all_results = []
+
+    # Track completed configs
+    completed = set()
+    for r in all_results:
+        completed.add((r['hidden_dim'], r['noise_rate'], r['epochs'], r['init_seed']))
 
     for i, (hidden_dim, noise_rate, epochs) in enumerate(configs):
         print(f"\n[{i+1}/{len(configs)}] hidden_dim={hidden_dim}, noise_rate={noise_rate}, epochs={epochs}")
@@ -232,19 +244,23 @@ def main():
             corruption_seed = config['corruption_seeds'][seed_idx]
             loader_seed = config['loader_seeds'][seed_idx]
 
+            if (hidden_dim, noise_rate, epochs, init_seed) in completed:
+                print(f"  Seed {seed_idx} (init={init_seed}): SKIPPED (already completed)")
+                continue
+
             result = train_and_evaluate(
                 config, hidden_dim, noise_rate, epochs,
                 init_seed, corruption_seed, loader_seed, device
             )
             all_results.append(result)
 
+            # Save incrementally
+            with open(results_file, 'w') as f:
+                json.dump(all_results, f, indent=2, default=str)
+
             print(f"  Seed {seed_idx}: test_acc={result['test_acc']:.2f}%, "
                   f"mem_frac={result['memorization_fraction']:.4f} "
                   f"({result['n_memorized']}/{result['n_changed']})")
-
-    # Save results
-    with open(output_dir / 'regime_sweep_results.json', 'w') as f:
-        json.dump(all_results, f, indent=2, default=str)
 
     # Print summary table
     print("\n=== REGIME SWEEP SUMMARY ===")

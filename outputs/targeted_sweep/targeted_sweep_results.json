@@ -1,0 +1,32 @@
+[
+  {
+    "hidden_dim": 64,
+    "noise_rate": 0.4,
+    "epochs": 50,
+    "init_seed": 42,
+    "corruption_seed": 7001,
+    "loader_seed": 9001,
+    "train_acc": 59.36833333333333,
+    "n_changed": 24000,
+    "n_memorized": 468,
+    "memorization_fraction": 0.0195,
+    "n_forgotten": 5135,
+    "mean_csl": 7.660096107245153,
+    "mean_forgetting": 0.0916
+  },
+  {
+    "hidden_dim": 64,
+    "noise_rate": 0.4,
+    "epochs": 50,
+    "init_seed": 123,
+    "corruption_seed": 7002,
+    "loader_seed": 9002,
+    "train_acc": 59.52,
+    "n_changed": 24000,
+    "n_memorized": 567,
+    "memorization_fraction": 0.023625,
+    "n_forgotten": 5271,
+    "mean_csl": 7.648058941226136,
+    "mean_forgetting": 0.09465
+  }
+]
